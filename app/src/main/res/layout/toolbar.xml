@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_orange_dark"
+    android:padding="5dp"
+    >
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/firstB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/material_dynamic_neutral0"
+            android:layout_marginStart="0dp"
+            android:layout_centerVertical="true"
+            android:text="Profile"
+
+            ></ImageButton>
+
+        <ImageButton
+            android:id="@+id/SecondB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/material_dynamic_neutral0"
+            android:layout_marginStart="0dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/firstB"
+            android:text="Schedule"
+            ></ImageButton>
+
+        <ImageButton
+            android:id="@+id/thirdB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/material_dynamic_neutral0"
+            android:layout_marginStart="0dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/SecondB"
+            android:text="ADD"
+
+            ></ImageButton>
+
+        <ImageButton
+            android:id="@+id/SOS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/material_dynamic_neutral0"
+            android:layout_marginStart="0dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/thirdB"
+            android:text="SOS"
+
+            ></ImageButton>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_home_24"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            >
+        </ImageButton>
+
+
+
+
+
+</RelativeLayout>
