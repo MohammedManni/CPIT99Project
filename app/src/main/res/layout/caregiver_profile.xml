@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        ></include>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline31"
@@ -26,8 +30,8 @@
         android:id="@+id/imageCaregiver"
         android:layout_width="161dp"
         android:layout_height="163dp"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="84dp"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline31"
