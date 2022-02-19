@@ -7,7 +7,7 @@
 
     <include
         layout="@layout/toolbar"
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarADD"
         ></include>
 
     <androidx.constraintlayout.widget.Guideline

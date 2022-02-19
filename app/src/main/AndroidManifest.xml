@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeMedicare">
         <activity android:name=".register2Activity"></activity>
+        <activity android:name=".Home_Page"></activity>
+        <activity android:name=".Profile"></activity>
+        <activity android:name=".Add"></activity>
+        <activity android:name=".Schedule"></activity>
+        <activity android:name=".SOS"></activity>
         <activity android:name=".register1Activity" />
         <activity android:name=".sign_activity" />
         <activity android:name=".MainActivity">
