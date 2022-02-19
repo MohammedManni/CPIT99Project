@@ -20,7 +20,7 @@ public class register2Activity extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(register2Activity.this, register1Activity.class);
+                Intent intent= new Intent(register2Activity.this, Home_Page.class);
                 startActivity(intent);
             }
         });
