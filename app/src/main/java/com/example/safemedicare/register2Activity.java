@@ -4,27 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
-    int splash_out= 3000;
-
+public class register2Activity extends AppCompatActivity {
+    Button finish;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.slpash);
+        setContentView(R.layout.register_2);
 
-        getSupportActionBar().hide();
 
-        new Handler().postDelayed(new Runnable() {
+        Button finish = findViewById(R.id.Confirm);
+
+        finish.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                Intent intent= new Intent(MainActivity.this, sign_activity.class);
+            public void onClick(View view) {
+                Intent intent= new Intent(register2Activity.this, Home_Page.class);
                 startActivity(intent);
             }
-        },splash_out);
+        });
 
     }
 }
