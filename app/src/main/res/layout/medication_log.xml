@@ -7,80 +7,76 @@
     android:layout_height="match_parent">
 
     <include
-        layout="@layout/toolbar"
         android:id="@+id/toolbarMedication"
-        ></include>
+        layout="@layout/toolbar"
+        tools:layout_editor_absoluteX="1dp"></include>
 
     <TextView
         android:id="@+id/MedicineName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginEnd="13dp"
+        android:layout_width="134dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="92dp"
         android:text="Medicine Name"
-        app:layout_constraintEnd_toStartOf="@+id/TextMedicineName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMedication" />
 
     <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
-        android:layout_marginEnd="88dp"
+        android:id="@+id/numberOfTimeView"
+        android:layout_width="134dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="40dp"
         android:text="Number of time per day"
-        app:layout_constraintEnd_toStartOf="@+id/editTextNumber"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MedicineName" />
 
-    <EditText
-        android:id="@+id/TextMedicineName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="47dp"
-        android:layout_marginEnd="44dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/MedicineName"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
 
     <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="65dp"
+        android:id="@+id/amountView"
+        android:layout_width="134dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
         android:text="Amount"
-        app:layout_constraintEnd_toStartOf="@+id/editTextTextPersonName2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/numberOfTimeView" />
 
     <EditText
-        android:id="@+id/editTextNumber"
-        android:layout_width="98dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="16dp"
+        android:id="@+id/EditMedicineName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="85dp"
+        android:ems="10"
+        android:hint="Medicine name"
+        android:inputType="textAutoCorrect"
+        app:layout_constraintStart_toEndOf="@+id/MedicineName"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMedication" />
+
+
+    <EditText
+        android:id="@+id/editTextNumberOfTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="35dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/TextMedicineName" />
+        app:layout_constraintStart_toEndOf="@+id/numberOfTimeView"
+        app:layout_constraintTop_toBottomOf="@+id/EditMedicineName" />
+
+
+    <EditText
+        android:id="@+id/editTextAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="35dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/amountView"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberOfTime" />
 
     <Button
         android:id="@+id/Changes"

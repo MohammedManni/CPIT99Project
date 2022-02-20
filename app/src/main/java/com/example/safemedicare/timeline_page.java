@@ -63,5 +63,17 @@ public class timeline_page extends AppCompatActivity {
         });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
+
+        // timeline button
+
+        Button viewCalendar = findViewById(R.id.buttonViewAsCalendar);
+
+        viewCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(timeline_page.this, Schedule.class);
+                startActivity(intent);
+            }
+        });
     }
 }

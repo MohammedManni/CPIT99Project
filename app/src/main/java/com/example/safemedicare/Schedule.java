@@ -64,6 +64,17 @@ public class Schedule extends AppCompatActivity {
             }
         });
 
-        ////////////////////////////////////////////////////////////////////////////
+        //////////////////////////end toolbar buttons////////////////////////////////////////////
+
+        Button viewTimeline = findViewById(R.id.buttonViewAsTimeline);
+
+        viewTimeline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Schedule.this, timeline_page.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
