@@ -1,21 +1,19 @@
 package com.example.safemedicare;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class Schedule extends AppCompatActivity {
+public class timeline_page extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.calendar);
-
-        /////////////////////////////////////////////////////////////////////
+        setContentView(R.layout.timeline);
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
@@ -27,7 +25,7 @@ public class Schedule extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule.this, Profile.class);
+                Intent intent = new Intent(timeline_page.this, Profile.class);
                 startActivity(intent);
             }
         });
@@ -35,7 +33,7 @@ public class Schedule extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule.this, Schedule.class);
+                Intent intent = new Intent(timeline_page.this, Schedule.class);
                 startActivity(intent);
             }
         });
@@ -43,7 +41,7 @@ public class Schedule extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule.this, Add.class);
+                Intent intent = new Intent(timeline_page.this, Add.class);
                 startActivity(intent);
             }
         });
@@ -51,7 +49,7 @@ public class Schedule extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule.this, SOS.class);
+                Intent intent = new Intent(timeline_page.this, SOS.class);
                 startActivity(intent);
             }
         });
@@ -59,11 +57,11 @@ public class Schedule extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule.this, Home_Page.class);
+                Intent intent = new Intent(timeline_page.this, Home_Page.class);
                 startActivity(intent);
             }
         });
 
-        ////////////////////////////////////////////////////////////////////////////
+        ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
     }
 }

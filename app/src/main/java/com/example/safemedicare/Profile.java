@@ -7,10 +7,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class Profile extends AppCompatActivity {
-    Button Profile, Scheduale, Add, SOS, imageButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +64,47 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        ////////////////////////////////////////////////////////////////////////////
+        ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
+
+        // profile page button //
+        Button personalInfo = findViewById(R.id.buttonPersonalInfo);
+        Button medicationLog = findViewById(R.id.buttonMedicationLog);
+        Button caregiver_relative_control = findViewById(R.id.buttonCaregiver);
+        Button privacy = findViewById(R.id.buttonPrivacy);
+        Button patient = findViewById(R.id.buttonPatient);
+
+        personalInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, personal_info.class);
+                startActivity(intent);
+            }
+        });
+
+        medicationLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, medicationLog_page.class);
+                startActivity(intent);
+            }
+        });
+
+
+        caregiver_relative_control.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, caregiver_relative_control.class);
+                startActivity(intent);
+            }
+        });
+
+        privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, privacy_page.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
