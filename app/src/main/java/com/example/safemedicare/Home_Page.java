@@ -11,22 +11,23 @@ import androidx.appcompat.widget.Toolbar;
 
 public class Home_Page extends AppCompatActivity {
     Button Profile, Scheduale, Add, SOS, imageButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
 
-        Toolbar toolbar= findViewById(R.id.toolbarh);
+        Toolbar toolbar = findViewById(R.id.toolbarh);
         setSupportActionBar(toolbar);
 
-      /////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
         Button Add = findViewById(R.id.thirdB);
         Button SOS = findViewById(R.id.SOS);
-        ImageButton imageButton= findViewById(R.id.imageButton);
+        ImageButton imageButton = findViewById(R.id.imageButton);
 
 
         Profile.setOnClickListener(new View.OnClickListener() {

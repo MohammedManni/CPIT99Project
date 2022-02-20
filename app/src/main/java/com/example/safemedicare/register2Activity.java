@@ -9,6 +9,7 @@ import android.widget.Button;
 
 public class register2Activity extends AppCompatActivity {
     Button finish;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +21,7 @@ public class register2Activity extends AppCompatActivity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(register2Activity.this, Home_Page.class);
+                Intent intent = new Intent(register2Activity.this, Home_Page.class);
                 startActivity(intent);
             }
         });

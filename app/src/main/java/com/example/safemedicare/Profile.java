@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 
 public class Profile extends AppCompatActivity {
     Button Profile, Scheduale, Add, SOS, imageButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +24,7 @@ public class Profile extends AppCompatActivity {
         Button Schedule = findViewById(R.id.SecondB);
         Button Add = findViewById(R.id.thirdB);
         Button SOS = findViewById(R.id.SOS);
-        ImageButton imageButton= findViewById(R.id.imageButton);
+        ImageButton imageButton = findViewById(R.id.imageButton);
 
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
