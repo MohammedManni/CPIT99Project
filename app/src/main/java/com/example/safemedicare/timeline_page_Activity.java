@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class timeline_page extends AppCompatActivity {
+public class timeline_page_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class timeline_page extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page.this, Profile.class);
+                Intent intent = new Intent(timeline_page_Activity.this, Profile_Activity.class);
                 startActivity(intent);
             }
         });
@@ -33,7 +33,7 @@ public class timeline_page extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page.this, Schedule.class);
+                Intent intent = new Intent(timeline_page_Activity.this, Schedule_Activity.class);
                 startActivity(intent);
             }
         });
@@ -41,7 +41,7 @@ public class timeline_page extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page.this, Add.class);
+                Intent intent = new Intent(timeline_page_Activity.this, Add_Activity.class);
                 startActivity(intent);
             }
         });
@@ -49,7 +49,7 @@ public class timeline_page extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page.this, SOS.class);
+                Intent intent = new Intent(timeline_page_Activity.this, SOS_Activity.class);
                 startActivity(intent);
             }
         });
@@ -57,7 +57,7 @@ public class timeline_page extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page.this, Home_Page.class);
+                Intent intent = new Intent(timeline_page_Activity.this, Home_Page_Activity.class);
                 startActivity(intent);
             }
         });
@@ -71,7 +71,7 @@ public class timeline_page extends AppCompatActivity {
         viewCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page.this, Schedule.class);
+                Intent intent = new Intent(timeline_page_Activity.this, Schedule_Activity.class);
                 startActivity(intent);
             }
         });

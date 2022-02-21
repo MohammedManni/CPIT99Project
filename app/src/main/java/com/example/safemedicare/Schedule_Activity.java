@@ -1,19 +1,21 @@
 package com.example.safemedicare;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class medicationLog_page extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class Schedule_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.medication_log);
+        setContentView(R.layout.calendar);
+
+        /////////////////////////////////////////////////////////////////////
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
@@ -25,7 +27,7 @@ public class medicationLog_page extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page.this, Profile.class);
+                Intent intent = new Intent(Schedule_Activity.this, Profile_Activity.class);
                 startActivity(intent);
             }
         });
@@ -33,7 +35,7 @@ public class medicationLog_page extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page.this, Schedule.class);
+                Intent intent = new Intent(Schedule_Activity.this, Schedule_Activity.class);
                 startActivity(intent);
             }
         });
@@ -41,7 +43,7 @@ public class medicationLog_page extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page.this, Add.class);
+                Intent intent = new Intent(Schedule_Activity.this, Add_Activity.class);
                 startActivity(intent);
             }
         });
@@ -49,7 +51,7 @@ public class medicationLog_page extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page.this, SOS.class);
+                Intent intent = new Intent(Schedule_Activity.this, SOS_Activity.class);
                 startActivity(intent);
             }
         });
@@ -57,11 +59,22 @@ public class medicationLog_page extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page.this, Home_Page.class);
+                Intent intent = new Intent(Schedule_Activity.this, Home_Page_Activity.class);
                 startActivity(intent);
             }
         });
 
-        ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
+        //////////////////////////end toolbar buttons////////////////////////////////////////////
+
+        Button viewTimeline = findViewById(R.id.buttonViewAsTimeline);
+
+        viewTimeline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Schedule_Activity.this, timeline_page_Activity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

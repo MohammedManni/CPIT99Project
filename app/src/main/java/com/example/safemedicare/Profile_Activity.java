@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Profile extends AppCompatActivity {
+public class Profile_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class Profile extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, Profile.class);
+                Intent intent = new Intent(Profile_Activity.this, Profile_Activity.class);
                 startActivity(intent);
             }
         });
@@ -35,7 +35,7 @@ public class Profile extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, Schedule.class);
+                Intent intent = new Intent(Profile_Activity.this, Schedule_Activity.class);
                 startActivity(intent);
             }
         });
@@ -43,7 +43,7 @@ public class Profile extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, Add.class);
+                Intent intent = new Intent(Profile_Activity.this, Add_Activity.class);
                 startActivity(intent);
             }
         });
@@ -51,7 +51,7 @@ public class Profile extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, SOS.class);
+                Intent intent = new Intent(Profile_Activity.this, SOS_Activity.class);
                 startActivity(intent);
             }
         });
@@ -59,7 +59,7 @@ public class Profile extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, Home_Page.class);
+                Intent intent = new Intent(Profile_Activity.this, Home_Page_Activity.class);
                 startActivity(intent);
             }
         });
@@ -76,7 +76,7 @@ public class Profile extends AppCompatActivity {
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, personal_info.class);
+                Intent intent = new Intent(Profile_Activity.this, personal_info_Activity.class);
                 startActivity(intent);
             }
         });
@@ -84,7 +84,7 @@ public class Profile extends AppCompatActivity {
         medicationLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, medicationLog_page.class);
+                Intent intent = new Intent(Profile_Activity.this, medicationLog_page_Activity.class);
                 startActivity(intent);
             }
         });
@@ -93,7 +93,7 @@ public class Profile extends AppCompatActivity {
         caregiver_relative_control.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, caregiver_relative_control.class);
+                Intent intent = new Intent(Profile_Activity.this, caregiver_relative_control_Activity.class);
                 startActivity(intent);
             }
         });
@@ -101,7 +101,7 @@ public class Profile extends AppCompatActivity {
         privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, privacy_page.class);
+                Intent intent = new Intent(Profile_Activity.this, privacy_page.class);
                 startActivity(intent);
             }
         });

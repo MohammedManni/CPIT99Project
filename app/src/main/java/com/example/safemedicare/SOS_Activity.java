@@ -1,31 +1,34 @@
 package com.example.safemedicare;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class personal_info extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SOS_Activity extends AppCompatActivity {
+    Button Profile, Scheduale, Add, SOS, imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.personal_info);
+        setContentView(R.layout.sos);
+
+        /////////////////////////////////////////////////////////////////////
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
         Button Add = findViewById(R.id.thirdB);
         Button SOS = findViewById(R.id.SOS);
-        ImageButton imageButton= findViewById(R.id.imageButton);
+        ImageButton imageButton = findViewById(R.id.imageButton);
 
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(personal_info.this, Profile.class);
+                Intent intent = new Intent(SOS_Activity.this, Profile_Activity.class);
                 startActivity(intent);
             }
         });
@@ -33,7 +36,7 @@ public class personal_info extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(personal_info.this, Schedule.class);
+                Intent intent = new Intent(SOS_Activity.this, Schedule_Activity.class);
                 startActivity(intent);
             }
         });
@@ -41,7 +44,7 @@ public class personal_info extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(personal_info.this, Add.class);
+                Intent intent = new Intent(SOS_Activity.this, Add_Activity.class);
                 startActivity(intent);
             }
         });
@@ -49,7 +52,7 @@ public class personal_info extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(personal_info.this, SOS.class);
+                Intent intent = new Intent(SOS_Activity.this, SOS_Activity.class);
                 startActivity(intent);
             }
         });
@@ -57,11 +60,11 @@ public class personal_info extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(personal_info.this, Home_Page.class);
+                Intent intent = new Intent(SOS_Activity.this, Home_Page_Activity.class);
                 startActivity(intent);
             }
         });
 
-        ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
     }
 }
