@@ -6,6 +6,10 @@ public class MedicationLog {
 
     ArrayList<Medication> MedicationList = new ArrayList<Medication>();
 
+    public MedicationLog(ArrayList<Medication> medicationList) {
+        MedicationList = medicationList;
+    }
+
     public void AddMedication(Medication medication) {
         MedicationList.add(medication);
 
