@@ -46,13 +46,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ministryOfHealth" />
 
-    <Button
-        android:id="@+id/buttonRelative"
-        android:layout_width="356dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="65dp"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button997" />
 </androidx.constraintlayout.widget.ConstraintLayout>
