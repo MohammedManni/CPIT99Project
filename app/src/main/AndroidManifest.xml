@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeMedicare">
-        <activity android:name=".timeline_page_Activity"></activity>
+        <activity android:name=".caregiver_homePage_activity"></activity>
+        <activity android:name=".SecondActivity" />
+        <activity android:name=".timeline_page_Activity" />
         <activity android:name=".medicationLog_page_Activity" />
         <activity android:name=".privacy_page" />
         <activity android:name=".caregiver_relative_control_Activity" />

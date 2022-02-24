@@ -22,7 +22,7 @@ public class sign_activity extends AppCompatActivity {
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(sign_activity.this, register1Activity.class);
+                Intent intent = new Intent(sign_activity.this, Home_Page_Activity.class);
                 startActivity(intent);
             }
         });

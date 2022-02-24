@@ -38,7 +38,7 @@
         app:layout_constraintGuide_begin="20dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -53,7 +53,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="39dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/textViewItem">
 
         <RadioButton
             android:id="@+id/CaregiverRadioButton"

@@ -66,7 +66,7 @@ public class Schedule_Activity extends AppCompatActivity {
 
         //////////////////////////end toolbar buttons////////////////////////////////////////////
 
-        Button viewTimeline = findViewById(R.id.buttonViewAsTimeline);
+        Button viewTimeline = findViewById(R.id.buttonAdjustment);
 
         viewTimeline.setOnClickListener(new View.OnClickListener() {
             @Override
