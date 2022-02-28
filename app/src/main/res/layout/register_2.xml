@@ -15,14 +15,7 @@
         app:layout_constraintGuide_percent="0.0" />
 
 
-    <TextView
-        android:id="@+id/textViewItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="Are you a Patint or a Caregiver?"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="342dp" />
+
 
     <EditText
         android:id="@+id/HomeAddress"
@@ -30,6 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="116dp"
         android:ems="10"
+        android:drawableEnd="@drawable/ic_add_location"
+        android:drawableRight="@drawable/ic_add_location"
         android:hint="Home Adress"
         android:inputType="textPersonName"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,21 +36,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:drawableEnd="@drawable/ic_baseline_local_hospital_24"
+        android:drawableRight="@drawable/ic_baseline_local_hospital_24"
         android:hint="Prime Hospital"
         android:inputType="textPersonName"
         app:layout_constraintTop_toBottomOf="@+id/HomeAddress"
         tools:layout_editor_absoluteX="0dp" />
 
 
-
-
     <Button
         android:id="@+id/Confirm"
-        android:layout_width="356dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="238dp"
         android:text="Confirm"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="525dp" />
+        app:layout_constraintTop_toBottomOf="@+id/PrimeHospital" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

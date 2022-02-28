@@ -49,6 +49,7 @@ public class register1Activity extends AppCompatActivity {
                         Intent intent = new Intent(register1Activity.this, register2Activity.class);
                         startActivity(intent);
 
+
                     }else if ( radioButtonC.isChecked()){
                         // Caregiver home page
                         Intent intent = new Intent(register1Activity.this, caregiver_homePage_activity.class);
@@ -62,7 +63,14 @@ public class register1Activity extends AppCompatActivity {
         });
 
         // Back button
-
+        Button Back = findViewById(R.id.Back);
+        Back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(register1Activity.this, sign_activity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
