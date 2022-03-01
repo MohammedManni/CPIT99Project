@@ -8,12 +8,12 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SOS extends AppCompatActivity {
-    Button Profile, Scheduale, Add, SOS, imageButton;
+public class Schedule_Activity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sos);
+        setContentView(R.layout.calendar);
 
         /////////////////////////////////////////////////////////////////////
 
@@ -27,7 +27,7 @@ public class SOS extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SOS.this, Profile.class);
+                Intent intent = new Intent(Schedule_Activity.this, Profile_Activity.class);
                 startActivity(intent);
             }
         });
@@ -35,7 +35,7 @@ public class SOS extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SOS.this, Schedule.class);
+                Intent intent = new Intent(Schedule_Activity.this, Schedule_Activity.class);
                 startActivity(intent);
             }
         });
@@ -43,7 +43,7 @@ public class SOS extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SOS.this, Add.class);
+                Intent intent = new Intent(Schedule_Activity.this, Add_Activity.class);
                 startActivity(intent);
             }
         });
@@ -51,7 +51,7 @@ public class SOS extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SOS.this, SOS.class);
+                Intent intent = new Intent(Schedule_Activity.this, SOS_Activity.class);
                 startActivity(intent);
             }
         });
@@ -59,11 +59,22 @@ public class SOS extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SOS.this, Home_Page.class);
+                Intent intent = new Intent(Schedule_Activity.this, Home_Page_Activity.class);
                 startActivity(intent);
             }
         });
 
-        ////////////////////////////////////////////////////////////////////////////
+        //////////////////////////end toolbar buttons////////////////////////////////////////////
+
+        Button viewTimeline = findViewById(R.id.buttonAdjustment);
+
+        viewTimeline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Schedule_Activity.this, timeline_page_Activity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

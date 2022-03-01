@@ -1,22 +1,19 @@
 package com.example.safemedicare;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+public class medicationLog_page_Activity extends AppCompatActivity {
 
-public class Profile extends AppCompatActivity {
-    Button Profile, Scheduale, Add, SOS, imageButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile);
-
-        /////////////////////////////////////////////////////////////////////
+        setContentView(R.layout.medication_log);
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
@@ -28,7 +25,7 @@ public class Profile extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, Profile.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, Profile_Activity.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +33,7 @@ public class Profile extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, Schedule.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, Schedule_Activity.class);
                 startActivity(intent);
             }
         });
@@ -44,7 +41,7 @@ public class Profile extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, Add.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, Add_Activity.class);
                 startActivity(intent);
             }
         });
@@ -52,7 +49,7 @@ public class Profile extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, SOS.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, SOS_Activity.class);
                 startActivity(intent);
             }
         });
@@ -60,11 +57,11 @@ public class Profile extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Profile.this, Home_Page.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, Home_Page_Activity.class);
                 startActivity(intent);
             }
         });
 
-        ////////////////////////////////////////////////////////////////////////////
+        ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
     }
 }

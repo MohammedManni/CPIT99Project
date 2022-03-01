@@ -35,23 +35,25 @@
         app:layout_constraintGuide_begin="20dp" />
 
     <Button
-        android:id="@+id/buttonViewAsTimeline"
+        android:id="@+id/buttonAdjustment"
         android:layout_width="356dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="45dp"
-        android:text="View as Timeline"
+        android:text="Adjustment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline29" />
 
     <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="349dp"
-        android:layout_height="216dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="345dp"
+        android:layout_height="320dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="33dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline28" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCalendar" />
 
     <EditText
         android:id="@+id/MultiLineInCalendar"

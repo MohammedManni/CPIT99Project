@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonPrivacy" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="132dp"

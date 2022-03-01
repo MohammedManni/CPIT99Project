@@ -10,7 +10,6 @@ import android.widget.Button;
 public class sign_activity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,11 +19,10 @@ public class sign_activity extends AppCompatActivity {
         Button logIn = findViewById(R.id.LogIN);
 
 
-
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(sign_activity.this, register1Activity.class);
+                Intent intent = new Intent(sign_activity.this, Home_Page_Activity.class);
                 startActivity(intent);
             }
         });
@@ -32,7 +30,7 @@ public class sign_activity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(sign_activity.this, register1Activity.class);
+                Intent intent = new Intent(sign_activity.this, register1Activity.class);
                 startActivity(intent);
             }
         });
