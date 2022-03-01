@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class register2Activity extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class register2Activity extends AppCompatActivity {
         HomeAddress = (EditText) findViewById(R.id.HomeAddress);
         PrimeHospital = (EditText) findViewById(R.id.PrimeHospital);
 
-        Button Confirm = findViewById(R.id.Confirm);
+        Button Confirm = findViewById(R.id.Confirm2);
 
         Confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +29,7 @@ public class register2Activity extends AppCompatActivity {
                 // check if there is a null value
                 if (HomeAddress.getText().toString().equalsIgnoreCase("") || PrimeHospital.getText().toString().equalsIgnoreCase("")){
                     // toast to fill all the edit text
-
+                    Toast.makeText(register2Activity.this, "Please fill all blanks", Toast.LENGTH_LONG).show();
                 }else {  // if there is no null value
                     Intent intent = new Intent(register2Activity.this, Home_Page_Activity.class);
                     startActivity(intent);

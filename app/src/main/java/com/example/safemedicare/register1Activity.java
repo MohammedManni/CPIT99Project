@@ -49,7 +49,7 @@ public class register1Activity extends AppCompatActivity {
                         Password.getText().toString().equalsIgnoreCase("") || ConfirmPassword.getText().toString().equalsIgnoreCase(""))
                         || (!radioButtonP.isChecked() && !radioButtonC.isChecked())) {
                     // toast test to fill all the input
-
+                    Toast.makeText(register1Activity.this, "Please fill all blanks", Toast.LENGTH_LONG).show();
 
                 } else { // else whine all the input filled
 
