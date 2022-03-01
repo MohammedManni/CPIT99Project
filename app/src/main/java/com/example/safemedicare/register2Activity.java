@@ -31,6 +31,8 @@ public class register2Activity extends AppCompatActivity {
                     // toast to fill all the edit text
                     Toast.makeText(register2Activity.this, "Please fill all blanks", Toast.LENGTH_LONG).show();
                 }else {  // if there is no null value
+
+
                     Intent intent = new Intent(register2Activity.this, Home_Page_Activity.class);
                     startActivity(intent);
 

@@ -42,14 +42,46 @@ public class register1Activity extends AppCompatActivity {
         con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //   String a1 = Username.getText().toString();
+
                 // check is all the input are filled
                 if ((Username.getText().toString().equalsIgnoreCase("") || Name.getText().toString().equalsIgnoreCase("") ||
                         PhoneNumber.getText().toString().equalsIgnoreCase("") || Age.getText().toString().equalsIgnoreCase("") ||
                         Password.getText().toString().equalsIgnoreCase("") || ConfirmPassword.getText().toString().equalsIgnoreCase(""))
                         || (!radioButtonP.isChecked() && !radioButtonC.isChecked())) {
                     // toast test to fill all the input
-                    Toast.makeText(register1Activity.this, "Please fill all blanks", Toast.LENGTH_LONG).show();
+
+
+                    if (Username.getText().toString().isEmpty()) {
+                        Username.setError("ENTER the User Name ");
+
+                    }
+                    if (Name.getText().toString().isEmpty()) {
+                        Name.setError("ENTER your full Name ");
+
+                    }
+                    if (PhoneNumber.getText().toString().isEmpty()) {
+                        PhoneNumber.setError("ENTER your Phone Number ");
+
+                    }
+                    if (Age.getText().toString().isEmpty()) {
+                        Age.setError("ENTER your Age ");
+
+                    }
+                    if (Password.getText().toString().isEmpty()) {
+                        Password.setError("ENTER the Password ");
+
+                    }
+                    if (ConfirmPassword.getText().toString().isEmpty()) {
+                        ConfirmPassword.setError("Confirm the Password ");
+
+                    }
+                    if ((!radioButtonP.isChecked() && !radioButtonC.isChecked())) {
+                        radioButtonP.setError("Choose one please ");
+                        radioButtonC.setError("Choose one please ");
+
+                    }
+
+                    //Toast.makeText(register1Activity.this, "Please fill all blanks", Toast.LENGTH_LONG).show();
 
                 } else { // else whine all the input filled
 
