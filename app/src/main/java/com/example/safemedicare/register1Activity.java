@@ -19,7 +19,7 @@ public class register1Activity extends AppCompatActivity {
     EditText Name, PhoneNumber, Age, Username, Password, ConfirmPassword;
     RadioGroup radioGroup;
     RadioButton radioButtonP, radioButtonC;
-
+    Context context;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +89,9 @@ public class register1Activity extends AppCompatActivity {
                     if (Password.getText().toString().equals(ConfirmPassword.getText().toString())) {
                         // the check if patient or care giver
                         if (radioButtonP.isChecked()) {
-                            // next register page Patient
+                            // send to database
+                            OnRegister(view);
+                            // end to database
                             Intent intent = new Intent(register1Activity.this, register2Activity.class);
                             startActivity(intent);
 
