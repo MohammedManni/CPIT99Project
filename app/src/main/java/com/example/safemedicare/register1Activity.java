@@ -94,13 +94,13 @@ public class register1Activity extends AppCompatActivity {
     }
 
     public void OnRegister(View view) {
-        String username = Name.getText().toString();
-        String userSurname = PhoneNumber.getText().toString();
-        String useAge = Age.getText().toString();
-        String userUsername = Username.getText().toString();
+        String username = Username.getText().toString();
+        String name = Name.getText().toString();
+        String phoneNumber = PhoneNumber.getText().toString();
+        String age = Age.getText().toString();
         String password = Password.getText().toString();
         String type = "register";
         db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(type, username, userSurname, useAge, userUsername, password);
+        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password);
     }
 }
