@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 public class sign_activity extends AppCompatActivity {
     EditText Username, Password;
+    RadioButton radioButtonC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +20,8 @@ public class sign_activity extends AppCompatActivity {
 
         Username = (EditText) findViewById(R.id.UserName);
         Password = (EditText) findViewById(R.id.Password);
+
+        radioButtonC = (RadioButton) findViewById(R.id.CaregiverRadioButton2);
 
         Button register = findViewById(R.id.Register);
         Button logIn = findViewById(R.id.LogIN);
@@ -33,10 +37,14 @@ public class sign_activity extends AppCompatActivity {
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-// if for empty edit text
-OnLogin(view);
-                Intent intent = new Intent(sign_activity.this, Home_Page_Activity.class);
-                startActivity(intent);
+            // check caregiver
+
+                // end caregiver
+
+                // if for empty edit text
+                OnLogin(view);
+                //Intent intent = new Intent(sign_activity.this, Home_Page_Activity.class);
+                //startActivity(intent);
             }
         });
 
@@ -49,11 +57,22 @@ OnLogin(view);
         });
 
     }
+
     public void OnLogin(View view) {
         String username = Username.getText().toString();
         String password = Password.getText().toString();
         String type = "login";
         db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
-        backgroundWorker.execute(type, username, password);     }
+        backgroundWorker.execute(type, username, password);
+    }
+
+    // login caregiver//
+    public void loginCaregiver(View view) {
+        String username = Username.getText().toString();
+        String password = Password.getText().toString();
+        String type = "loginC";
+        db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
+        backgroundWorker.execute(type, username, password);
+    }
 
 }

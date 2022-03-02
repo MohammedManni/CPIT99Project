@@ -97,6 +97,9 @@ public class register1Activity extends AppCompatActivity {
 
 
                         } else if (radioButtonC.isChecked()) {
+                            // send to database
+                            registerCaregiver(view);
+                            // end to database
                             // Caregiver home page
                             Intent intent = new Intent(register1Activity.this, caregiver_homePage_activity.class);
                             startActivity(intent);
@@ -136,5 +139,16 @@ public class register1Activity extends AppCompatActivity {
         String type = "register";
         db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
         db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password);
+    }
+    public void registerCaregiver(View view) {
+        String username = Username.getText().toString();
+        String name = Name.getText().toString();
+        String phoneNumber = PhoneNumber.getText().toString();
+        String age = Age.getText().toString();
+        String password = Password.getText().toString();
+        String user = radioButtonC.getText().toString();
+        String type = "registerC";
+        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
+        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password,user);
     }
 }
