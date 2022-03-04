@@ -23,6 +23,7 @@ import java.net.URI;
 public class retriveDB extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
+
     CaregiverClass caregiver;
     CaregiverClass[] caregiverList;
 
@@ -37,6 +38,8 @@ public class retriveDB extends AppCompatActivity {
         list.setAdapter(adapter);
         new Connection().execute();
     }
+
+
 
     class Connection extends AsyncTask<String, String, String> {
         // starting the connection
@@ -82,6 +85,7 @@ public class retriveDB extends AppCompatActivity {
                         int id = caregiverObject.getInt("id");
                         String userName = caregiverObject.getString("userName");
                         String name = caregiverObject.getString("name");
+
                     //  int linkID = caregiverObject.getInt("linkID");
                         int phoneNum = caregiverObject.getInt("phoneNumber");
                         int Age = caregiverObject.getInt("age");
@@ -90,6 +94,7 @@ public class retriveDB extends AppCompatActivity {
                         caregiverList = new CaregiverClass[caregiverData.length()];
                         caregiverList[i]= caregiver;
                         String line = name + " - " + userName + " - " + id + " - " + id + " - " + phoneNum + " - " + Age ;
+
                         adapter.add(line);
 
                     }
