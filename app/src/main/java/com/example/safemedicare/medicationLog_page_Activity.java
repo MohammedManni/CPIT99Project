@@ -1,7 +1,5 @@
 package com.example.safemedicare;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,8 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -169,6 +168,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                         String medicationName = caregiverObject.getString("medicationName");
                         int numOfTime = caregiverObject.getInt("numberOfTime");
                         int amount = caregiverObject.getInt("doseAmount");
+
 
 
                         //String line = id + " - " + medicationName + " - " + numOfTime + " - " + amount;
