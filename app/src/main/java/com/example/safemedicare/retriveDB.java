@@ -41,7 +41,7 @@ ArrayAdapter<String> adapter;
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.10/medication.php";
+            String medication_url = "http://192.168.100.10/readCaregiver.php";
             try {
                 HttpClient client=new DefaultHttpClient();
                 HttpGet request =new HttpGet();
@@ -72,15 +72,16 @@ ArrayAdapter<String> adapter;
                 JSONObject jsonResult=new JSONObject(result);
                 int success= jsonResult.getInt("success");
                 if (success ==1){
-                    JSONArray cars= jsonResult.getJSONArray("medication");
-                    for (int i=0; i<cars.length();i++){
-                        JSONObject car=cars.getJSONObject(i);
-                        int id= car.getInt("id");
-                        String userName=car.getString("userName");
-                        String name=car.getString("name");
+                    JSONArray caregiverData= jsonResult.getJSONArray("caregiver");
+                    for (int i=0; i<caregiverData.length();i++){
+                        JSONObject caregiverObject=caregiverData.getJSONObject(i);
+                        int id= caregiverObject.getInt("id");
+                        String userName=caregiverObject.getString("userName");
+                        String name=caregiverObject.getString("name");
+                        int phoneNum=caregiverObject.getInt("phoneNumber");
                         TextView t=(TextView) findViewById(R.id.textVi);
                         t.setText(userName);
-                        String line=id+" - "+userName+" - "+name;
+                        String line=id+" - "+userName+" - "+name+" - "+phoneNum;
                         adapter.add(line);
 
                     }
