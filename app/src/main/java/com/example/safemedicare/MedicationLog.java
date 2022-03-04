@@ -10,6 +10,10 @@ public class MedicationLog {
         MedicationList = medicationList;
     }
 
+    public MedicationLog() {
+
+    }
+
     public void AddMedication(Medication medication) {
         MedicationList.add(medication);
 

@@ -32,6 +32,8 @@ public class medicationLog_page_Activity extends AppCompatActivity {
     ////////attributes medication to read from DB/////////
     ListView list;
     ArrayAdapter<String> adapter;
+    Medication medication;
+    MedicationLog medicationLog ;
     /////////////////////////////////////////////
 
     @Override
@@ -167,11 +169,14 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                         int id = caregiverObject.getInt("id");
                         String medicationName = caregiverObject.getString("medicationName");
                         int numOfTime = caregiverObject.getInt("numberOfTime");
-                        int amount = caregiverObject.getInt("doseAmount");
+                        int med_DoseAmount = caregiverObject.getInt("doseAmount");
 
-
-
-                        //String line = id + " - " + medicationName + " - " + numOfTime + " - " + amount;
+                        //try to match the constructor medicationName,  med_numberOfTime,  med_DoseAmount,  id
+                        medication= new Medication( medicationName,  numOfTime,  med_DoseAmount,  id);
+                       // create the array and add the medication
+                        medicationLog = new MedicationLog();
+                        medicationLog.AddMedication(medication);
+                        String line = id + " - " + medicationName + " - " + numOfTime + " - " + amount;
                         //adapter.add(line);
 
                     }
