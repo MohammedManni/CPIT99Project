@@ -6,14 +6,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class medicationLog_page_Activity extends AppCompatActivity {
+
+    EditText medName, numOfTime, amount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.medication_log);
+
+        // Edit text
+        medName = (EditText) findViewById(R.id.EditMedicineName);
+        numOfTime = (EditText) findViewById(R.id.editTextNumberOfTime);
+        amount = (EditText) findViewById(R.id.editTextAmount);
+        ////////////////////////////////////////////////////////////////
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
@@ -63,5 +73,28 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
+
+        //////// database /////////////////
+
+        // saveChange button
+        Button save = findViewById(R.id.Changes);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+medicationLog(view);
+            }
+        });
     }
+
+
+    public void medicationLog(View view) {
+        String medicationName = medName.getText().toString();
+        String numberOfTime = numOfTime.getText().toString();
+        String doseAmount = amount.getText().toString();
+
+        String type = "medication";
+        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
+        db1BackgroundWorker.execute(type, medicationName, numberOfTime, doseAmount);
+    }
+
 }

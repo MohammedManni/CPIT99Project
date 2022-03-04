@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, sign_activity.class);
+                Intent intent = new Intent(MainActivity.this, retriveDB.class);
                 startActivity(intent);
             }
         }, splash_out);
