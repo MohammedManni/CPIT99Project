@@ -1,19 +1,17 @@
 package com.example.safemedicare;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.DefaultUserTokenHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,30 +21,35 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 public class retriveDB extends AppCompatActivity {
-ListView list;
-ArrayAdapter<String> adapter;
+    ListView list;
+    ArrayAdapter<String> adapter;
+    CaregiverClass caregiver;
+    CaregiverClass[] caregiverList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrive_d_b);
 
 
-        list=(ListView)findViewById(R.id.list);
-        adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-   list.setAdapter(adapter);
+        list = (ListView) findViewById(R.id.list);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        list.setAdapter(adapter);
         new Connection().execute();
     }
-    class Connection extends AsyncTask<String,String,String>{
 
+    class Connection extends AsyncTask<String, String, String> {
+        // starting the connection
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.10/readCaregiver.php";
+            String medication_url = "http://192.168.100.171/readCaregiver.php";
             try {
-                HttpClient client=new DefaultHttpClient();
-                HttpGet request =new HttpGet();
+
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
                 request.setURI(new URI(medication_url));
-                HttpResponse response= client.execute(request);
+                HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer stringBuffer = new StringBuffer("");
                 String line = "";
@@ -55,39 +58,43 @@ ArrayAdapter<String> adapter;
                     break;
                 }
                 reader.close();
-                result=stringBuffer.toString();
+                result = stringBuffer.toString();
 
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new String("error");
             }
 
 
-
             return result;
         }
+
         @Override
+        // getting the data
         protected void onPostExecute(String result) {
             try {
-                JSONObject jsonResult=new JSONObject(result);
-                int success= jsonResult.getInt("success");
-                if (success ==1){
-                    JSONArray caregiverData= jsonResult.getJSONArray("caregiver");
-                    for (int i=0; i<caregiverData.length();i++){
-                        JSONObject caregiverObject=caregiverData.getJSONObject(i);
-                        int id= caregiverObject.getInt("id");
-                        String userName=caregiverObject.getString("userName");
-                        String name=caregiverObject.getString("name");
-                        int phoneNum=caregiverObject.getInt("phoneNumber");
-                        TextView t=(TextView) findViewById(R.id.textVi);
-                        t.setText(userName);
-                        String line=id+" - "+userName+" - "+name+" - "+phoneNum;
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if (success == 1) {
+                    JSONArray caregiverData = jsonResult.getJSONArray("caregiver");
+                    for (int i = 0; i < caregiverData.length(); i++) {
+                        JSONObject caregiverObject = caregiverData.getJSONObject(i);
+                        int id = caregiverObject.getInt("id");
+                        String userName = caregiverObject.getString("userName");
+                        String name = caregiverObject.getString("name");
+                    //  int linkID = caregiverObject.getInt("linkID");
+                        int phoneNum = caregiverObject.getInt("phoneNumber");
+                        int Age = caregiverObject.getInt("age");
+                        //try to match the constructor fullName,  username,  id,  linkID,  phone_number,  age)
+                        caregiver= new CaregiverClass(name,userName,id,id,phoneNum,Age);
+                        caregiverList = new CaregiverClass[caregiverData.length()];
+                        caregiverList[i]= caregiver;
+                        String line = name + " - " + userName + " - " + id + " - " + id + " - " + phoneNum + " - " + Age ;
                         adapter.add(line);
 
                     }
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"no there",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
