@@ -2,8 +2,11 @@ package com.example.safemedicare;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +36,13 @@ public class retriveDB extends AppCompatActivity {
 
 
         list = (ListView) findViewById(R.id.list);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView textView =findViewById(R.id.textVi);
+                textView.setText(adapter.getItem(i).toString());
+            }
+        });
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         list.setAdapter(adapter);
         new Connection().execute();
