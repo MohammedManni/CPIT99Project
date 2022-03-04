@@ -1,38 +1,27 @@
 package com.example.safemedicare;
 
 public class User {
-    String FirstName, LastName, Username, Email, Password, Hospital;
-    int Id, Phone_number, Age;
+    String FullName, Username;
+    int Id,LinkID, Phone_number, Age;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String username, String email, String password, String hospital, int id, int phone_number, int age) {
-        FirstName = firstName;
-        LastName = lastName;
+    public User(String fullName, String username, int id, int linkID, int phone_number, int age) {
+        FullName = fullName;
         Username = username;
-        Email = email;
-        Password = password;
-        Hospital = hospital;
         Id = id;
+        LinkID = linkID;
         Phone_number = phone_number;
         Age = age;
     }
 
-    public String getFirstName() {
-        return FirstName;
+    public String getFullName() {
+        return FullName;
     }
 
-    public void setFirstName(String firstName) {
-        FirstName = firstName;
-    }
-
-    public String getLastName() {
-        return LastName;
-    }
-
-    public void setLastName(String lastName) {
-        LastName = lastName;
+    public void setFullName(String fullName) {
+        FullName = fullName;
     }
 
     public String getUsername() {
@@ -41,30 +30,6 @@ public class User {
 
     public void setUsername(String username) {
         Username = username;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
-    }
-
-    public String getHospital() {
-        return Hospital;
-    }
-
-    public void setHospital(String hospital) {
-        Hospital = hospital;
     }
 
     public int getId() {

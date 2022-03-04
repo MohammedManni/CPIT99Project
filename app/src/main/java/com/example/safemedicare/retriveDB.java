@@ -1,19 +1,17 @@
 package com.example.safemedicare;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.DefaultUserTokenHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +23,8 @@ import java.net.URI;
 public class retriveDB extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
+    CaregiverClass caregiver;
+    CaregiverClass[] caregiverList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +39,13 @@ public class retriveDB extends AppCompatActivity {
     }
 
     class Connection extends AsyncTask<String, String, String> {
-
+        // starting the connection
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.10/readCaregiver.php";
+            String medication_url = "http://192.168.100.171/readCaregiver.php";
             try {
+
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(medication_url));
@@ -69,6 +70,7 @@ public class retriveDB extends AppCompatActivity {
         }
 
         @Override
+        // getting the data
         protected void onPostExecute(String result) {
             try {
                 JSONObject jsonResult = new JSONObject(result);
@@ -80,10 +82,14 @@ public class retriveDB extends AppCompatActivity {
                         int id = caregiverObject.getInt("id");
                         String userName = caregiverObject.getString("userName");
                         String name = caregiverObject.getString("name");
+                    //  int linkID = caregiverObject.getInt("linkID");
                         int phoneNum = caregiverObject.getInt("phoneNumber");
-                        TextView t = (TextView) findViewById(R.id.textVi);
-                        t.setText(userName);
-                        String line = id + " - " + userName + " - " + name + " - " + phoneNum;
+                        int Age = caregiverObject.getInt("age");
+                        //try to match the constructor fullName,  username,  id,  linkID,  phone_number,  age)
+                        caregiver= new CaregiverClass(name,userName,id,id,phoneNum,Age);
+                        caregiverList = new CaregiverClass[caregiverData.length()];
+                        caregiverList[i]= caregiver;
+                        String line = name + " - " + userName + " - " + id + " - " + id + " - " + phoneNum + " - " + Age ;
                         adapter.add(line);
 
                     }
