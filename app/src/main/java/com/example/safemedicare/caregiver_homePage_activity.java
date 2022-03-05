@@ -21,4 +21,6 @@ public class caregiver_homePage_activity extends AppCompatActivity {
             ListAdabter customAdapter = new ListAdabter(getApplicationContext(), listName, flags);
             patientList.setAdapter(customAdapter);
         }
+
+
 }

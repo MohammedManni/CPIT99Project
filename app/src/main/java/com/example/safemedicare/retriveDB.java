@@ -1,15 +1,18 @@
 package com.example.safemedicare;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,7 +37,51 @@ public class retriveDB extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrive_d_b);
 
+        Toolbar toolbar = findViewById(R.id.toolbarh);
+        setSupportActionBar(toolbar);
 
+        /////////////////////////////////////////////////////////////////////
+
+        // toolbar buttons
+        Button Profile = findViewById(R.id.firstB);
+        Button Schedule = findViewById(R.id.SecondB);
+        Button Add = findViewById(R.id.thirdB);
+        Button SOS = findViewById(R.id.SOS);
+
+
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(retriveDB.this, Profile_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(retriveDB.this, Schedule_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(retriveDB.this, Add_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(retriveDB.this, SOS_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        //////////////////////////////  end toolbar button//////////////////////////////////////////////
         list = (ListView) findViewById(R.id.list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
