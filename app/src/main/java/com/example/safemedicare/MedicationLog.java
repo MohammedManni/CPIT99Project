@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class MedicationLog {
 
-    ArrayList<Medication> MedicationList = new ArrayList<Medication>();
+    public ArrayList<Medication> MedicationList = new ArrayList<Medication>();
 
     public MedicationLog(ArrayList<Medication> medicationList) {
         MedicationList = medicationList;

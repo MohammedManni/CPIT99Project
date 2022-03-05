@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -72,18 +71,18 @@ public class Home_Page_Activity extends AppCompatActivity {
         GridView gridList;
         ArrayList eventList=new ArrayList<>();
             gridList = (GridView) findViewById(R.id.gridView);
-            eventList.add(new GridItem("Event 1",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 2",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 3",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 4",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 5",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 6",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 7",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 8",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 9",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 10",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 11",R.drawable.medicare1));
-            eventList.add(new GridItem("Event 12",R.drawable.medicare1));
+            eventList.add(new GridItem("Event 1",R.drawable.logo19));
+            eventList.add(new GridItem("Event 2",R.drawable.logo19));
+            eventList.add(new GridItem("Event 3",R.drawable.logo19));
+            eventList.add(new GridItem("Event 4",R.drawable.logo19));
+            eventList.add(new GridItem("Event 5",R.drawable.logo19));
+            eventList.add(new GridItem("Event 6",R.drawable.logo19));
+            eventList.add(new GridItem("Event 7",R.drawable.logo19));
+            eventList.add(new GridItem("Event 8",R.drawable.logo19));
+            eventList.add(new GridItem("Event 9",R.drawable.logo19));
+            eventList.add(new GridItem("Event 10",R.drawable.logo19));
+            eventList.add(new GridItem("Event 11",R.drawable.logo19));
+            eventList.add(new GridItem("Event 12",R.drawable.logo19));
 
             GridAdapter myAdapter=new GridAdapter(this,R.layout.gridview_item,eventList);
             gridList.setAdapter(myAdapter);

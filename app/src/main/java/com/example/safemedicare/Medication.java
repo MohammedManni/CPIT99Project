@@ -1,8 +1,8 @@
 package com.example.safemedicare;
 
 public class Medication {
-    String MedicationName;
-    int Med_numberOfTime, Med_DoseAmount , id;
+    public String MedicationName;
+    public int Med_numberOfTime, Med_DoseAmount , id;
 
     public Medication() {
     }
