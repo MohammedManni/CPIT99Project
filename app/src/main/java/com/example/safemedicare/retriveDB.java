@@ -34,7 +34,6 @@ public class retriveDB extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrive_d_b);
 
-
         list = (ListView) findViewById(R.id.list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -48,12 +47,12 @@ public class retriveDB extends AppCompatActivity {
         new Connection().execute();
     }
 
-    class Connection extends AsyncTask<String, String, String> {
+    public  class Connection extends AsyncTask<String, String, String> {
         // starting the connection
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.171/readCaregiver.php";
+            String medication_url = "http://192.168.100.10/readCaregiver.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();

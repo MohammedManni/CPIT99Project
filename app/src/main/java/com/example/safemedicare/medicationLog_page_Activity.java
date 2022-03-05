@@ -42,9 +42,11 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         setContentView(R.layout.medication_log);
 
         //////////attributes medication to read from DB////////////////////////////////////////////////
+
         //list = (ListView) findViewById(R.id.list);
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 //        list.setAdapter(adapter);
+
         new ConnectionToReadMedication().execute();
         /////////////////////////////////////////////////////////////////////////////////////////
 
