@@ -156,7 +156,8 @@ public class Home_Page_Activity extends AppCompatActivity {
                         int phoneNum = caregiverObject.getInt("phoneNumber");
                         int Age = caregiverObject.getInt("age");
                         //try to match the constructor fullName,  username,  id,  linkID,  phone_number,  age)
-                        eventList.add(new GridItem(name + "\n" + userName + "\n" + id + "\n" + id + "\n" + phoneNum + "\n" + Age,R.drawable.ic_add_location));
+                        //eventList.add(new GridItem(name + "\n" + userName + "\n" + id + "\n" + id + "\n" + phoneNum + "\n" + Age,R.drawable.ic_add_location));
+                        eventList.add(new GridItem(name + "\n" + userName + "\n" + id + "\n" + id + "\n" + phoneNum + "\n" + Age));
                         //eventList.add(new GridItem(userName,R.drawable.logo19));
                        // String line = name + " - " + userName + " - " + id + " - " + id + " - " + phoneNum + " - " + Age ;
                          gridList.setAdapter(myAdapter);

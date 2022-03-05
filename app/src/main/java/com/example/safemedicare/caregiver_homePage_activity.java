@@ -1,10 +1,12 @@
 package com.example.safemedicare;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,23 +28,60 @@ import java.net.URI;
 public class caregiver_homePage_activity extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
+    CaregiverClass caregiver;
+    CaregiverClass[] caregiverList;
+    Patient patient;
+    Patient[] patientList;
 
-        /*ListView patientList;
-        String listName[] = {"Ali", "Ahmed", "Khalid", "Nasser", "Fares", "Ali"};
-        int flags[] = {R.drawable.logo19, R.drawable.logo19, R.drawable.logo19,
-                R.drawable.logo19, R.drawable.logo19, R.drawable.logo19};
-         */
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_caregiver_home_page);
-           /*
-            patientList = (ListView) findViewById(R.id.patientList);
-            ListAdabter customAdapter = new ListAdabter(getApplicationContext(), listName, flags);
-            patientList.setAdapter(customAdapter);
-            */
 
+
+            /////////////////////////////////////////////////////////////////////
+
+            // toolbar buttons
+            Button Profile = findViewById(R.id.firstB);
+            Button Schedule = findViewById(R.id.SecondB);
+            Button Add = findViewById(R.id.thirdB);
+            Button SOS = findViewById(R.id.SOS);
+
+
+            Profile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+                    startActivity(intent);
+                }
+            });
+
+            Schedule.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(caregiver_homePage_activity.this, Schedule_Activity.class);
+                    startActivity(intent);
+                }
+            });
+
+            Add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(caregiver_homePage_activity.this, Add_Activity.class);
+                    startActivity(intent);
+                }
+            });
+
+            SOS.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(caregiver_homePage_activity.this, SOS_Activity.class);
+                    startActivity(intent);
+                }
+            });
+
+            //////////////////////////////  end toolbar button//////////////////////////////////////////////
 
             ////////////// read from database///////////////////////////
 
@@ -64,7 +103,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.10/readPatient.php";
+            String readPatient_url = "http://192.168.100.171/readPatient.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -101,9 +140,13 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                         int id = patientObject.getInt("id");
                         String userName = patientObject.getString("userName");
                         String name = patientObject.getString("name");
+                        //  int linkID = caregiverObject.getInt("linkID");
                         int phoneNum = patientObject.getInt("phoneNumber");
                         int age = patientObject.getInt("age");
-
+                        //try to match the constructor fullName,  username,  id, int linkID, int phone_number, int age
+                        patient= new Patient(name,userName,id,id,phoneNum,age);
+                        patientList = new Patient[patientData.length()];
+                        patientList[i]= patient;
 
                         String line = id + " - " + userName + " - " + name + " - " + phoneNum + " - "+age;
                         adapter.add(line);
