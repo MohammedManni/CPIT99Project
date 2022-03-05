@@ -19,7 +19,7 @@ public class register1Activity extends AppCompatActivity {
     EditText Name, PhoneNumber, Age, Username, Password, ConfirmPassword;
     RadioGroup radioGroup;
     RadioButton radioButtonP, radioButtonC;
-
+    Context context;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,7 @@ public class register1Activity extends AppCompatActivity {
         con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //   String a1 = Username.getText().toString();
+
                 // check is all the input are filled
                 if ((Username.getText().toString().equalsIgnoreCase("") || Name.getText().toString().equalsIgnoreCase("") ||
                         PhoneNumber.getText().toString().equalsIgnoreCase("") || Age.getText().toString().equalsIgnoreCase("") ||
@@ -51,18 +51,55 @@ public class register1Activity extends AppCompatActivity {
                     // toast test to fill all the input
 
 
+                    if (Username.getText().toString().isEmpty()) {
+                        Username.setError("ENTER the User Name ");
+
+                    }
+                    if (Name.getText().toString().isEmpty()) {
+                        Name.setError("ENTER your full Name ");
+
+                    }
+                    if (PhoneNumber.getText().toString().isEmpty()) {
+                        PhoneNumber.setError("ENTER your Phone Number ");
+
+                    }
+                    if (Age.getText().toString().isEmpty()) {
+                        Age.setError("ENTER your Age ");
+
+                    }
+                    if (Password.getText().toString().isEmpty()) {
+                        Password.setError("ENTER the Password ");
+
+                    }
+                    if (ConfirmPassword.getText().toString().isEmpty()) {
+                        ConfirmPassword.setError("Confirm the Password ");
+
+                    }
+                    if ((!radioButtonP.isChecked() && !radioButtonC.isChecked())) {
+                        radioButtonP.setError("Choose one please ");
+                        radioButtonC.setError("Choose one please ");
+
+                    }
+
+                    //Toast.makeText(register1Activity.this, "Please fill all blanks", Toast.LENGTH_LONG).show();
+
                 } else { // else whine all the input filled
 
                     // the password match check
                     if (Password.getText().toString().equals(ConfirmPassword.getText().toString())) {
                         // the check if patient or care giver
                         if (radioButtonP.isChecked()) {
-                            // next register page Patient
+                            // send to database
+                            OnRegister(view);
+                            // end to database
                             Intent intent = new Intent(register1Activity.this, register2Activity.class);
                             startActivity(intent);
 
 
                         } else if (radioButtonC.isChecked()) {
+                            // send to database
+                            registerCaregiver(view);
+                            // end to database
                             // Caregiver home page
                             Intent intent = new Intent(register1Activity.this, caregiver_homePage_activity.class);
                             startActivity(intent);
@@ -94,13 +131,24 @@ public class register1Activity extends AppCompatActivity {
     }
 
     public void OnRegister(View view) {
-        String username = Name.getText().toString();
-        String userSurname = PhoneNumber.getText().toString();
-        String useAge = Age.getText().toString();
-        String userUsername = Username.getText().toString();
+        String username = Username.getText().toString();
+        String name = Name.getText().toString();
+        String phoneNumber = PhoneNumber.getText().toString();
+        String age = Age.getText().toString();
         String password = Password.getText().toString();
         String type = "register";
         db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(type, username, userSurname, useAge, userUsername, password);
+        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password);
+    }
+    public void registerCaregiver(View view) {
+        String username = Username.getText().toString();
+        String name = Name.getText().toString();
+        String phoneNumber = PhoneNumber.getText().toString();
+        String age = Age.getText().toString();
+        String password = Password.getText().toString();
+        String user = radioButtonC.getText().toString();
+        String type = "registerC";
+        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
+        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password,user);
     }
 }

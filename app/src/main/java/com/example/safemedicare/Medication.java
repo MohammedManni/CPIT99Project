@@ -1,16 +1,18 @@
 package com.example.safemedicare;
 
 public class Medication {
-    String MedicationName;
-    int Med_numberOfTime, Med_DoseAmount;
+    public String MedicationName;
+    public int Med_numberOfTime, Med_DoseAmount , id;
 
     public Medication() {
     }
 
-    public Medication(String medicationName, int med_numberOfTime, int med_DoseAmount) {
+
+    public Medication(String medicationName, int med_numberOfTime, int med_DoseAmount, int id) {
         MedicationName = medicationName;
         Med_numberOfTime = med_numberOfTime;
         Med_DoseAmount = med_DoseAmount;
+        this.id = id;
     }
 
     public String getMedicationName() {

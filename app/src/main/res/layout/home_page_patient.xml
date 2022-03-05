@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="119dp"
         android:layout_marginTop="35dp"
+        android:textAlignment="center"
         android:text="Up coming events for today"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarh" />
@@ -25,7 +26,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:numColumns="3"
+        android:numColumns="auto_fit"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UpComingEv" />
 

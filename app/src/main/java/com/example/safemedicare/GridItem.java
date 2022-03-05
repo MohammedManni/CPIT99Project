@@ -4,6 +4,10 @@ public class GridItem {
     String eventListName;
     int eventListImage;
 
+    public GridItem(String eventListName) {
+        this.eventListName = eventListName;
+    }
+
     public GridItem(String eventListName, int eventListImage) {
         this.eventListName = eventListName;
         this.eventListImage = eventListImage;

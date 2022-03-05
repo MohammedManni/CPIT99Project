@@ -1,13 +1,10 @@
 package com.example.safemedicare;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     int splash_out = 3000;
@@ -23,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this, register1Activity.class);
+                Intent intent = new Intent(MainActivity.this, caregiver_homePage_activity.class);
                 startActivity(intent);
             }
         }, splash_out);
