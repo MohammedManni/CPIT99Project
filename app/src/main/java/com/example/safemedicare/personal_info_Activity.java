@@ -11,17 +11,26 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class personal_info_Activity extends AppCompatActivity {
+    public static final String user = "new user";
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_info);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            name = extras.getString("USERNAME");
 
+        }
 
+        EditText UserNameINProfileEDITText = (EditText) findViewById(R.id.UserNameINProfileEDITText);
         EditText Password = (EditText) findViewById(R.id.PasswordINProfileEditText);
+
         EditText ConfirmPassword = (EditText) findViewById(R.id.ConPasswordINProfileEditText);
 
+        UserNameINProfileEDITText.setText(name);
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -33,6 +42,7 @@ public class personal_info_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(personal_info_Activity.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
                 startActivity(intent);
             }
         });
@@ -80,7 +90,7 @@ public class personal_info_Activity extends AppCompatActivity {
                 //startActivity(intent);
 
 
-                if ( !Password.getText().toString().equalsIgnoreCase("") && !ConfirmPassword.getText().toString().equalsIgnoreCase("")){
+                if (!Password.getText().toString().equalsIgnoreCase("") && !ConfirmPassword.getText().toString().equalsIgnoreCase("")) {
                     // the password match check
                     if (Password.getText().toString().equals(ConfirmPassword.getText().toString())) {
 
@@ -92,7 +102,7 @@ public class personal_info_Activity extends AppCompatActivity {
                         Toast.makeText(personal_info_Activity.this, "the Password not matching", Toast.LENGTH_LONG).show();
                     }
 
-                }else {// else for not matching pass
+                } else {// else for not matching pass
                     Toast.makeText(personal_info_Activity.this, "Nothing to update", Toast.LENGTH_LONG).show();
                 }
 

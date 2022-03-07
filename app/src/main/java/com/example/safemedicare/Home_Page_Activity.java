@@ -25,6 +25,8 @@ import java.net.URI;
 import java.util.ArrayList;
 
 public class Home_Page_Activity extends AppCompatActivity {
+    public static final String user = "user";
+    private String name;
     GridView gridList;
     ArrayList eventList=new ArrayList<>();
     GridAdapter myAdapter;
@@ -33,8 +35,11 @@ public class Home_Page_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page_patient);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            name = extras.getString("USERNAME");
 
-
+        }
 
         /////////////////////////////////////////////////////////////////////
 
@@ -49,6 +54,7 @@ public class Home_Page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home_Page_Activity.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
                 startActivity(intent);
             }
         });

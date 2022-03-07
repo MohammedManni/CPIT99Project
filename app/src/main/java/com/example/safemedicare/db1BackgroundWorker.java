@@ -249,8 +249,13 @@ public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        alertDialog.setMessage(result);
-        alertDialog.show();
+        if (result.toString().equalsIgnoreCase("login success !!!!! Welcome")){
+
+        }else if (!result.toString().equalsIgnoreCase("login success !!!!! Welcome")) {
+            alertDialog.setMessage(result);
+            alertDialog.show();
+        }
+
     }
 
     @Override
