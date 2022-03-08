@@ -25,8 +25,8 @@ import java.net.URI;
 import java.util.ArrayList;
 
 public class Home_Page_Activity extends AppCompatActivity {
-    public static final String user = "user";
-    private String name;
+
+    private String name, type;
     GridView gridList;
     ArrayList eventList=new ArrayList<>();
     GridAdapter myAdapter;
@@ -35,10 +35,12 @@ public class Home_Page_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page_patient);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
-
+            type = extras.getString("TYPE");
+            //Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
         }
 
         /////////////////////////////////////////////////////////////////////
@@ -55,6 +57,7 @@ public class Home_Page_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Home_Page_Activity.this, Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -63,6 +66,8 @@ public class Home_Page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home_Page_Activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -71,6 +76,8 @@ public class Home_Page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home_Page_Activity.this, Add_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -79,6 +86,8 @@ public class Home_Page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home_Page_Activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });

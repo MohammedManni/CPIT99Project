@@ -10,11 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Schedule_Activity extends AppCompatActivity {
 
+    private String name, type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            name = extras.getString("USERNAME");
+            type = extras.getString("TYPE");
+
+        }
         /////////////////////////////////////////////////////////////////////
 
         // toolbar buttons
@@ -28,6 +36,8 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Schedule_Activity.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -36,6 +46,8 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Schedule_Activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -44,6 +56,8 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Schedule_Activity.this, Add_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -52,6 +66,8 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Schedule_Activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -59,8 +75,19 @@ public class Schedule_Activity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Home_Page_Activity.class);
-                startActivity(intent);
+                if (type.equalsIgnoreCase("patient")){
+                    Intent intent = new Intent(Schedule_Activity.this, Home_Page_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }else if (type.equalsIgnoreCase("caregiver")){
+                    Intent intent = new Intent(Schedule_Activity.this, caregiver_homePage_activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
             }
         });
 
@@ -72,6 +99,8 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Schedule_Activity.this, timeline_page_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });

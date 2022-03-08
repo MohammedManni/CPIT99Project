@@ -28,6 +28,7 @@ import java.net.URI;
 public class medicationLog_page_Activity extends AppCompatActivity {
 
     EditText medName, numOfTime, amount;
+    public String name, type;
 
     ////////attributes medication to read from DB/////////
     ListView list;
@@ -41,11 +42,16 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.medication_log);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            name = extras.getString("USERNAME");
+            type = extras.getString("TYPE");
+
+        }
         //////////attributes medication to read from DB////////////////////////////////////////////////
 
-        //list = (ListView) findViewById(R.id.list);
-        //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-//        list.setAdapter(adapter);
+
+
 
         new ConnectionToReadMedication().execute();
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -68,6 +74,8 @@ public class medicationLog_page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(medicationLog_page_Activity.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -76,6 +84,8 @@ public class medicationLog_page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(medicationLog_page_Activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -84,6 +94,8 @@ public class medicationLog_page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(medicationLog_page_Activity.this, Add_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -92,6 +104,8 @@ public class medicationLog_page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(medicationLog_page_Activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
@@ -99,8 +113,19 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, Home_Page_Activity.class);
-                startActivity(intent);
+                if (type.equalsIgnoreCase("patient")){
+                    Intent intent = new Intent(medicationLog_page_Activity.this, Home_Page_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }else if (type.equalsIgnoreCase("caregiver")){
+                    Intent intent = new Intent(medicationLog_page_Activity.this, caregiver_homePage_activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
             }
         });
 
@@ -134,7 +159,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.10/readMedication.php";
+            String medication_url = "http://192.168.100.171/readMedication.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();

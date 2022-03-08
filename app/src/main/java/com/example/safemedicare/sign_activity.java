@@ -41,28 +41,37 @@ public class sign_activity extends AppCompatActivity {
         Button register = findViewById(R.id.Register);
         Button logIn = findViewById(R.id.LogIN);
 
-        if (Username.getText().toString().isEmpty()) {
-            Username.setError("ENTER the User User Name ");
 
-        }
-        if (Password.getText().toString().isEmpty()) {
-            Password.setError("ENTER the Password ");
-
-        }
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (Username.getText().toString().isEmpty() && Password.getText().toString().isEmpty()) {
+                    Username.setError("ENTER the User Name ");
+                    Password.setError("ENTER the Password ");
+
+                } else if (Username.getText().toString().isEmpty()) {
+                    Username.setError("ENTER the User Name ");
+
+                } else if (Password.getText().toString().isEmpty()) {
+                    Password.setError("ENTER the Password ");
+
+                } else {
+                    OnLogin(view);
+                }
                 // check caregiver
-                Username.onSaveInstanceState();
+                // Username.onSaveInstanceState();
                 // end caregiver
 
                 // if for empty edit text
-             //   OnLogin(view);
 
+             /*
                 Intent myIntent = new Intent(sign_activity.this, Decide_Class.class);
                 myIntent.putExtra("USERNAME", Username.getText().toString());
                 myIntent.putExtra("PASSWORD", Password.getText().toString());
                 startActivity(myIntent);
+
+              */
             }
         });
 
@@ -84,29 +93,24 @@ public class sign_activity extends AppCompatActivity {
         backgroundWorker.execute(type, username, password);
     }
 
-    // login caregiver//
-    public void HomePage() {
-        Intent myIntent = new Intent(sign_activity.this, personal_info_Activity.class);
-        myIntent.putExtra("USERNAME", Username.getText().toString());
-        startActivity(myIntent);
-    }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
-    Context context;
-    AlertDialog alertDialog;
+    private class db1BackgroundWorker extends AsyncTask<String, Void, String> {
+        Context context;
+        AlertDialog alertDialog;
 
-    db1BackgroundWorker(Context ctx) {
-        context = ctx;
-    }
+        db1BackgroundWorker(Context ctx) {
+            context = ctx;
+        }
 
-    @Override
-    protected String doInBackground(String... params) {
-        String type = params[0];
-        String login_url = "http://192.168.100.171/login.php";
+        @Override
+        protected String doInBackground(String... params) {
+            String type = params[0];
+            String login_url = "http://192.168.100.171/login.php";
 
-        if (type.equals("login")) {
+
             try {
                 String user_name = params[1];
                 String password = params[2];
@@ -123,7 +127,6 @@ public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 outputStream.close();
-
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                 String result = "";
@@ -141,30 +144,44 @@ public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
 
-        }
-        return null;
-    }
 
-    @Override
-    protected void onPreExecute() {
-        alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("Login Status");
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        if (result.toString().equalsIgnoreCase("login success !!!!! Welcome")){
-
-        }else if (!result.toString().equalsIgnoreCase("login success !!!!! Welcome")) {
-            alertDialog.setMessage(result);
-            alertDialog.show();
+            return null;
         }
 
+        @Override
+        protected void onPreExecute() {
+            alertDialog = new AlertDialog.Builder(context).create();
+            alertDialog.setTitle("Login Status");
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // if patient
+            if (result.toString().equalsIgnoreCase("patientlogin not success")) {
+                Intent myIntent = new Intent(sign_activity.this, Home_Page_Activity.class);
+                myIntent.putExtra("USERNAME", Username.getText().toString());
+                myIntent.putExtra("TYPE", "patient");
+                startActivity(myIntent);
+
+            }
+            // if caregiver
+            else if (result.toString().equalsIgnoreCase("patientcaregiver")) {
+                Intent myIntent = new Intent(sign_activity.this, caregiver_homePage_activity.class);
+                myIntent.putExtra("USERNAME", Username.getText().toString());
+                myIntent.putExtra("TYPE", "caregiver");
+                startActivity(myIntent);
+
+            } else if (result.toString().equalsIgnoreCase("login not success")) {
+                alertDialog.setMessage(result);
+                alertDialog.show();
+            }
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
     }
 
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
-    }
-}
 }
