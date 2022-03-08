@@ -14,6 +14,7 @@
         android:theme="@style/Theme.SafeMedicare"
         android:usesCleartextTraffic="true">
         <activity android:name=".retriveDB"></activity>
+        <activity android:name=".Decide_Class" />
         <activity android:name=".caregiver_homePage_activity" />
         <activity android:name=".SecondActivity" />
         <activity android:name=".timeline_page_Activity" />

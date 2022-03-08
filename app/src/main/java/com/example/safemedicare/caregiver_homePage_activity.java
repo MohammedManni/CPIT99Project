@@ -32,6 +32,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
     CaregiverClass[] caregiverList;
     Patient patient;
     Patient[] patientList;
+    private String name, type;
 
 
         @Override
@@ -39,7 +40,12 @@ public class caregiver_homePage_activity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_caregiver_home_page);
 
-
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                name = extras.getString("USERNAME");
+                type = extras.getString("TYPE");
+               // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
+            }
             /////////////////////////////////////////////////////////////////////
 
             // toolbar buttons
@@ -53,6 +59,8 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
                     startActivity(intent);
                 }
             });
@@ -61,6 +69,8 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(caregiver_homePage_activity.this, Schedule_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
                     startActivity(intent);
                 }
             });
@@ -69,6 +79,8 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(caregiver_homePage_activity.this, Add_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
                     startActivity(intent);
                 }
             });
@@ -77,6 +89,8 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(caregiver_homePage_activity.this, SOS_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
                     startActivity(intent);
                 }
             });
