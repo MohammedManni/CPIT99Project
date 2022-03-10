@@ -10,20 +10,21 @@ import android.widget.TextView;
 
 public class ListAdabter extends BaseAdapter {
     Context context;
-    String arrayList[];
-    int flags[];
+    String arrayList;
+    //int flags[];
     LayoutInflater inflter;
+    int x;
 
-    public ListAdabter(Context applicationContext, String[] arrayList, int[] flags) {
+    public ListAdabter(Context context, String arrayList) {
         this.context = context;
         this.arrayList = arrayList;
-        this.flags = flags;
-        inflter = (LayoutInflater.from(applicationContext));
+        inflter = (LayoutInflater.from(context));
+
     }
 
     @Override
     public int getCount() {
-        return arrayList.length;
+        return x;
     }
 
     @Override
@@ -41,8 +42,8 @@ public class ListAdabter extends BaseAdapter {
         view = inflter.inflate(R.layout.listview_item, null);
         TextView patientName = (TextView) view.findViewById(R.id.patientINlistView);
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
-        patientName.setText(arrayList[i]);
-        icon.setImageResource(flags[i]);
+        patientName.setText(arrayList);
+        //icon.setImageResource(flags[i]);
         return view;
     }
 }

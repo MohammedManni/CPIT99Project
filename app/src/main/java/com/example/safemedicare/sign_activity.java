@@ -108,7 +108,7 @@ public class sign_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String type = params[0];
-            String login_url = "http://192.168.100.171/login.php";
+            String login_url = "http://192.168.100.10/login.php";
 
 
             try {
@@ -165,7 +165,7 @@ public class sign_activity extends AppCompatActivity {
 
             }
             // if caregiver
-            else if (result.toString().equalsIgnoreCase("patientcaregiver")) {
+            else if (result.toString().equalsIgnoreCase("caregiver")) {
                 Intent myIntent = new Intent(sign_activity.this, caregiver_homePage_activity.class);
                 myIntent.putExtra("USERNAME", Username.getText().toString());
                 myIntent.putExtra("TYPE", "caregiver");

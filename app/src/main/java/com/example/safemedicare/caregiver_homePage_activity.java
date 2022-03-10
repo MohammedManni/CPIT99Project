@@ -27,6 +27,7 @@ import java.net.URI;
 
 public class caregiver_homePage_activity extends AppCompatActivity {
     ListView list;
+    String names[];
     ArrayAdapter<String> adapter;
     CaregiverClass caregiver;
     CaregiverClass[] caregiverList;
@@ -44,6 +45,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
             if (extras != null) {
                 name = extras.getString("USERNAME");
                 type = extras.getString("TYPE");
+
                // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
             }
             /////////////////////////////////////////////////////////////////////
@@ -98,18 +100,24 @@ public class caregiver_homePage_activity extends AppCompatActivity {
             //////////////////////////////  end toolbar button//////////////////////////////////////////////
 
             ////////////// read from database///////////////////////////
-
             list = (ListView) findViewById(R.id.patientList);
+/*
+
+            names= new String[]{name};
+ArrayAdapter<String>arr=new ArrayAdapter<String>(this, R.layout.listview_item, R.id.patientINlistView, names);
+list.setAdapter(arr);
+*/
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     TextView textView =findViewById(R.id.textVi);
-                    textView.setText(adapter.getItem(i).toString());
+                    textView.setText(name);
                 }
             });
             adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
             list.setAdapter(adapter);
             new ConnectionToReadPatient().execute();
+
         }
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadPatient extends AsyncTask<String, String, String> {
@@ -117,7 +125,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readPatient.php";
+            String readPatient_url = "http://192.168.100.10/readPC.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -152,18 +160,14 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                     for (int i = 0; i < patientData.length(); i++) {
                         JSONObject patientObject = patientData.getJSONObject(i);
                         int id = patientObject.getInt("id");
-                        String userName = patientObject.getString("userName");
-                        String name = patientObject.getString("name");
-                        //  int linkID = caregiverObject.getInt("linkID");
-                        int phoneNum = patientObject.getInt("phoneNumber");
-                        int age = patientObject.getInt("age");
-                        //try to match the constructor fullName,  username,  id, int linkID, int phone_number, int age
-                        patient= new Patient(name,userName,id,id,phoneNum,age);
-                        patientList = new Patient[patientData.length()];
-                        patientList[i]= patient;
+                        String userName = patientObject.getString("userNameC");
+                        String patientName = patientObject.getString("userNameP");
 
-                        String line = id + " - " + userName + " - " + name + " - " + phoneNum + " - "+age;
-                        adapter.add(line);
+if (userName.equalsIgnoreCase("saad")){
+    String line = id + " - " + patientName ;
+     adapter.add(line);
+}
+
 
                     }
                 } else {

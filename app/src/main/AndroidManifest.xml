@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeMedicare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".retriveDB"></activity>
+        <activity android:name=".retriveDB" />
         <activity android:name=".Decide_Class" />
         <activity android:name=".caregiver_homePage_activity" />
         <activity android:name=".SecondActivity" />
@@ -37,7 +37,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>
