@@ -9,17 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,7 +21,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -135,7 +125,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
     }
     public void OnLogin(View view) {
         String username = editTextName.getText().toString();
-        String patientName = "Khalid";
+        String patientName = name;
         db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
         backgroundWorker.execute(username,patientName);
     }
@@ -154,7 +144,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String type = params[0];
-            String login_url = "http://192.168.100.10/pc.php";
+            String login_url = "http://192.168.100.171/pc.php";
 
 
             try {
@@ -203,27 +193,27 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             // if patient
-            /*
-            if (result.toString().equalsIgnoreCase("patientlogin not success")) {
-               /* Intent myIntent = new Intent(caregiver_relative_control_Activity.this, Home_Page_Activity.class);
+
+            if (result.toString().equalsIgnoreCase("Already added")) {
+              //  Intent myIntent = new Intent(caregiver_relative_control_Activity.this, Home_Page_Activity.class);
                 //myIntent.putExtra("USERNAME", Username.getText().toString());
-                myIntent.putExtra("TYPE", "patient");
-                startActivity(myIntent);
+              //  myIntent.putExtra("TYPE", "patient");
+              //  startActivity(myIntent);
 
 
             }
             // if caregiver
-            else if (result.toString().equalsIgnoreCase("caregiver")) {
-                Intent myIntent = new Intent(caregiver_relative_control_Activity.this, caregiver_homePage_activity.class);
-                myIntent.putExtra("USERNAME", editTextName.getText().toString());
-                myIntent.putExtra("TYPE", "caregiver");
-                startActivity(myIntent);
+            else if (result.toString().equalsIgnoreCase("DONE")) {
+                //Intent myIntent = new Intent(caregiver_relative_control_Activity.this, caregiver_homePage_activity.class);
+               // myIntent.putExtra("USERNAME", editTextName.getText().toString());
+               // myIntent.putExtra("TYPE", "caregiver");
+               // startActivity(myIntent);
 
-            } else if (result.toString().equalsIgnoreCase("login not success")) {
+            } else if (result.toString().equalsIgnoreCase("User not found ")) {
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
-             */
+
             alertDialog.setMessage(result);
             alertDialog.show();
 
