@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,7 +30,8 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
     CaregiverClass caregiver;
     CaregiverClass[] caregiverList;
 
-    EditText editTextName , phone;
+    EditText editTextName ;
+    Switch switchMedicationLog,switchSchedule,switchTimeline,switchAddCaregiver;
 
     private String name, type;
     @Override
@@ -42,9 +45,12 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
             type = extras.getString("TYPE");
         }
         editTextName = (EditText) findViewById(R.id.editTextTextPersonName);
-        phone = (EditText) findViewById(R.id.editTextPhone);
         Button add = findViewById(R.id.addPatinetORcaregiver);
         Button delete = findViewById(R.id.deletePatinetORcaregiver);
+        switchMedicationLog =(Switch) findViewById(R.id.switchMedicationLog);
+        switchSchedule = (Switch)findViewById(R.id.switchSchedule);
+        switchTimeline = (Switch)findViewById(R.id.switchTimeline);
+        switchAddCaregiver = (Switch)findViewById(R.id.switchAddCaregiver);
 
 
 
@@ -116,18 +122,23 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OnLogin(view);
+
+                addCaregiver(view);
             }
         });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
 
     }
-    public void OnLogin(View view) {
+    public void addCaregiver(View view) {
         String username = editTextName.getText().toString();
         String patientName = name;
+        Boolean swMedLog=switchMedicationLog.isChecked();
+        Boolean swSchedule=switchSchedule.isChecked();
+        Boolean swTimeline=switchTimeline.isChecked();
+        Boolean swAddAsCaregiver=switchAddCaregiver.isChecked();
         db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
-        backgroundWorker.execute(username,patientName);
+        backgroundWorker.execute(username,patientName,swMedLog.toString(),swSchedule.toString(),swTimeline.toString(),swAddAsCaregiver.toString());
     }
 
     ////////////////////// ADD CAREGIVER/////////////////////////////////////////////
@@ -143,13 +154,17 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String type = params[0];
-            String login_url = "http://192.168.100.171/pc.php";
+
+            String login_url = "http://192.168.100.10/pc.php";
 
 
             try {
                 String user_name = params[0];
                 String patientName = params[1];
+                String swMedLog = params[2];
+                String swSchedule = params[3];
+                String swTimeline = params[4];
+                String swAddAsCaregiver = params[5];
                 URL url = new URL(login_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -158,7 +173,11 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8")
-                        + "&" + URLEncoder.encode("patient", "UTF-8") + "=" + URLEncoder.encode(patientName, "UTF-8");
+                        + "&" + URLEncoder.encode("patient", "UTF-8") + "=" + URLEncoder.encode(patientName, "UTF-8")
+                        + "&" + URLEncoder.encode("swMedLog", "UTF-8") + "=" + URLEncoder.encode(swMedLog, "UTF-8")
+                        + "&" + URLEncoder.encode("swSchedule", "UTF-8") + "=" + URLEncoder.encode(swSchedule, "UTF-8")
+                        + "&" + URLEncoder.encode("swTimeline", "UTF-8") + "=" + URLEncoder.encode(swTimeline, "UTF-8")
+                        + "&" + URLEncoder.encode("swAddAsCaregiver", "UTF-8") + "=" + URLEncoder.encode(swAddAsCaregiver, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -199,7 +218,8 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 //myIntent.putExtra("USERNAME", Username.getText().toString());
               //  myIntent.putExtra("TYPE", "patient");
               //  startActivity(myIntent);
-
+                alertDialog.setMessage(result);
+                alertDialog.show();
 
             }
             // if caregiver
@@ -208,14 +228,15 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                // myIntent.putExtra("USERNAME", editTextName.getText().toString());
                // myIntent.putExtra("TYPE", "caregiver");
                // startActivity(myIntent);
+                alertDialog.setMessage(result);
+                alertDialog.show();
 
             } else if (result.toString().equalsIgnoreCase("User not found ")) {
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
 
-            alertDialog.setMessage(result);
-            alertDialog.show();
+
 
         }
 

@@ -60,10 +60,12 @@ public class caregiver_homePage_activity extends AppCompatActivity {
             Profile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
+                        Intent intent = new Intent(caregiver_homePage_activity.this, personal_info_Activity.class);
+                        intent.putExtra("USERNAME", name);
+                        intent.putExtra("TYPE", type);
+                        startActivity(intent);
+
+
                 }
             });
 
@@ -125,7 +127,7 @@ list.setAdapter(arr);
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readPC.php";
+            String readPatient_url = "http://192.168.100.10/readPC.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -163,7 +165,7 @@ list.setAdapter(arr);
                         String userName = patientObject.getString("userNameC");
                         String patientName = patientObject.getString("userNameP");
 
-if (userName.equalsIgnoreCase("saad")){
+if (userName.equalsIgnoreCase(name)){
     String line = id + " - " + patientName ;
      adapter.add(line);
 }
