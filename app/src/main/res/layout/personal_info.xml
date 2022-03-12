@@ -74,12 +74,12 @@
         app:layout_constraintTop_toBottomOf="@+id/nameINProfile" />
 
     <TextView
-        android:id="@+id/emailINProfile"
+        android:id="@+id/AgeLNProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="40dp"
-        android:text="Email"
+        android:text="Age"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PhoneINProfile" />
 
@@ -91,7 +91,7 @@
         android:layout_marginTop="43dp"
         android:text="Password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailINProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/AgeLNProfile" />
 
     <TextView
         android:id="@+id/confirmPasswordINProfile"
@@ -140,15 +140,15 @@
         app:layout_constraintTop_toBottomOf="@+id/PersonNameINProfileEditText" />
 
     <EditText
-        android:id="@+id/EmailAddressINProfileEditText"
+        android:id="@+id/AgeEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="117dp"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="Age"
         android:inputType="textEmailAddress"
-        app:layout_constraintStart_toEndOf="@+id/emailINProfile"
+        app:layout_constraintStart_toEndOf="@+id/AgeLNProfile"
         app:layout_constraintTop_toBottomOf="@+id/PhoneNumberINProfileEditText" />
 
     <EditText
@@ -161,7 +161,7 @@
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toEndOf="@+id/passwordINProfile"
-        app:layout_constraintTop_toBottomOf="@+id/EmailAddressINProfileEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/AgeEditText" />
 
     <EditText
         android:id="@+id/ConPasswordINProfileEditText"

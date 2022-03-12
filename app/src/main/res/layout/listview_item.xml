@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="80dp"
         android:layout_height="80dp"
-         />
+        />
 
     <TextView
         android:id="@+id/patientINlistView"
@@ -16,5 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        />
 </LinearLayout>

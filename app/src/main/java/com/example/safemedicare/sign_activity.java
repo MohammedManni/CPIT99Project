@@ -108,7 +108,7 @@ public class sign_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String type = params[0];
-            String login_url = "http://192.168.100.10/login.php";
+            String login_url = "http://192.168.100.193/login.php";
 
 
             try {
@@ -172,6 +172,9 @@ public class sign_activity extends AppCompatActivity {
                 startActivity(myIntent);
 
             } else if (result.toString().equalsIgnoreCase("login not success")) {
+                alertDialog.setMessage(result);
+                alertDialog.show();
+            }else {
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }

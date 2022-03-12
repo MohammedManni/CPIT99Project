@@ -53,7 +53,7 @@ public class retriveDB extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.10/readCaregiver.php";
+            String medication_url = "http://192.168.100.193/readCaregiver.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();

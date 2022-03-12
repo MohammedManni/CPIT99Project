@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ListAdabter extends BaseAdapter {
@@ -41,7 +40,7 @@ public class ListAdabter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.listview_item, null);
         TextView patientName = (TextView) view.findViewById(R.id.patientINlistView);
-        ImageView icon = (ImageView) view.findViewById(R.id.icon);
+       // ImageView icon = (ImageView) view.findViewById(R.id.icon);
         patientName.setText(arrayList);
         //icon.setImageResource(flags[i]);
         return view;

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -155,7 +154,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String login_url = "http://192.168.100.10/pc.php";
+            String login_url = "http://192.168.100.193/pc.php";
 
 
             try {
@@ -214,24 +213,31 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
             // if patient
 
             if (result.toString().equalsIgnoreCase("Already added")) {
-              //  Intent myIntent = new Intent(caregiver_relative_control_Activity.this, Home_Page_Activity.class);
-                //myIntent.putExtra("USERNAME", Username.getText().toString());
-              //  myIntent.putExtra("TYPE", "patient");
-              //  startActivity(myIntent);
+                editTextName.setText(null);
+                switchMedicationLog.setChecked(false);
+                switchSchedule.setChecked(false);
+                switchTimeline.setChecked(false);
+                switchAddCaregiver.setChecked(false);
+
                 alertDialog.setMessage(result);
                 alertDialog.show();
 
             }
             // if caregiver
             else if (result.toString().equalsIgnoreCase("DONE")) {
-                //Intent myIntent = new Intent(caregiver_relative_control_Activity.this, caregiver_homePage_activity.class);
-               // myIntent.putExtra("USERNAME", editTextName.getText().toString());
-               // myIntent.putExtra("TYPE", "caregiver");
-               // startActivity(myIntent);
+                editTextName.setText(null);
+                switchMedicationLog.setChecked(false);
+                switchSchedule.setChecked(false);
+                switchTimeline.setChecked(false);
+                switchAddCaregiver.setChecked(false);
                 alertDialog.setMessage(result);
                 alertDialog.show();
 
             } else if (result.toString().equalsIgnoreCase("User not found ")) {
+                switchMedicationLog.setChecked(false);
+                switchSchedule.setChecked(false);
+                switchTimeline.setChecked(false);
+                switchAddCaregiver.setChecked(false);
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }

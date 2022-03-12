@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +33,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
     Patient patient;
     Patient[] patientList;
     private String name, type;
+    String userName ,patientName;
 
 
         @Override
@@ -112,8 +112,12 @@ list.setAdapter(arr);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    TextView textView =findViewById(R.id.textVi);
-                    textView.setText(name);
+                    Intent intent = new Intent(caregiver_homePage_activity.this, listview_item.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    intent.putExtra("PatientName", patientName );
+                    startActivity(intent);
+
                 }
             });
             adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -127,7 +131,7 @@ list.setAdapter(arr);
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.10/readPC.php";
+            String readPatient_url = "http://192.168.100.193/readPC.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -162,8 +166,8 @@ list.setAdapter(arr);
                     for (int i = 0; i < patientData.length(); i++) {
                         JSONObject patientObject = patientData.getJSONObject(i);
                         int id = patientObject.getInt("id");
-                        String userName = patientObject.getString("userNameC");
-                        String patientName = patientObject.getString("userNameP");
+                         userName = patientObject.getString("userNameC");
+                         patientName = patientObject.getString("userNameP");
 
 if (userName.equalsIgnoreCase(name)){
     String line = id + " - " + patientName ;
