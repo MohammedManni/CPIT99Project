@@ -1,7 +1,6 @@
 package com.example.safemedicare;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +17,7 @@ public class listview_item extends AppCompatActivity {
 
 
 
-                */
+
         TextView patientINlistView =(TextView) findViewById(R.id.patientINlistView);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -29,6 +28,6 @@ public class listview_item extends AppCompatActivity {
          //   patientMedicationLog.setText(type);
           //  addMedicationForPatient.setText(patientName);
         }
-
+  */
     }
 }

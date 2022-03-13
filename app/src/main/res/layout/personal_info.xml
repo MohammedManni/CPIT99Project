@@ -22,8 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.80"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="584dp"
+        app:layout_constraintGuide_percent="0.80" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline19"
@@ -47,9 +47,12 @@
         android:id="@+id/UserNameInProfile"
         android:layout_width="134dp"
         android:layout_height="35dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="35dp"
         android:text="User Name"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/nameINProfile"
+        app:layout_constraintEnd_toStartOf="@+id/UserNameINProfileEDITText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
@@ -57,49 +60,64 @@
         android:id="@+id/nameINProfile"
         android:layout_width="134dp"
         android:layout_height="35dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="27dp"
         android:text="Name"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/AgeLNProfile"
+        app:layout_constraintEnd_toStartOf="@+id/PersonNameINProfileEditText"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UserNameInProfile" />
-
-    <TextView
-        android:id="@+id/PhoneINProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="56dp"
-        android:text="Phone Number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameINProfile" />
 
     <TextView
         android:id="@+id/AgeLNProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="26dp"
         android:text="Age"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/PhoneINProfile"
+        app:layout_constraintEnd_toStartOf="@+id/AgeEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PhoneINProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/nameINProfile" />
+
+    <TextView
+        android:id="@+id/PhoneINProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="34dp"
+        android:text="Phone Number"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/passwordINProfile"
+        app:layout_constraintEnd_toStartOf="@+id/PhoneNumberINProfileEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AgeLNProfile" />
 
     <TextView
         android:id="@+id/passwordINProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="43dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="34dp"
         android:text="Password"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/confirmPasswordINProfile"
+        app:layout_constraintEnd_toStartOf="@+id/PasswordINProfileEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AgeLNProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/PhoneINProfile" />
 
     <TextView
         android:id="@+id/confirmPasswordINProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="43dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="36dp"
         android:text="Confirm Password"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/ConPasswordINProfileEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordINProfile" />
 
@@ -107,71 +125,89 @@
         android:id="@+id/UserNameINProfileEDITText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="33dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="21dp"
         android:ems="10"
         android:hint="User Name"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/PersonNameINProfileEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/UserNameInProfile"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
 
     <EditText
         android:id="@+id/PersonNameINProfileEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="21dp"
         android:ems="10"
         android:hint="Name"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/AgeEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nameINProfile"
         app:layout_constraintTop_toBottomOf="@+id/UserNameINProfileEDITText" />
-
-    <EditText
-        android:id="@+id/PhoneNumberINProfileEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="57dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="Phone"
-        android:inputType="phone"
-        app:layout_constraintStart_toEndOf="@+id/PhoneINProfile"
-        app:layout_constraintTop_toBottomOf="@+id/PersonNameINProfileEditText" />
 
     <EditText
         android:id="@+id/AgeEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="117dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="138dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="21dp"
         android:ems="10"
         android:hint="Age"
         android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/PhoneNumberINProfileEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/AgeLNProfile"
-        app:layout_constraintTop_toBottomOf="@+id/PhoneNumberINProfileEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/PersonNameINProfileEditText" />
+
+    <EditText
+        android:id="@+id/PhoneNumberINProfileEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="21dp"
+        android:ems="10"
+        android:hint="Phone Number"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/PasswordINProfileEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/PhoneINProfile"
+        app:layout_constraintTop_toBottomOf="@+id/AgeEditText" />
 
     <EditText
         android:id="@+id/PasswordINProfileEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="85dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="21dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/ConPasswordINProfileEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/passwordINProfile"
-        app:layout_constraintTop_toBottomOf="@+id/AgeEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/PhoneNumberINProfileEditText" />
 
     <EditText
         android:id="@+id/ConPasswordINProfileEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="21dp"
         android:ems="10"
         android:hint="Confirm password"
         android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/confirmPasswordINProfile"
         app:layout_constraintTop_toBottomOf="@+id/PasswordINProfileEditText" />
 
@@ -179,9 +215,11 @@
         android:id="@+id/saveChange"
         android:layout_width="356dp"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="27dp"
         android:layout_marginTop="65dp"
+        android:layout_marginEnd="28dp"
         android:text="SAVE CHANGES"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline18" />
 

@@ -1,5 +1,7 @@
 package com.example.safemedicare;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,15 +22,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class personal_info_Activity extends AppCompatActivity {
 
     private String name, type, userName;
     CaregiverClass caregiver;
 
-    EditText UserNameINProfileEDITText ,PersonNameINProfileEditText , PhoneNumberINProfileEditText , AgeEditText,ConfirmPassword,Password;
+    EditText UserNameINProfileEDITText, PersonNameINProfileEditText, PhoneNumberINProfileEditText, AgeEditText, ConfirmPassword, Password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +52,13 @@ public class personal_info_Activity extends AppCompatActivity {
             type = extras.getString("TYPE");
             new ConnectionToCaregiver().execute();
         }
-
-         UserNameINProfileEDITText = (EditText) findViewById(R.id.UserNameINProfileEDITText);
-         PersonNameINProfileEditText = (EditText) findViewById(R.id.PersonNameINProfileEditText);
-         PhoneNumberINProfileEditText = (EditText) findViewById(R.id.PhoneNumberINProfileEditText);
-         AgeEditText = (EditText) findViewById(R.id.AgeEditText);
-         Password = (EditText) findViewById(R.id.PasswordINProfileEditText);
-         ConfirmPassword = (EditText) findViewById(R.id.ConPasswordINProfileEditText);
+        caregiver = new CaregiverClass();
+        UserNameINProfileEDITText = (EditText) findViewById(R.id.UserNameINProfileEDITText);
+        PersonNameINProfileEditText = (EditText) findViewById(R.id.PersonNameINProfileEditText);
+        PhoneNumberINProfileEditText = (EditText) findViewById(R.id.PhoneNumberINProfileEditText);
+        AgeEditText = (EditText) findViewById(R.id.AgeEditText);
+        Password = (EditText) findViewById(R.id.PasswordINProfileEditText);
+        ConfirmPassword = (EditText) findViewById(R.id.ConPasswordINProfileEditText);
 
 
         // toolbar buttons
@@ -141,15 +152,19 @@ public class personal_info_Activity extends AppCompatActivity {
                     if (Password.getText().toString().equals(ConfirmPassword.getText().toString())) {
 
                         // update the information
-                        OnUpdate(view);
-
+                        PasswordUpdate(view);
+                        Password.setText(null);
+                        ConfirmPassword.setText(null);
 
                     } else {// else for not matching pass
+                        Password.setText(null);
+                        ConfirmPassword.setText(null);
                         Toast.makeText(personal_info_Activity.this, "the Password not matching", Toast.LENGTH_LONG).show();
                     }
 
-                } else {// else for not matching pass
-                    Toast.makeText(personal_info_Activity.this, "Nothing to update", Toast.LENGTH_LONG).show();
+                } else {// else for phone number update
+                    PhoneUpdate(view);
+                    //Toast.makeText(personal_info_Activity.this, "Phone Number update", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -158,16 +173,28 @@ public class personal_info_Activity extends AppCompatActivity {
 
     }
 
-    public void OnUpdate(View view) {
+    public void PasswordUpdate(View view) {
 
-       String username = caregiver.getUsername();
-        String name = caregiver.getFullName();
-        String phoneNumber = String.valueOf(caregiver.getPhone_number());
-        String age = String.valueOf(caregiver.getAge());
+        String operation = "password";
+        String username = name;
+        String type1 = type;
+
         String password = Password.getText().toString();
-        String type = "UpdatePass";
+
         db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password);
+        db1BackgroundWorker.execute(operation, username, type1, password);
+
+    }
+    public void PhoneUpdate(View view) {
+
+        String type1 = type;
+        String username = name;
+        String operation = "phoneNumber";
+        String phoneNumber =  PhoneNumberINProfileEditText.getText().toString();
+
+
+        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
+        db1BackgroundWorker.execute(operation, username, type1, phoneNumber);
 
     }
 
@@ -178,7 +205,7 @@ public class personal_info_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.193/returnINFO.php";
+            String readPatient_url = "http://192.168.100.197/returnINFO.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -216,15 +243,25 @@ public class personal_info_Activity extends AppCompatActivity {
                         userName = patientObject.getString("userName");
 
 
-                        if (userName.equalsIgnoreCase(name)){
+                        if (userName.equalsIgnoreCase(name)) {
                             String fullName = patientObject.getString("name");
-                            String phoneNumber = patientObject.getString("phoneNumber");
-                            String age = patientObject.getString("age");
+                            int phoneNumber = Integer.parseInt(patientObject.getString("phoneNumber"));
+                            int age = Integer.parseInt(patientObject.getString("age"));
 
-                            UserNameINProfileEDITText.setText(userName);
-                            PersonNameINProfileEditText.setText(fullName);
-                            PhoneNumberINProfileEditText .setText(phoneNumber);
-                            AgeEditText.setText(age);
+                            caregiver.setId(Integer.parseInt(patientObject.getString("id")));
+                            caregiver.setUsername(userName);
+                            caregiver.setFullName(fullName);
+                            caregiver.setPhone_number(phoneNumber);
+                            caregiver.setAge(age);
+
+                            UserNameINProfileEDITText.setText(caregiver.getUsername());
+                            PersonNameINProfileEditText.setText(caregiver.getFullName());
+                            PhoneNumberINProfileEditText.setText(String.valueOf(caregiver.getPhone_number()));
+                            AgeEditText.setText(String.valueOf(caregiver.getAge()));
+                            UserNameINProfileEDITText.setEnabled(false);
+                            PersonNameINProfileEditText.setEnabled(false);
+
+                            AgeEditText.setEnabled(false);
 
                         }
 
@@ -239,4 +276,118 @@ public class personal_info_Activity extends AppCompatActivity {
         }
     }
     ///////////////////////////// DO NOT CHANGE ANYTHING  ( UNTIL HERE ) ///////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////// Update class ///////////////////////////////////////////////////////////////////////////////////
+    public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
+        Context context;
+        AlertDialog alertDialog;
+
+        db1BackgroundWorker(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String operation = params[0];
+            String UrlPaasPhone = "http://192.168.100.197/UpdatePassword.php";
+
+            if (operation.equals("password")) {
+                try {
+                    String user_name = params[1];
+                    String password = params[3];
+                    String type1 = params[2];
+                    String phoneNumber = " ";
+                    URL url = new URL(UrlPaasPhone);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8") + "&"
+                            + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8")+ "&"
+                            + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(type1, "UTF-8")+ "&"
+                            + URLEncoder.encode("Phone_number", "UTF-8") + "=" + URLEncoder.encode(phoneNumber, "UTF-8")+ "&"
+                            + URLEncoder.encode("operation", "UTF-8") + "=" + URLEncoder.encode(operation, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (operation.equals("phoneNumber")) {
+                try {
+                    String user_name = params[1];
+                    String password = " ";
+                    String type1 = params[2];
+                    String phoneNumber = params[3];
+                    URL url = new URL(UrlPaasPhone);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8") + "&"
+                            + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8")+ "&"
+                            + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(type1, "UTF-8")+ "&"
+                            + URLEncoder.encode("Phone_number", "UTF-8") + "=" + URLEncoder.encode(phoneNumber, "UTF-8")+ "&"
+                            + URLEncoder.encode("operation", "UTF-8") + "=" + URLEncoder.encode(operation, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            alertDialog = new AlertDialog.Builder(context).create();
+            alertDialog.setTitle("Update Status");
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+                alertDialog.setMessage(result);
+                alertDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+    }
 }
