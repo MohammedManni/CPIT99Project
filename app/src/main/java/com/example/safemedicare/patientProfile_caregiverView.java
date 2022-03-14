@@ -4,25 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Schedule_Activity extends AppCompatActivity {
-
-    private String name, type;
-
+public class patientProfile_caregiverView extends AppCompatActivity {
+     String name, type , patientName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.calendar);
+        setContentView(R.layout.patientprofile_caregiverview);
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-
+            patientName = extras.getString("PatientName");
         }
         /////////////////////////////////////////////////////////////////////
 
@@ -36,26 +34,17 @@ public class Schedule_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (type.equalsIgnoreCase("patient")){
-                    Intent intent = new Intent(Schedule_Activity.this, Profile_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-
-                }else if (type.equalsIgnoreCase("caregiver")){
-                    Intent intent = new Intent(Schedule_Activity.this, personal_info_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-
-                }
+                Intent intent = new Intent(patientProfile_caregiverView.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
             }
         });
 
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Schedule_Activity.class);
+                Intent intent = new Intent(patientProfile_caregiverView.this, Schedule_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -65,7 +54,7 @@ public class Schedule_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Add_Activity.class);
+                Intent intent = new Intent(patientProfile_caregiverView.this, Add_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -75,7 +64,7 @@ public class Schedule_Activity extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, SOS_Activity.class);
+                Intent intent = new Intent(patientProfile_caregiverView.this, SOS_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -86,52 +75,68 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (type.equalsIgnoreCase("patient")){
-                    Intent intent = new Intent(Schedule_Activity.this, Home_Page_Activity.class);
+                    Intent intent = new Intent(patientProfile_caregiverView.this, Home_Page_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
 
                 }else if (type.equalsIgnoreCase("caregiver")){
-                    Intent intent = new Intent(Schedule_Activity.this, caregiver_homePage_activity.class);
+                    Intent intent = new Intent(patientProfile_caregiverView.this, caregiver_homePage_activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
 
                 }
+
             }
         });
 
-        //////////////////////////end toolbar buttons////////////////////////////////////////////
+        ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
 
-        Button buttonAdjustment = findViewById(R.id.buttonAdjustment);
-        Button buttonAddEvent = findViewById(R.id.buttonAddEvent);
+        // profile page button //
+        Button MedicationLog_CaregiverView = findViewById(R.id.MedicationLog_CaregiverView);
+        Button Schedule_CaregiverView = findViewById(R.id.Schedule_CaregiverView);
+        Button Event_CaregiverView = findViewById(R.id.Event_CaregiverView);
+        Button AddMedicine_CaregiverView = findViewById(R.id.AddMedicine_CaregiverView);
 
-        buttonAdjustment.setOnClickListener(new View.OnClickListener() {
+
+        MedicationLog_CaregiverView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Add_event_from_calendar.class);
+                Intent intent = new Intent(patientProfile_caregiverView.this, personal_info_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
-        buttonAddEvent.setOnClickListener(new View.OnClickListener() {
+
+        Schedule_CaregiverView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePicker simpleDatePicker = (DatePicker) findViewById(R.id.simpleDatePicker); // initiate a date picker
-                String day = " " + simpleDatePicker.getDayOfMonth();
-                String month = "/" + (simpleDatePicker.getMonth() + 1);
-                String year = "/" + simpleDatePicker.getYear();
-                String date1 = day + "" + month + "" + year;
-                // display the values by using a toast
-                //Toast.makeText(getApplicationContext(), date1, Toast.LENGTH_LONG).show();
-
-
-
-                Intent intent = new Intent(Schedule_Activity.this, Add_event_from_calendar.class);
+                Intent intent = new Intent(patientProfile_caregiverView.this, medicationLog_page_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
-                intent.putExtra("DATE", date1);
+                startActivity(intent);
+            }
+        });
+
+
+        Event_CaregiverView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(patientProfile_caregiverView.this, caregiver_relative_control_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        AddMedicine_CaregiverView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(patientProfile_caregiverView.this, privacy_page.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });

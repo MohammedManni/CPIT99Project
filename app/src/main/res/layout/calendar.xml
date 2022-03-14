@@ -10,61 +10,40 @@
         android:id="@+id/toolbarCalendar"
         ></include>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline28"
+    <DatePicker
+        android:id="@+id/simpleDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.0"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.80"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="1.0"
-        app:layout_constraintGuide_begin="20dp" />
+        android:datePickerMode="calendar"
+        android:padding="40dp"/>
 
     <Button
         android:id="@+id/buttonAdjustment"
-        android:layout_width="356dp"
+        android:layout_width="180dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="282dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="16dp"
         android:text="Adjustment"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddEvent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline29" />
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="345dp"
-        android:layout_height="320dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="33dp"
+    <Button
+        android:id="@+id/buttonAddEvent"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="282dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="16dp"
+        android:text="Add Event"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarCalendar" />
-
-    <EditText
-        android:id="@+id/MultiLineInCalendar"
-        android:layout_width="340dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonAdjustment"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

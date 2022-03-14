@@ -112,7 +112,7 @@ list.setAdapter(arr);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, listview_item.class);
+                    Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     intent.putExtra("PatientName", patientName );

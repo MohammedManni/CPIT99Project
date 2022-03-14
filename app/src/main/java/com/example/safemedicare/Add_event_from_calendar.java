@@ -4,14 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class timeline_page_Activity extends AppCompatActivity {
+public class Add_event_from_calendar extends AppCompatActivity {
 
-    private String name, type;
-
+    private String name, type ,selectedDateString;
+    EditText eventNameET,DescriptionET;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +23,7 @@ public class timeline_page_Activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
+            selectedDateString = extras.getString("DATE");
 
         }
         // toolbar buttons
@@ -33,7 +36,7 @@ public class timeline_page_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(Add_event_from_calendar.this, Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -43,7 +46,7 @@ public class timeline_page_Activity extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page_Activity.this, Schedule_Activity.class);
+                Intent intent = new Intent(Add_event_from_calendar.this, Schedule_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -53,7 +56,7 @@ public class timeline_page_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page_Activity.this, Add_Activity.class);
+                Intent intent = new Intent(Add_event_from_calendar.this, Add_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -63,7 +66,7 @@ public class timeline_page_Activity extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page_Activity.this, SOS_Activity.class);
+                Intent intent = new Intent(Add_event_from_calendar.this, SOS_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -74,13 +77,13 @@ public class timeline_page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (type.equalsIgnoreCase("patient")){
-                    Intent intent = new Intent(timeline_page_Activity.this, Home_Page_Activity.class);
+                    Intent intent = new Intent(Add_event_from_calendar.this, Home_Page_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
 
                 }else if (type.equalsIgnoreCase("caregiver")){
-                    Intent intent = new Intent(timeline_page_Activity.this, caregiver_homePage_activity.class);
+                    Intent intent = new Intent(Add_event_from_calendar.this, caregiver_homePage_activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
@@ -91,18 +94,46 @@ public class timeline_page_Activity extends AppCompatActivity {
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
 
-        // timeline button
+        // timeline button    dateView
+         eventNameET= findViewById(R.id.eventNameET);
+         DescriptionET= findViewById(R.id.DescriptionET);
+        TextView dateView= findViewById(R.id.dateView);
+        dateView.setText(selectedDateString);
+        Button buttonSave = findViewById(R.id.buttonSave);
 
-        Button viewCalendar = findViewById(R.id.buttonViewAsCalendar);
-
-        viewCalendar.setOnClickListener(new View.OnClickListener() {
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(timeline_page_Activity.this, Schedule_Activity.class);
+                eventNameET.setText(selectedDateString);
+            }
+        });
+
+        Button buttonBack = findViewById(R.id.buttonBack);
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_event_from_calendar.this, Schedule_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
+    }
+
+    public void PasswordUpdate(View view) {
+
+        String operation = "save";
+        String username = name;
+        String type1 = type;
+        String eventName = eventNameET.getText().toString();
+        String Description = DescriptionET.getText().toString();
+        String Date = selectedDateString;
+        //String time = ;
+
+
+       // personal_info_Activity.db1BackgroundWorker db1BackgroundWorker = new personal_info_Activity.db1BackgroundWorker(this);
+       // db1BackgroundWorker.execute(operation, username, type1, password);
+
     }
 }
