@@ -83,14 +83,13 @@
         android:layout_gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginTop="54dp"
-        android:layout_marginEnd="349dp"
         android:layout_marginBottom="109dp"
-        android:text="Date"
+        android:text="Date:"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/eventTimeTV"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DescriptionET" />
 
@@ -100,16 +99,30 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="346dp"
-        android:layout_marginBottom="151dp"
-        android:text="Time"
+        android:layout_marginBottom="131dp"
+        android:text="Time:"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonBack"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/simpleTimePicker"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventDateTV" />
+
+    <TimePicker
+        android:id="@+id/simpleTimePicker"
+        android:layout_width="237dp"
+        android:layout_height="189dp"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="55dp"
+        android:timePickerMode="spinner"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toEndOf="@+id/eventTimeTV"
+        app:layout_constraintTop_toBottomOf="@+id/dateView" />
 
     <Button
         android:id="@+id/buttonSave"
@@ -136,7 +149,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="11dp"
         android:layout_marginBottom="16dp"
-        android:text="View as Calendar"
+        android:text="Back"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -144,17 +157,24 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonSave"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/dateView"
+
+    <EditText
+        android:id="@+id/date"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="119dp"
-        android:text="dd/mm/yyyy"
-        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="17dp"
+        android:background="#d4d4d4"
+        android:hint="Select Date..."
+        android:padding="15dp"
+        android:textColor="#100"
+        android:textColorHint="#600"
+        android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/simpleTimePicker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/eventDateTV"
         app:layout_constraintTop_toBottomOf="@+id/DescriptionET" />
