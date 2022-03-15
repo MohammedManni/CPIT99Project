@@ -33,98 +33,99 @@ public class caregiver_homePage_activity extends AppCompatActivity {
     Patient patient;
     Patient[] patientList;
     private String name, type;
-    String userName ,patientName;
+    String userName, patientName;
 
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_caregiver_home_page);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_caregiver_home_page);
 
-            Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                name = extras.getString("USERNAME");
-                type = extras.getString("TYPE");
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            name = extras.getString("USERNAME");
+            type = extras.getString("TYPE");
 
-               // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
+        }
+        /////////////////////////////////////////////////////////////////////
+
+        // toolbar buttons
+        Button Profile = findViewById(R.id.firstB);
+        Button Schedule = findViewById(R.id.SecondB);
+        Button Add = findViewById(R.id.thirdB);
+        Button SOS = findViewById(R.id.SOS);
+
+
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, personal_info_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+
+
             }
-            /////////////////////////////////////////////////////////////////////
+        });
 
-            // toolbar buttons
-            Button Profile = findViewById(R.id.firstB);
-            Button Schedule = findViewById(R.id.SecondB);
-            Button Add = findViewById(R.id.thirdB);
-            Button SOS = findViewById(R.id.SOS);
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
 
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, Add_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
 
-            Profile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                        Intent intent = new Intent(caregiver_homePage_activity.this, personal_info_Activity.class);
-                        intent.putExtra("USERNAME", name);
-                        intent.putExtra("TYPE", type);
-                        startActivity(intent);
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
 
+        //////////////////////////////  end toolbar button//////////////////////////////////////////////
 
-                }
-            });
-
-            Schedule.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, Schedule_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            Add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, Add_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            SOS.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, SOS_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            //////////////////////////////  end toolbar button//////////////////////////////////////////////
-
-            ////////////// read from database///////////////////////////
-            list = (ListView) findViewById(R.id.patientList);
+        ////////////// read from database///////////////////////////
+        list = (ListView) findViewById(R.id.patientList);
 /*
 
             names= new String[]{name};
 ArrayAdapter<String>arr=new ArrayAdapter<String>(this, R.layout.listview_item, R.id.patientINlistView, names);
 list.setAdapter(arr);
 */
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    intent.putExtra("PatientName", patientName );
-                    startActivity(intent);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                intent.putExtra("PatientName", patientName);
+                startActivity(intent);
 
-                }
-            });
-            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-            list.setAdapter(adapter);
-            new ConnectionToReadPatient().execute();
+            }
+        });
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        list.setAdapter(adapter);
+        new ConnectionToReadPatient().execute();
 
-        }
+    }
+
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadPatient extends AsyncTask<String, String, String> {
 
@@ -166,13 +167,13 @@ list.setAdapter(arr);
                     for (int i = 0; i < patientData.length(); i++) {
                         JSONObject patientObject = patientData.getJSONObject(i);
                         int id = patientObject.getInt("id");
-                         userName = patientObject.getString("userNameC");
-                         patientName = patientObject.getString("userNameP");
+                        userName = patientObject.getString("userNameC");
+                        patientName = patientObject.getString("userNameP");
 
-if (userName.equalsIgnoreCase(name)){
-    String line = id + " - " + patientName ;
-     adapter.add(line);
-}
+                        if (userName.equalsIgnoreCase(name)) {
+                            String line = id + " - " + patientName;
+                            adapter.add(line);
+                        }
 
 
                     }

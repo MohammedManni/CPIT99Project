@@ -45,7 +45,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-            selectedDateString = extras.getString("DATE");
+           // selectedDateString = extras.getString("DATE");
 
         }
         // toolbar buttons
@@ -140,7 +140,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // set day of month , month and year value in the edit text
-                        date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        date.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
