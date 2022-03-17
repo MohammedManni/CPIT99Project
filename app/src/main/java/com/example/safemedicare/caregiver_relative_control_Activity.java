@@ -154,7 +154,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String login_url = "http://192.168.100.193/pc.php";
+            String login_url = "http://192.168.100.171/pc.php";
 
 
             try {

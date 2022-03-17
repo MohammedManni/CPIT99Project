@@ -23,13 +23,15 @@
 
     <GridView
         android:id="@+id/gridView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="406dp"
+        android:layout_height="605dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="12dp"
+        android:horizontalSpacing="5dp"
         android:numColumns="auto_fit"
-        android:background="@color/black"
-        android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:scrollbars="horizontal"
+        android:verticalSpacing="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UpComingEv" />
 

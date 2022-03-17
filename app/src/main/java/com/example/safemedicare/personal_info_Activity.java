@@ -205,7 +205,7 @@ public class personal_info_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.197/returnINFO.php";
+            String readPatient_url = "http://192.168.100.171/returnINFO.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -289,7 +289,7 @@ public class personal_info_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String UrlPaasPhone = "http://192.168.100.197/UpdatePassword.php";
+            String UrlPaasPhone = "http://192.168.100.171/UpdatePassword.php";
 
             if (operation.equals("password")) {
                 try {

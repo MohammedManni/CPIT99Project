@@ -1,27 +1,43 @@
 package com.example.safemedicare;
 
-import java.util.Date;
-
 public class Event {
-    String EventTitle, EventDetails;
-    Date EventDate;
+    String EventName, EventDetails ,EventDate,EventTimeH,EventTimeM;
 
     public Event() {
 
     }
 
-    public Event(String eventTitle, String eventDetails, Date eventDate) {
-        EventTitle = eventTitle;
+    public Event(String eventName, String eventDetails, String eventTimeH, String eventTimeM, String eventDate) {
+        EventName = eventName;
         EventDetails = eventDetails;
+        EventTimeH = eventTimeH;
+        EventTimeM = eventTimeM;
         EventDate = eventDate;
     }
 
-    public String getEventTitle() {
-        return EventTitle;
+
+    public String getEventTimeH() {
+        return EventTimeH;
     }
 
-    public void setEventTitle(String eventTitle) {
-        EventTitle = eventTitle;
+    public void setEventTimeH(String eventTimeH) {
+        EventTimeH = eventTimeH;
+    }
+
+    public String getEventTimeM() {
+        return EventTimeM;
+    }
+
+    public void setEventTimeM(String eventTimeM) {
+        EventTimeM = eventTimeM;
+    }
+
+    public String getEventName() {
+        return EventName;
+    }
+
+    public void setEventName(String eventName) {
+        EventName = eventName;
     }
 
     public String getEventDetails() {
@@ -32,11 +48,11 @@ public class Event {
         EventDetails = eventDetails;
     }
 
-    public Date getEventDate() {
+    public String getEventDate() {
         return EventDate;
     }
 
-    public void setEventDate(Date eventDate) {
+    public void setEventDate(String eventDate) {
         EventDate = eventDate;
     }
 
