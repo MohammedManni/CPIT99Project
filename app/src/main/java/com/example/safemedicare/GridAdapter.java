@@ -30,9 +30,13 @@ public class GridAdapter extends ArrayAdapter {
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.gridview_item, null);
-        TextView textView = (TextView) v.findViewById(R.id.textViewItem);
-        ImageView imageView = (ImageView) v.findViewById(R.id.imageViewGrid);
-        textView.setText(eventList.get(position).getEventListName());
+        TextView eventListNameID = (TextView) v.findViewById(R.id.eventListNameID);
+        TextView eventListDateID = (TextView) v.findViewById(R.id.eventListDateID);
+        TextView eventListTimeID = (TextView) v.findViewById(R.id.eventListTimeID);
+       // ImageView imageView = (ImageView) v.findViewById(R.id.imageViewGrid);
+        eventListNameID.setText("NAME: "+eventList.get(position).getEventListName());
+        eventListDateID.setText("DATE: "+eventList.get(position).getEventListDate());
+        eventListTimeID.setText("TIME: "+eventList.get(position).getEventListTime());
         //imageView.setImageResource(eventList.get(position).getEventListImage());
         return v;
 

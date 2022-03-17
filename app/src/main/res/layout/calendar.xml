@@ -11,7 +11,7 @@
         ></include>
 
     <DatePicker
-        android:id="@+id/simpleDatePicker"
+        android:id="@+id/datePicker"
         android:layout_width="344dp"
         android:layout_height="444dp"
         android:datePickerMode="calendar"

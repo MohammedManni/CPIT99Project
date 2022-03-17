@@ -32,14 +32,14 @@ public class Add_event_from_calendar extends AppCompatActivity {
 
     private String name, type, selectedDateString;
     EditText eventNameET, DescriptionET;
-    TimePicker simpleTimePicker;
-    EditText date;
+    TimePicker timePicker;
+    Button date;
     DatePickerDialog datePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timeline);
+        setContentView(R.layout.add_event);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -121,11 +121,11 @@ public class Add_event_from_calendar extends AppCompatActivity {
         DescriptionET = findViewById(R.id.DescriptionET);
 
         Button buttonSave = findViewById(R.id.buttonSave);
-        simpleTimePicker = (TimePicker) findViewById(R.id.simpleTimePicker); // initiate a time picker
-        simpleTimePicker.setCurrentHour(12); // before api level 23
-        simpleTimePicker.setHour(12); // from api level 23
+        timePicker = (TimePicker) findViewById(R.id.timePicker); // initiate a time picker
+        timePicker.setCurrentHour(12); // before api level 23
+        timePicker.setHour(12); // from api level 23
 
-        date = (EditText) findViewById(R.id.date);
+        date = (Button) findViewById(R.id.date);
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,12 +140,12 @@ public class Add_event_from_calendar extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // set day of month , month and year value in the edit text
-                        date.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
-        });
+                         date.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
+                         }
+                         }, mYear, mMonth, mDay);
+                         datePickerDialog.show();
+                         }
+                         });
 
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -180,8 +180,8 @@ public class Add_event_from_calendar extends AppCompatActivity {
     }
 
     public void AddEvent(View view) {
-        int hours = simpleTimePicker.getHour(); // after api level 23
-        int minutes = simpleTimePicker.getMinute(); // after api level 23
+        int hours = timePicker.getHour(); // after api level 23
+        int minutes = timePicker.getMinute(); // after api level 23
         String operation = "AddEvent";
         String username = name;
         String type1 = type;
@@ -211,7 +211,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String login_url = "http://192.168.100.197/AddEvent.php";
+            String login_url = "http://192.168.100.10/AddEvent.php";
 
 
             if (operation.equals("AddEvent")) {

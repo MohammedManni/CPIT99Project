@@ -29,7 +29,7 @@ public class Schedule_Activity extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
     private String name, type, userName,date1;
-    DatePicker simpleDatePicker;
+    DatePicker datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,10 +154,10 @@ public class Schedule_Activity extends AppCompatActivity {
             }
         });
 
-        simpleDatePicker = (DatePicker) findViewById(R.id.simpleDatePicker);
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
 
 
-        simpleDatePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+        datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // Toast.makeText(Schedule_Activity.this," You are changed date is : "+dayOfMonth +" -  "+monthOfYear+ " - "+year,Toast.LENGTH_LONG).show();
@@ -175,7 +175,7 @@ public class Schedule_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.197/readEvent.php";
+            String readPatient_url = "http://192.168.100.10/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();

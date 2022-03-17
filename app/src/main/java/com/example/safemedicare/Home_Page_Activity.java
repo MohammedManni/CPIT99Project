@@ -22,13 +22,18 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class Home_Page_Activity extends AppCompatActivity {
 
-    private String name, type;
+    private String name, type, userName, formattedDate;
     GridView gridList;
-    ArrayList eventList=new ArrayList<>();
+    ArrayList eventList = new ArrayList<>();
     GridAdapter myAdapter;
 
     @Override
@@ -97,14 +102,22 @@ public class Home_Page_Activity extends AppCompatActivity {
 
         ///// START GRID VIEW /////
 
-            gridList = (GridView) findViewById(R.id.gridView);
-
+        gridList = (GridView) findViewById(R.id.gridView);
 
 
         int logos[] = {R.drawable.logo19, R.drawable.logo19, R.drawable.logo19, R.drawable.logo19,
                 R.drawable.logo19, R.drawable.logo19};
+        ///////////////////////////////////GET CURRENT DATE//////////////////////////////////////////////////////////////////
+        Date getDate = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
+        formattedDate = dateFormat.format(getDate);
+        Toast.makeText(getApplicationContext(), formattedDate, Toast.LENGTH_SHORT).show();
+
+        ///////////////////////////////////END GET CURRENT DATE//////////////////////////////////////////////////////////////////
+
+
         new Connection().execute();
-     myAdapter=new GridAdapter(this,R.layout.gridview_item,eventList);
+        myAdapter = new GridAdapter(this, R.layout.gridview_item, eventList);
 
         //new Connection().execute();
 
@@ -120,15 +133,14 @@ public class Home_Page_Activity extends AppCompatActivity {
         });
 
 
-
-        }
+    }
 
     class Connection extends AsyncTask<String, String, String> {
         // starting the connection
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.197/readCaregiver.php";
+            String medication_url = "http://192.168.100.10/readEvent.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
@@ -155,27 +167,50 @@ public class Home_Page_Activity extends AppCompatActivity {
         }
 
         @Override
-        // getting the data
         protected void onPostExecute(String result) {
             try {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
                 if (success == 1) {
-                    JSONArray caregiverData = jsonResult.getJSONArray("caregiver");
-                    for (int i = 0; i < caregiverData.length(); i++) {
-                        JSONObject caregiverObject = caregiverData.getJSONObject(i);
-                        int id = caregiverObject.getInt("id");
-                        String userName = caregiverObject.getString("userName");
-                        String name = caregiverObject.getString("name");
-                        //  int linkID = caregiverObject.getInt("linkID");
-                        int phoneNum = caregiverObject.getInt("phoneNumber");
-                        int Age = caregiverObject.getInt("age");
-                        //try to match the constructor fullName,  username,  id,  linkID,  phone_number,  age)
-                        //eventList.add(new GridItem(name + "\n" + userName + "\n" + id + "\n" + id + "\n" + phoneNum + "\n" + Age,R.drawable.ic_add_location));
-                        eventList.add(new GridItem(name + "\n" + userName + "\n" + id + "\n" + id + "\n" + phoneNum + "\n" + Age));
-                        //eventList.add(new GridItem(userName,R.drawable.logo19));
-                       // String line = name + " - " + userName + " - " + id + " - " + id + " - " + phoneNum + " - " + Age ;
-                         gridList.setAdapter(myAdapter);
+                    JSONArray patientData = jsonResult.getJSONArray("event");
+                    for (int i = 0; i < patientData.length(); i++) {
+                        JSONObject patientObject = patientData.getJSONObject(i);
+                        userName = patientObject.getString("userName");
+
+
+                        if (userName.equalsIgnoreCase(name)) {
+                            String eventName = patientObject.getString("eventName");
+                            String eventDescription = patientObject.getString("eventDescription");
+                            String date = patientObject.getString("date");
+                            String timeH = patientObject.getString("timeH");
+                            String timeM = patientObject.getString("timeM");
+
+                            // initiate a date picker
+
+
+                            String line;
+                            if (date.matches(formattedDate)) {
+                                if (Integer.parseInt(timeH) > 11 && Integer.parseInt(timeH) < 24) {
+                                    if (Integer.parseInt(timeH) > 12) {
+                                        //line = eventName + " - " + date + " - " + (Integer.parseInt(timeH) - 12) + ":" + timeM + " pm";
+                                        eventList.add(new GridItem(eventName,date,((Integer.parseInt(timeH) - 12) + ":" + timeM + " pm")));
+
+                                    } else {
+                                        //line = eventName + " - " + date + " - " + timeH + ":" + timeM + " pm";
+                                        eventList.add(new GridItem(eventName,date,(timeH + ":" + timeM + " pm")));
+
+                                    }
+                                } else {
+                                    //line = eventName + " - " + date + " - " + timeH + ":" + timeM + " am";
+                                    eventList.add(new GridItem(eventName,date,(timeH + ":" + timeM + " am")));
+
+                                }
+                            }
+                            gridList.setAdapter(myAdapter);
+
+
+                        }
+
 
                     }
                 } else {
