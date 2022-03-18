@@ -29,10 +29,11 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
     CaregiverClass caregiver;
     CaregiverClass[] caregiverList;
 
-    EditText editTextName ;
-    Switch switchMedicationLog,switchSchedule,switchTimeline,switchAddCaregiver;
+    EditText editTextName;
+    Switch switchMedicationLog, switchSchedule, switchTimeline, switchAddCaregiver;
 
-    private String name, type;
+    private String name, type, user_name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +47,26 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         editTextName = (EditText) findViewById(R.id.editTextTextPersonName);
         Button add = findViewById(R.id.addPatinetORcaregiver);
         Button delete = findViewById(R.id.deletePatinetORcaregiver);
-        switchMedicationLog =(Switch) findViewById(R.id.switchMedicationLog);
-        switchSchedule = (Switch)findViewById(R.id.switchSchedule);
-        switchTimeline = (Switch)findViewById(R.id.switchTimeline);
-        switchAddCaregiver = (Switch)findViewById(R.id.switchAddCaregiver);
+        switchMedicationLog = (Switch) findViewById(R.id.switchMedicationLog);
+        switchSchedule = (Switch) findViewById(R.id.switchSchedule);
+        switchTimeline = (Switch) findViewById(R.id.switchTimeline);
+        switchAddCaregiver = (Switch) findViewById(R.id.switchAddCaregiver);
 
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                addCaregiver(view);
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                deleteCaregiver(view);
+            }
+        });
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
@@ -118,26 +133,30 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 }
             }
         });
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                addCaregiver(view);
-            }
-        });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
 
     }
+
     public void addCaregiver(View view) {
+        String operation = "AddCaregiver";
         String username = editTextName.getText().toString();
         String patientName = name;
-        Boolean swMedLog=switchMedicationLog.isChecked();
-        Boolean swSchedule=switchSchedule.isChecked();
-        Boolean swTimeline=switchTimeline.isChecked();
-        Boolean swAddAsCaregiver=switchAddCaregiver.isChecked();
+        Boolean swMedLog = switchMedicationLog.isChecked();
+        Boolean swSchedule = switchSchedule.isChecked();
+        Boolean swTimeline = switchTimeline.isChecked();
+        Boolean swAddAsCaregiver = switchAddCaregiver.isChecked();
         db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
-        backgroundWorker.execute(username,patientName,swMedLog.toString(),swSchedule.toString(),swTimeline.toString(),swAddAsCaregiver.toString());
+        backgroundWorker.execute(operation, username, patientName, swMedLog.toString(), swSchedule.toString(), swTimeline.toString(), swAddAsCaregiver.toString());
+    }
+
+    public void deleteCaregiver(View view) {
+        String operation = "DeleteCaregiver";
+        String username = editTextName.getText().toString();
+        String patientName = name;
+
+        db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
+        backgroundWorker.execute(operation, username, patientName);
     }
 
     ////////////////////// ADD CAREGIVER/////////////////////////////////////////////
@@ -153,51 +172,86 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+            String operation = params[0];
+            String addCaregiver = "http://192.168.100.171/pc.php";
+            String deleteCaregiver = "http://192.168.100.171/Delete_From_PC.php";
 
-            String login_url = "http://192.168.100.171/pc.php";
-
-
-            try {
-                String user_name = params[0];
-                String patientName = params[1];
-                String swMedLog = params[2];
-                String swSchedule = params[3];
-                String swTimeline = params[4];
-                String swAddAsCaregiver = params[5];
-                URL url = new URL(login_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8")
-                        + "&" + URLEncoder.encode("patient", "UTF-8") + "=" + URLEncoder.encode(patientName, "UTF-8")
-                        + "&" + URLEncoder.encode("swMedLog", "UTF-8") + "=" + URLEncoder.encode(swMedLog, "UTF-8")
-                        + "&" + URLEncoder.encode("swSchedule", "UTF-8") + "=" + URLEncoder.encode(swSchedule, "UTF-8")
-                        + "&" + URLEncoder.encode("swTimeline", "UTF-8") + "=" + URLEncoder.encode(swTimeline, "UTF-8")
-                        + "&" + URLEncoder.encode("swAddAsCaregiver", "UTF-8") + "=" + URLEncoder.encode(swAddAsCaregiver, "UTF-8");
-                bufferedWriter.write(post_data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                String result = "";
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    result += line;
+            if (operation.equals("AddCaregiver")) {
+                try {
+                    String user_name = params[1];
+                    String patientName = params[2];
+                    String swMedLog = params[3];
+                    String swSchedule = params[4];
+                    String swTimeline = params[5];
+                    String swAddAsCaregiver = params[6];
+                    URL url = new URL(addCaregiver);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8")
+                            + "&" + URLEncoder.encode("patient", "UTF-8") + "=" + URLEncoder.encode(patientName, "UTF-8")
+                            + "&" + URLEncoder.encode("swMedLog", "UTF-8") + "=" + URLEncoder.encode(swMedLog, "UTF-8")
+                            + "&" + URLEncoder.encode("swSchedule", "UTF-8") + "=" + URLEncoder.encode(swSchedule, "UTF-8")
+                            + "&" + URLEncoder.encode("swTimeline", "UTF-8") + "=" + URLEncoder.encode(swTimeline, "UTF-8")
+                            + "&" + URLEncoder.encode("swAddAsCaregiver", "UTF-8") + "=" + URLEncoder.encode(swAddAsCaregiver, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return result;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } else if (operation.equals("DeleteCaregiver")) {
+                try {
+                    user_name = params[1];
+                    String patientName = params[2];
+                    URL url = new URL(deleteCaregiver);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8") + "&"
+                            + URLEncoder.encode("patient", "UTF-8") + "=" + URLEncoder.encode(patientName, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+            }
 
             return null;
         }
@@ -205,13 +259,13 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             alertDialog = new AlertDialog.Builder(context).create();
-            alertDialog.setTitle("Login Status");
+            alertDialog.setTitle("Operation Status");
         }
 
         @Override
         protected void onPostExecute(String result) {
-            // if patient
 
+// if caregiver was added already
             if (result.toString().equalsIgnoreCase("Already added")) {
                 editTextName.setText(null);
                 switchMedicationLog.setChecked(false);
@@ -223,7 +277,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 alertDialog.show();
 
             }
-            // if caregiver
+            // if caregiver was added successfully
             else if (result.toString().equalsIgnoreCase("DONE")) {
                 editTextName.setText(null);
                 switchMedicationLog.setChecked(false);
@@ -233,7 +287,9 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 alertDialog.setMessage(result);
                 alertDialog.show();
 
-            } else if (result.toString().equalsIgnoreCase("User not found ")) {
+            }
+            // if caregiver was not found in the caregiver data base
+            else if (result.toString().equalsIgnoreCase("No caregiver with that user name")) {
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
@@ -241,7 +297,26 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
-
+            // if caregiver was deleted successfully
+            else if (result.toString().equalsIgnoreCase(user_name + " was deleted")) {
+                switchMedicationLog.setChecked(false);
+                switchSchedule.setChecked(false);
+                switchTimeline.setChecked(false);
+                switchAddCaregiver.setChecked(false);
+                editTextName.setText("");
+                alertDialog.setMessage(result);
+                alertDialog.show();
+            }
+            // if caregiver was not found with the patient
+            else if (result.toString().equalsIgnoreCase(user_name + " not found")) {
+                switchMedicationLog.setChecked(false);
+                switchSchedule.setChecked(false);
+                switchTimeline.setChecked(false);
+                switchAddCaregiver.setChecked(false);
+                editTextName.setText("");
+                alertDialog.setMessage(result);
+                alertDialog.show();
+            }
 
 
         }

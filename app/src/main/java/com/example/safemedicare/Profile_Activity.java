@@ -131,7 +131,7 @@ public class Profile_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        privacy.setEnabled(false);
         privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

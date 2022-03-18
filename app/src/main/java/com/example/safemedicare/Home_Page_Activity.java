@@ -102,7 +102,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         Date getDate = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
         formattedDate = dateFormat.format(getDate);
-        Toast.makeText(getApplicationContext(), formattedDate, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), formattedDate, Toast.LENGTH_SHORT).show();
 
         ///////////////////////////////////END GET CURRENT DATE//////////////////////////////////////////////////////////////////
 
