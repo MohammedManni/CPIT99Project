@@ -45,12 +45,13 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
             type = extras.getString("TYPE");
         }
         editTextName = (EditText) findViewById(R.id.editTextTextPersonName);
-        Button add = findViewById(R.id.addPatinetORcaregiver);
-        Button delete = findViewById(R.id.deletePatinetORcaregiver);
         switchMedicationLog = (Switch) findViewById(R.id.switchMedicationLog);
         switchSchedule = (Switch) findViewById(R.id.switchSchedule);
         switchTimeline = (Switch) findViewById(R.id.switchTimeline);
         switchAddCaregiver = (Switch) findViewById(R.id.switchAddCaregiver);
+        Button add = findViewById(R.id.addPatinetORcaregiver);
+        Button delete = findViewById(R.id.deletePatinetORcaregiver);
+        Button BackBT = findViewById(R.id.BackBT);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +68,17 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 deleteCaregiver(view);
             }
         });
+
+        BackBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_relative_control_Activity.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
@@ -146,7 +158,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         Boolean swSchedule = switchSchedule.isChecked();
         Boolean swTimeline = switchTimeline.isChecked();
         Boolean swAddAsCaregiver = switchAddCaregiver.isChecked();
-        db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
+        connection_to_DB backgroundWorker = new connection_to_DB(this);
         backgroundWorker.execute(operation, username, patientName, swMedLog.toString(), swSchedule.toString(), swTimeline.toString(), swAddAsCaregiver.toString());
     }
 
@@ -155,18 +167,18 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         String username = editTextName.getText().toString();
         String patientName = name;
 
-        db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
+        connection_to_DB backgroundWorker = new connection_to_DB(this);
         backgroundWorker.execute(operation, username, patientName);
     }
 
     ////////////////////// ADD CAREGIVER/////////////////////////////////////////////
 
 
-    private class db1BackgroundWorker extends AsyncTask<String, Void, String> {
+    private class connection_to_DB extends AsyncTask<String, Void, String> {
         Context context;
         AlertDialog alertDialog;
 
-        db1BackgroundWorker(Context ctx) {
+        connection_to_DB(Context ctx) {
             context = ctx;
         }
 
@@ -265,9 +277,9 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-// if caregiver was added already
+            // if caregiver was added already
             if (result.toString().equalsIgnoreCase("Already added")) {
-                editTextName.setText(null);
+
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
@@ -278,7 +290,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
             }
             // if caregiver was added successfully
-            else if (result.toString().equalsIgnoreCase("DONE")) {
+            else if (result.toString().equalsIgnoreCase(user_name+" was added")) {
                 editTextName.setText(null);
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
@@ -303,7 +315,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
                 switchAddCaregiver.setChecked(false);
-                editTextName.setText("");
+                editTextName.setText(null);
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
@@ -313,7 +325,6 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
                 switchAddCaregiver.setChecked(false);
-                editTextName.setText("");
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }

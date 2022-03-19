@@ -24,17 +24,31 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Schedule_Activity extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
     private String name, type, userName,date1;
     DatePicker datePicker;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+    private String currentDate;
+    ArrayList eventList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
+
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd/M/yyyy");
+        currentDate = dateFormat.format(calendar.getTime());
+        //Toast.makeText(Schedule_Activity.this," The date is : "+currentDate ,Toast.LENGTH_LONG).show();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -124,15 +138,13 @@ public class Schedule_Activity extends AppCompatActivity {
         list = (ListView) findViewById(R.id.ListViewEvent);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         list.setAdapter(adapter);
-
-
         Button buttonAdjustment = findViewById(R.id.buttonAdjustment);
         Button buttonAddEvent = findViewById(R.id.buttonAddEvent);
 
         buttonAdjustment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Add_event_from_calendar.class);
+                Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -155,13 +167,13 @@ public class Schedule_Activity extends AppCompatActivity {
         });
 
         datePicker = (DatePicker) findViewById(R.id.datePicker);
-
-
+        new ConnectionToReadPatient().execute();
+        date1 = currentDate;
         datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // Toast.makeText(Schedule_Activity.this," You are changed date is : "+dayOfMonth +" -  "+monthOfYear+ " - "+year,Toast.LENGTH_LONG).show();
-                date1 = dayOfMonth + "/" + (monthOfYear+1) + "/" + year;
+               date1 = dayOfMonth + "/" + (monthOfYear+1) + "/" + year;
                 adapter.clear();
                 new ConnectionToReadPatient().execute();
             }
@@ -202,6 +214,7 @@ public class Schedule_Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            ArrayList<Event> eventlist = new ArrayList<>();
             try {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
@@ -218,33 +231,44 @@ public class Schedule_Activity extends AppCompatActivity {
                             String date = patientObject.getString("date");
                             String timeH = patientObject.getString("timeH");
                             String timeM = patientObject.getString("timeM");
-
-                             // initiate a date picker
-
-
-                            String line;
-                            if (date.matches(date1)){
-                                if (Integer.parseInt(timeH)>11&&Integer.parseInt(timeH)<24){
-                                    if (Integer.parseInt(timeH)>12){
-                                        line = eventName + " - " + date + " - " + (Integer.parseInt(timeH)-12) + ":" + timeM+" pm";
-                                        adapter.add(line);
-                                    }else {
-                                        line = eventName + " - " + date + " - " + timeH + ":" + timeM + " pm";
-                                        adapter.add(line);
-                                    }
-                                }else {
-                                    line = eventName + " - " + date + " - " + timeH + ":" + timeM+" am";
-                                    adapter.add(line);
-                                }
-                            }
+                            // add to the array list
+                            eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date));
 
 
                         }
 
 
                     }
+                    // sort the array list
+                    Collections.sort(eventlist, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event event1, Event event2) {
+                            return event1.getEventTimeH().compareToIgnoreCase(event2.getEventTimeH());
+                        }
+                    });
+                    // add the array list to the event list related to the list view
+                    for (int i = 0; i < eventlist.size(); i++) {
+                        Event e = new Event();
+                        e = eventlist.get(i);
+                        String line;
+                        if (e.getEventDate().matches(date1)) {
+                            if (Integer.parseInt(e.getEventTimeH()) >= 12 && Integer.parseInt(e.getEventTimeH()) < 24) {
+                                if (Integer.parseInt(e.getEventTimeH()) > 12) {
+                                    line = e.getEventName() + " - " +  e.getEventDate() + " - " +((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
+                                    adapter.add(line);
+                                } else {
+                                    line = e.getEventName() + " - " +  e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
+                                    adapter.add(line);
+                                }
+                            } else {
+                                line = e.getEventName() + " - " +  e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
+                                adapter.add(line);
+                            }
+                        }
+                    }
+
                 } else {
-                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

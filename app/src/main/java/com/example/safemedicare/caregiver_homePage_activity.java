@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
 
 public class caregiver_homePage_activity extends AppCompatActivity {
     ListView list;
@@ -34,6 +35,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
     Patient[] patientList;
     private String name, type;
     String userName, patientName;
+    ArrayList <String> p=new ArrayList<>();
 
 
     @Override
@@ -103,21 +105,16 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
         ////////////// read from database///////////////////////////
         list = (ListView) findViewById(R.id.patientList);
-/*
 
-            names= new String[]{name};
-ArrayAdapter<String>arr=new ArrayAdapter<String>(this, R.layout.listview_item, R.id.patientINlistView, names);
-list.setAdapter(arr);
-*/
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                intent.putExtra("PatientName", patientName);
-                startActivity(intent);
-
+               // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+               // intent.putExtra("USERNAME", name);
+               // intent.putExtra("TYPE", type);
+               // intent.putExtra("PatientName", p.get(i));
+                //startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
             }
         });
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -171,6 +168,7 @@ list.setAdapter(arr);
                         patientName = patientObject.getString("userNameP");
 
                         if (userName.equalsIgnoreCase(name)) {
+                            p.add(patientName);
                             String line = id + " - " + patientName;
                             adapter.add(line);
                         }

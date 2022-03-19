@@ -155,10 +155,8 @@ public class Home_Page_Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            ArrayList<Event> eventlist = new ArrayList<>();
+            ArrayList<Event> eventlist1 = new ArrayList<>();
 
-            Event ev = new Event("", "", "1", "0", "");
-            eventlist.add(ev);
             try {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
@@ -176,23 +174,23 @@ public class Home_Page_Activity extends AppCompatActivity {
                             String timeH = patientObject.getString("timeH");
                             String timeM = patientObject.getString("timeM");
 
-                            // initiate a date picker
-                            eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date));
+                            // add to the array list
+                            eventlist1.add(new Event(eventName, eventDescription, timeH, timeM, date));
                         }
 
 
                     }
-
-                    Collections.sort(eventlist, new Comparator<Event>() {
+                    // sort the array list
+                    Collections.sort(eventlist1, new Comparator<Event>() {
                         @Override
                         public int compare(Event event1, Event event2) {
-                            return event1.getEventTimeH().compareToIgnoreCase(event2.getEventTimeH());
+                            return event1.getEventTimeH().compareTo(event2.getEventTimeH());
                         }
                     });
-
-                    for (int i = 0; i < eventlist.size(); i++) {
+                    // add the array list to the event list related to the grid view
+                    for (int i = 0; i < eventlist1.size(); i++) {
                         Event e = new Event();
-                        e = eventlist.get(i);
+                        e = eventlist1.get(i);
                         if (e.getEventDate().matches(formattedDate)) {
                             if (Integer.parseInt(e.getEventTimeH()) >= 12 && Integer.parseInt(e.getEventTimeH()) < 24) {
                                 if (Integer.parseInt(e.getEventTimeH()) > 12) {
@@ -211,7 +209,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                     gridList.setAdapter(myAdapter);
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
