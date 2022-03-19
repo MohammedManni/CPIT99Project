@@ -110,7 +110,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         new Connection().execute();
         myAdapter = new GridAdapter(this, R.layout.gridview_item, eventList);
 
-        //new Connection().execute();
+
 
         // implement setOnItemClickListener event on GridView
         gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -200,9 +200,11 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     eventList.add(new GridItem(e.getEventName(), e.getEventDate(), (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm")));
 
                                 }
+                            } else if (Integer.parseInt(e.getEventTimeH()) == 0) {
+                                eventList.add(new GridItem(e.getEventName(), e.getEventDate(), ("12" + ":" + e.getEventTimeM() + " am")));
+
                             } else {
                                 eventList.add(new GridItem(e.getEventName(), e.getEventDate(), (e.getEventTimeH() + ":" + e.getEventTimeM() + " am")));
-
                             }
                         }
                     }

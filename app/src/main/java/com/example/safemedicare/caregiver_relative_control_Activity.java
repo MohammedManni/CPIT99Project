@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -56,8 +57,20 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!switchMedicationLog.isChecked() && !switchSchedule.isChecked() && !switchTimeline.isChecked() && !switchAddCaregiver.isChecked()){
+                    switchMedicationLog.setError("");
+                    switchSchedule.setError("");
+                    switchTimeline.setError("");
+                    switchAddCaregiver.setError("");
+                    Toast.makeText(getApplicationContext(), "Please choose at least one", Toast.LENGTH_LONG).show();
+                }else {
+                    switchMedicationLog.setChecked(false);
+                    switchSchedule.setChecked(false);
+                    switchTimeline.setChecked(false);
+                    switchAddCaregiver.setChecked(false);
+                    addCaregiver(view);
+                }
 
-                addCaregiver(view);
             }
         });
 
@@ -279,23 +292,13 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
             // if caregiver was added already
             if (result.toString().equalsIgnoreCase("Already added")) {
-
-                switchMedicationLog.setChecked(false);
-                switchSchedule.setChecked(false);
-                switchTimeline.setChecked(false);
-                switchAddCaregiver.setChecked(false);
-
                 alertDialog.setMessage(result);
                 alertDialog.show();
 
             }
             // if caregiver was added successfully
-            else if (result.toString().equalsIgnoreCase(user_name+" was added")) {
+            else if (result.toString().equalsIgnoreCase("The Caregiver was added")) {
                 editTextName.setText(null);
-                switchMedicationLog.setChecked(false);
-                switchSchedule.setChecked(false);
-                switchTimeline.setChecked(false);
-                switchAddCaregiver.setChecked(false);
                 alertDialog.setMessage(result);
                 alertDialog.show();
 

@@ -33,7 +33,7 @@ import java.util.Comparator;
 public class Schedule_Activity extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
-    private String name, type, userName,date1;
+    private String name, type, userName, date1;
     DatePicker datePicker;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
@@ -173,7 +173,7 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 // Toast.makeText(Schedule_Activity.this," You are changed date is : "+dayOfMonth +" -  "+monthOfYear+ " - "+year,Toast.LENGTH_LONG).show();
-               date1 = dayOfMonth + "/" + (monthOfYear+1) + "/" + year;
+                date1 = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                 adapter.clear();
                 new ConnectionToReadPatient().execute();
             }
@@ -252,16 +252,19 @@ public class Schedule_Activity extends AppCompatActivity {
                         e = eventlist.get(i);
                         String line;
                         if (e.getEventDate().matches(date1)) {
-                            if (Integer.parseInt(e.getEventTimeH()) >= 12 && Integer.parseInt(e.getEventTimeH()) < 24) {
+                            if (Integer.parseInt(e.getEventTimeH()) >= 12) {
                                 if (Integer.parseInt(e.getEventTimeH()) > 12) {
-                                    line = e.getEventName() + " - " +  e.getEventDate() + " - " +((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
+                                    line = e.getEventName() + " - " + e.getEventDate() + " - " + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
                                     adapter.add(line);
                                 } else {
-                                    line = e.getEventName() + " - " +  e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
+                                    line = e.getEventName() + " - " + e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
                                     adapter.add(line);
                                 }
+                            } else if (Integer.parseInt(e.getEventTimeH())==0) {
+                                line = e.getEventName() + " - " + e.getEventDate() + " - " + ("12" + ":" + e.getEventTimeM() + " am");
+                                adapter.add(line);
                             } else {
-                                line = e.getEventName() + " - " +  e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
+                                line = e.getEventName() + " - " + e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
                                 adapter.add(line);
                             }
                         }
