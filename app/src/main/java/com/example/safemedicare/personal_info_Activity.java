@@ -50,6 +50,10 @@ public class personal_info_Activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
+            Button SecondB = findViewById(R.id.SecondB);
+            if (type.matches("caregiver")){
+                SecondB.setVisibility(View.GONE);
+            }
             new ConnectionToCaregiver().execute();
         }
         caregiver = new CaregiverClass();

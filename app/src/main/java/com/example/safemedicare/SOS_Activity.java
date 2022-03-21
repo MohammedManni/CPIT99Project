@@ -1,16 +1,29 @@
 package com.example.safemedicare;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SOS_Activity extends AppCompatActivity {
     Button Profile, Scheduale, Add, SOS, imageButton;
     private String name, type;
+
+    EditText phoneNo;
+    FloatingActionButton callbtn;
+    static int PERMISSION_CODE= 100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +34,11 @@ public class SOS_Activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
+
+            Button SecondB = findViewById(R.id.SecondB);
+            if (type.matches("caregiver")){
+                SecondB.setVisibility(View.GONE);
+            }
         }
         /////////////////////////////////////////////////////////////////////
 
@@ -100,5 +118,37 @@ public class SOS_Activity extends AppCompatActivity {
         });
 
         ////////////////////////////////////////////////////////////////////////////
+
+        Button ministryOfHealth = findViewById(R.id.ministryOfHealth);
+        Button button997 = findViewById(R.id.button997);
+
+        if (ContextCompat.checkSelfPermission(SOS_Activity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(SOS_Activity  .this,new String[]{Manifest.permission.CALL_PHONE},PERMISSION_CODE);
+
+        }
+
+        ministryOfHealth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 937
+                String PhoneNumber = "+966548966818";
+                Intent i = new Intent(Intent.ACTION_CALL);
+                i.setData(Uri.parse("tel:"+PhoneNumber));
+                startActivity(i);
+            }
+        });
+
+        button997.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 997
+                String PhoneNumber = "+966548966818";
+                Intent i = new Intent(Intent.ACTION_CALL);
+                i.setData(Uri.parse("tel:"+PhoneNumber));
+                startActivity(i);
+            }
+        });
+
     }
 }

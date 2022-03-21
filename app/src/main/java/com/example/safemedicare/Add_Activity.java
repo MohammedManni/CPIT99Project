@@ -22,6 +22,10 @@ public class Add_Activity extends AppCompatActivity {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
 
+            Button SecondB = findViewById(R.id.SecondB);
+            if (type.matches("caregiver")){
+                SecondB.setVisibility(View.GONE);
+            }
         }
         /////////////////////////////////////////////////////////////////////
 

@@ -43,13 +43,21 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_caregiver_home_page);
 
+
+
+
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-
+            Button SecondB = findViewById(R.id.SecondB);
+            if (type.matches("caregiver")){
+                SecondB.setVisibility(View.GONE);
+            }
             // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
         }
+
         /////////////////////////////////////////////////////////////////////
 
         // toolbar buttons
