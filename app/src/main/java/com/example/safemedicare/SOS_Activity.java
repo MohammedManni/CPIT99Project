@@ -34,10 +34,19 @@ public class SOS_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SOS_Activity.this, Profile_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
+                if (type.equalsIgnoreCase("patient")){
+                    Intent intent = new Intent(SOS_Activity.this, Profile_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }else if (type.equalsIgnoreCase("caregiver")){
+                    Intent intent = new Intent(SOS_Activity.this, personal_info_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
             }
         });
 

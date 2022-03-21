@@ -158,10 +158,10 @@ public class register1Activity extends AppCompatActivity {
         String phoneNumber = PhoneNumber.getText().toString();
         String age = Age.getText().toString();
         String password = Password.getText().toString();
-        String user = radioButtonC.getText().toString();
+
         String type = "registerC";
         db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password, user);
+        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password);
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,7 +237,7 @@ public class register1Activity extends AppCompatActivity {
                     String phoneNumber = params[3];
                     String age = params[4];
                     String password = params[5];
-                    String user = params[6];
+
 
 
                     URL url = new URL(registerC_url);
@@ -252,8 +252,7 @@ public class register1Activity extends AppCompatActivity {
                             + URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8") + "&"
                             + URLEncoder.encode("phoneNumber", "UTF-8") + "=" + URLEncoder.encode(phoneNumber, "UTF-8") + "&"
                             + URLEncoder.encode("age", "UTF-8") + "=" + URLEncoder.encode(age, "UTF-8") + "&"
-                            + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8") + "&"
-                            + URLEncoder.encode("user", "UTF-8") + "=" + URLEncoder.encode(user, "UTF-8");
+                            + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8") ;
 
                     bufferedWriter.write(post_data);
                     bufferedWriter.flush();

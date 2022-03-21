@@ -2,15 +2,37 @@ package com.example.safemedicare;
 
 public class GridItem {
     String eventListName;
-    int eventListImage;
+    String eventListDate;
+    String eventListTime;
 
-    public GridItem(String eventListName) {
+    //int eventListImage;
+
+
+    public GridItem(String eventListName, String eventListDate, String eventListTime) {
         this.eventListName = eventListName;
+        this.eventListDate = eventListDate;
+        this.eventListTime = eventListTime;
     }
 
     public GridItem(String eventListName, int eventListImage) {
         this.eventListName = eventListName;
-        this.eventListImage = eventListImage;
+        //this.eventListImage = eventListImage;
+    }
+
+    public String getEventListDate() {
+        return eventListDate;
+    }
+
+    public void setEventListDate(String eventListDate) {
+        this.eventListDate = eventListDate;
+    }
+
+    public String getEventListTime() {
+        return eventListTime;
+    }
+
+    public void setEventListTime(String eventListTime) {
+        this.eventListTime = eventListTime;
     }
 
     public String getEventListName() {
@@ -21,11 +43,13 @@ public class GridItem {
         this.eventListName = eventListName;
     }
 
-    public int getEventListImage() {
+   /* public int getEventListImage() {
         return eventListImage;
     }
 
     public void setEventListImage(int eventListImage) {
         this.eventListImage = eventListImage;
     }
+    \
+    */
 }

@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,100 +23,113 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
 
 public class caregiver_homePage_activity extends AppCompatActivity {
     ListView list;
+    String names[];
     ArrayAdapter<String> adapter;
     CaregiverClass caregiver;
     CaregiverClass[] caregiverList;
     Patient patient;
     Patient[] patientList;
     private String name, type;
+    String userName, patientName;
+    ArrayList <String> p=new ArrayList<>();
 
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_caregiver_home_page);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_caregiver_home_page);
 
-            Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                name = extras.getString("USERNAME");
-                type = extras.getString("TYPE");
-               // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
-            }
-            /////////////////////////////////////////////////////////////////////
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            name = extras.getString("USERNAME");
+            type = extras.getString("TYPE");
 
-            // toolbar buttons
-            Button Profile = findViewById(R.id.firstB);
-            Button Schedule = findViewById(R.id.SecondB);
-            Button Add = findViewById(R.id.thirdB);
-            Button SOS = findViewById(R.id.SOS);
-
-
-            Profile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            Schedule.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, Schedule_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            Add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, Add_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            SOS.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(caregiver_homePage_activity.this, SOS_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            //////////////////////////////  end toolbar button//////////////////////////////////////////////
-
-            ////////////// read from database///////////////////////////
-
-            list = (ListView) findViewById(R.id.patientList);
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    TextView textView =findViewById(R.id.textVi);
-                    textView.setText(adapter.getItem(i).toString());
-                }
-            });
-            adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-            list.setAdapter(adapter);
-            new ConnectionToReadPatient().execute();
+            // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
         }
+        /////////////////////////////////////////////////////////////////////
+
+        // toolbar buttons
+        Button Profile = findViewById(R.id.firstB);
+        Button Schedule = findViewById(R.id.SecondB);
+        Button Add = findViewById(R.id.thirdB);
+        Button SOS = findViewById(R.id.SOS);
+
+
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, personal_info_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+
+
+            }
+        });
+
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, Add_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(caregiver_homePage_activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        //////////////////////////////  end toolbar button//////////////////////////////////////////////
+
+        ////////////// read from database///////////////////////////
+        list = (ListView) findViewById(R.id.patientList);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+               // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+               // intent.putExtra("USERNAME", name);
+               // intent.putExtra("TYPE", type);
+               // intent.putExtra("PatientName", p.get(i));
+                //startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
+            }
+        });
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        list.setAdapter(adapter);
+        new ConnectionToReadPatient().execute();
+
+    }
+
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadPatient extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readPatient.php";
+            String readPatient_url = "http://192.168.100.171/readPC.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -152,18 +164,15 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                     for (int i = 0; i < patientData.length(); i++) {
                         JSONObject patientObject = patientData.getJSONObject(i);
                         int id = patientObject.getInt("id");
-                        String userName = patientObject.getString("userName");
-                        String name = patientObject.getString("name");
-                        //  int linkID = caregiverObject.getInt("linkID");
-                        int phoneNum = patientObject.getInt("phoneNumber");
-                        int age = patientObject.getInt("age");
-                        //try to match the constructor fullName,  username,  id, int linkID, int phone_number, int age
-                        patient= new Patient(name,userName,id,id,phoneNum,age);
-                        patientList = new Patient[patientData.length()];
-                        patientList[i]= patient;
+                        userName = patientObject.getString("userNameC");
+                        patientName = patientObject.getString("userNameP");
 
-                        String line = id + " - " + userName + " - " + name + " - " + phoneNum + " - "+age;
-                        adapter.add(line);
+                        if (userName.equalsIgnoreCase(name)) {
+                            p.add(patientName);
+                            String line = id + " - " + patientName;
+                            adapter.add(line);
+                        }
+
 
                     }
                 } else {

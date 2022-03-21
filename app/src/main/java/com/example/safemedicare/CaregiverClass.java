@@ -1,6 +1,8 @@
 package com.example.safemedicare;
 
 public class CaregiverClass extends User{
+    public CaregiverClass() {
+    }
 
     public CaregiverClass(String fullName, String username, int id, int linkID, int phone_number, int age) {
         super(fullName, username, id, linkID, phone_number, age);

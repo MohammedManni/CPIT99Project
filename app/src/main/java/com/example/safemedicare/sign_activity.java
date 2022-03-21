@@ -157,7 +157,7 @@ public class sign_activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             // if patient
-            if (result.toString().equalsIgnoreCase("patientlogin not success")) {
+            if (result.toString().equalsIgnoreCase("patient")) {
                 Intent myIntent = new Intent(sign_activity.this, Home_Page_Activity.class);
                 myIntent.putExtra("USERNAME", Username.getText().toString());
                 myIntent.putExtra("TYPE", "patient");
@@ -165,13 +165,16 @@ public class sign_activity extends AppCompatActivity {
 
             }
             // if caregiver
-            else if (result.toString().equalsIgnoreCase("patientcaregiver")) {
+            else if (result.toString().equalsIgnoreCase("caregiver")) {
                 Intent myIntent = new Intent(sign_activity.this, caregiver_homePage_activity.class);
                 myIntent.putExtra("USERNAME", Username.getText().toString());
                 myIntent.putExtra("TYPE", "caregiver");
                 startActivity(myIntent);
 
             } else if (result.toString().equalsIgnoreCase("login not success")) {
+                alertDialog.setMessage(result);
+                alertDialog.show();
+            }else {
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
