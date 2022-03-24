@@ -99,7 +99,7 @@ public class Profile_Activity extends AppCompatActivity {
         Button medicationLog = findViewById(R.id.buttonMedicationLog);
         Button caregiver_relative_control = findViewById(R.id.buttonCaregiver);
         Button privacy = findViewById(R.id.buttonPrivacy);
-
+        privacy.setVisibility(View.GONE);
 
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override

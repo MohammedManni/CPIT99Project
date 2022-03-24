@@ -45,7 +45,8 @@
         app:layout_constraintBottom_toTopOf="@+id/Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Password" />
+        app:layout_constraintTop_toBottomOf="@+id/Password"
+        android:backgroundTint="#61A4BC"/>
 
     <Button
         android:id="@+id/Register"
@@ -57,6 +58,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LogIN" />
+        app:layout_constraintTop_toBottomOf="@+id/LogIN"
+        android:backgroundTint="#61A4BC" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
