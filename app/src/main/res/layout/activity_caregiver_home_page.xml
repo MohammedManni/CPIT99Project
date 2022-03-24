@@ -14,7 +14,7 @@
         android:layout_marginTop="15dp"
         android:text="List of patient"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="#1A132F"
         android:textSize="24sp" />
 
     <ListView
@@ -22,7 +22,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:divider="@color/black"
+        android:divider="#1A132F"
         android:dividerHeight="2dp"
         android:footerDividersEnabled="false" />
 </LinearLayout>

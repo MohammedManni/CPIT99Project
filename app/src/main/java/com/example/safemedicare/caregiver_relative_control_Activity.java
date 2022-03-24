@@ -40,9 +40,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class caregiver_relative_control_Activity extends AppCompatActivity {
-  String wantToDelete;
+    String wantToDelete, wantToADD;
 
-    ArrayList bankNames = new ArrayList<>();
+    ArrayList bankNamesDelete = new ArrayList<>();
+    ArrayList bankNamesADD = new ArrayList<>();
     EditText editTextName;
     Switch switchMedicationLog, switchSchedule, switchTimeline, switchAddCaregiver;
 
@@ -69,18 +70,20 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         BackBT.setVisibility(View.GONE);
 
         Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
+        Spinner spinADD = (Spinner) findViewById(R.id.simpleSpinnerADD);
+
         refresh();
 
         // Toast.makeText(getApplicationContext(), spin.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
 
-        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, bankNames);
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, bankNamesDelete);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                wantToDelete = bankNames.get(i).toString();
+                wantToDelete = bankNamesDelete.get(i).toString();
 
             }
 
@@ -89,6 +92,27 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
             }
         });
+
+
+
+        ArrayAdapter arrayAdapterADD = new ArrayAdapter(this, android.R.layout.simple_spinner_item, bankNamesADD);
+        arrayAdapterADD.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spinADD.setAdapter(arrayAdapterADD);
+        spinADD.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                wantToADD = bankNamesADD.get(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        //another seiner ready to show all the caregivers
+        spinADD.setVisibility(View.GONE);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,11 +218,16 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
 
     }
+
     public void refresh() {
-        bankNames.clear();
-        bankNames.add("Select Caregiver to DELETE");
+        bankNamesDelete.clear();
+        bankNamesDelete.add("Select Caregiver to DELETE");
+        bankNamesADD.clear();
+        bankNamesADD.add("Select Caregiver to ADD");
         new Connection().execute();
+        new Connection1().execute();
     }
+
     public void addCaregiver(View view) {
         String operation = "AddCaregiver";
         String username = editTextName.getText().toString();
@@ -213,9 +242,9 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
     public void deleteCaregiver(View view) {
 
-        if (wantToDelete.matches("Select Caregiver to DELETE")){
-            Toast.makeText(getApplicationContext(), "Please Select a Caregiver" , Toast.LENGTH_LONG).show();
-        }else {
+        if (wantToDelete.matches("Select Caregiver to DELETE")) {
+            Toast.makeText(getApplicationContext(), "Please Select a Caregiver", Toast.LENGTH_LONG).show();
+        } else {
             String operation = "DeleteCaregiver";
             String username = wantToDelete;
             String patientName = name;
@@ -427,17 +456,35 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                     JSONArray patientData = jsonResult.getJSONArray("patient");
                     for (int i = 0; i < patientData.length(); i++) {
                         JSONObject patientObject = patientData.getJSONObject(i);
-                        int id = patientObject.getInt("id");
-                        String  caregiverName = patientObject.getString("userNameC");
-                        String  patientName = patientObject.getString("userNameP");
+                        String caregiverName = patientObject.getString("userNameC");
+                        String patientName = patientObject.getString("userNameP");
 
                         if (patientName.equalsIgnoreCase(name)) {
-                            bankNames.add(caregiverName.toUpperCase());
+                            bankNamesDelete.add(caregiverName.toUpperCase());
+                        }
+
+
+
+
+                    }
+                } else if (success == 2) {
+                    JSONArray caregiverData = jsonResult.getJSONArray("caregiver");
+                    for (int i = 0; i < caregiverData.length(); i++) {
+                        JSONObject patientObject = caregiverData.getJSONObject(i);
+                        String userName = patientObject.getString("userName");
+
+                        for (int j = 0; j < bankNamesDelete.size(); j++) {
+                            if (!bankNamesDelete.get(i).toString().matches(userName)){
+                                bankNamesADD.add(userName.toUpperCase());
+                            }
+
+
+
                         }
 
 
                     }
-                } else {
+                }else {
                     Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
@@ -448,5 +495,60 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         }
     }
 
+    class Connection1 extends AsyncTask<String, String, String> {
+        // starting the connection
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = "";
+            String medication_url = "http://192.168.100.171/readCaregiver.php";
+            try {
 
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(medication_url));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer stringBuffer = new StringBuffer("");
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    stringBuffer.append(line);
+                    break;
+                }
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                return new String("error");
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if (success == 2) {
+                    JSONArray caregiverData = jsonResult.getJSONArray("caregiver");
+                    for (int i = 0; i < caregiverData.length(); i++) {
+                        JSONObject patientObject = caregiverData.getJSONObject(i);
+                        String userName = patientObject.getString("userName");
+
+
+                            bankNamesADD.add(userName.toUpperCase());
+
+
+
+
+
+                    }
+                }else {
+                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
 }

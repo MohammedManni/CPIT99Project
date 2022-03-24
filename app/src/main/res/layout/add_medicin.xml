@@ -83,6 +83,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="65dp"
         android:text="Add"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline26" />
 

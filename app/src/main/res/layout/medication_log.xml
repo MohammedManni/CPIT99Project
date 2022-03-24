@@ -86,6 +86,7 @@
         android:layout_marginEnd="132dp"
         android:layout_marginBottom="46dp"
         android:text="Save Changes"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button" />
@@ -97,6 +98,7 @@
         android:layout_marginStart="9dp"
         android:layout_marginBottom="46dp"
         android:text="Back"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/Changes"
         app:layout_constraintStart_toStartOf="parent" />

@@ -85,7 +85,7 @@ public class retriveDB extends AppCompatActivity {
             try {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
-                if (success == 1) {
+                if (success == 2) {
                     JSONArray caregiverData = jsonResult.getJSONArray("caregiver");
                     for (int i = 0; i < caregiverData.length(); i++) {
                         JSONObject caregiverObject = caregiverData.getJSONObject(i);

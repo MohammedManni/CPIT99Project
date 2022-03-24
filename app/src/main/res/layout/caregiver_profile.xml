@@ -44,6 +44,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="110dp"
         android:text="SCHEDULE"
+        android:textColor="#1A132F"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageCaregiver" />
 
@@ -54,6 +56,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="65dp"
         android:text="MEDICATION LOG"
+        android:textColor="#1A132F"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSchedule" />
 
@@ -64,6 +68,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="65dp"
         android:text="TIMELINE"
+        android:textColor="#1A132F"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonMedLogINcaregiver" />
 </androidx.constraintlayout.widget.ConstraintLayout>

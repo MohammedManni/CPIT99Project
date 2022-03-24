@@ -28,6 +28,7 @@
         android:layout_marginBottom="16dp"
         android:text="Adjustment"
         android:textSize="20dp"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonAddEvent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -40,6 +41,7 @@
         android:layout_marginBottom="16dp"
         android:text="Add Event"
         android:textSize="20dp"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonAdjustment" />
@@ -49,6 +51,9 @@
         android:layout_width="406dp"
         android:layout_height="208dp"
         android:layout_marginTop="456dp"
+        android:divider="#1A132F"
+        android:dividerHeight="2dp"
+        android:footerDividersEnabled="false"
         app:layout_constraintBottom_toTopOf="@+id/buttonAdjustment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
