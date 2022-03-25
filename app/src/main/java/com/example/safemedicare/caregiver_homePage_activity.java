@@ -122,6 +122,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                // intent.putExtra("TYPE", type);
                // intent.putExtra("PatientName", p.get(i));
                 //startActivity(intent);
+
                 Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
             }
         });

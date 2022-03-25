@@ -53,6 +53,7 @@
         android:layout_marginTop="456dp"
         android:divider="#1A132F"
         android:dividerHeight="2dp"
+        android:listSelector="#F7E2E2"
         android:footerDividersEnabled="false"
         app:layout_constraintBottom_toTopOf="@+id/buttonAdjustment"
         app:layout_constraintEnd_toEndOf="parent"

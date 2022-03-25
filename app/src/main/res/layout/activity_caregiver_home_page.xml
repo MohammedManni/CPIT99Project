@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:divider="#1A132F"
+        android:listSelector="#F7E2E2"
         android:dividerHeight="2dp"
         android:footerDividersEnabled="false" />
 </LinearLayout>
