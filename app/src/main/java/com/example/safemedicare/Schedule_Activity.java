@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -141,6 +142,31 @@ public class Schedule_Activity extends AppCompatActivity {
         Button buttonAdjustment = findViewById(R.id.buttonAdjustment);
         Button buttonAddEvent = findViewById(R.id.buttonAddEvent);
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+                // intent.putExtra("USERNAME", name);
+                // intent.putExtra("TYPE", type);
+                // intent.putExtra("PatientName", p.get(i));
+                //startActivity(intent);
+                buttonAdjustment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(position>=0){
+                            String itemValue=(String)list.getItemAtPosition(position);
+                            Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
+                            intent.putExtra("EVENT_NAME", itemValue);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(getApplicationContext(), "Please select any event to adjustment", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+            }
+        });
+        /*
         buttonAdjustment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +176,7 @@ public class Schedule_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+         */
         buttonAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,7 +214,7 @@ public class Schedule_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readEvent.php";
+            String readPatient_url = "http://192.168.100.10/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -234,7 +261,6 @@ public class Schedule_Activity extends AppCompatActivity {
                             // add to the array list
                             eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date));
 
-
                         }
 
 
@@ -254,17 +280,21 @@ public class Schedule_Activity extends AppCompatActivity {
                         if (e.getEventDate().matches(date1)) {
                             if (Integer.parseInt(e.getEventTimeH()) >= 12) {
                                 if (Integer.parseInt(e.getEventTimeH()) > 12) {
-                                    line = e.getEventName() + " - " + e.getEventDate() + " - " + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
+                                    //line = e.getEventName() + " - " + e.getEventDate() + " - " + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
+                                    line=e.getEventName();
                                     adapter.add(line);
                                 } else {
-                                    line = e.getEventName() + " - " + e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
+                                    //line = e.getEventName() + " - " + e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
+                                    line=e.getEventName();
                                     adapter.add(line);
                                 }
                             } else if (Integer.parseInt(e.getEventTimeH())==0) {
-                                line = e.getEventName() + " - " + e.getEventDate() + " - " + ("12" + ":" + e.getEventTimeM() + " am");
+                                //line = e.getEventName() + " - " + e.getEventDate() + " - " + ("12" + ":" + e.getEventTimeM() + " am");
+                                line=e.getEventName();
                                 adapter.add(line);
                             } else {
-                                line = e.getEventName() + " - " + e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
+                                //line = e.getEventName() + " - " + e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
+                                line=e.getEventName();
                                 adapter.add(line);
                             }
                         }
