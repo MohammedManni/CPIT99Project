@@ -119,7 +119,6 @@ public class Add_event_from_calendar extends AppCompatActivity {
         // timeline button    dateView
         eventNameET = findViewById(R.id.eventNameET);
         DescriptionET = findViewById(R.id.DescriptionET);
-
         Button buttonSave = findViewById(R.id.buttonSave);
         timePicker = (TimePicker) findViewById(R.id.timePicker); // initiate a time picker
         timePicker.setCurrentHour(12); // before api level 23

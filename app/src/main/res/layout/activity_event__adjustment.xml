@@ -14,22 +14,32 @@
 
     <EditText
         android:id="@+id/nameOfEventET"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="132dp"
+        android:layout_width="356dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
+        android:background="#F7E2E2"
         android:ems="10"
-        app:layout_constraintStart_toEndOf="@+id/eventNameTV"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarPersonalInfo" />
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventNameTV" />
 
     <TextView
         android:id="@+id/eventNameTV"
         android:layout_width="134dp"
         android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="144dp"
+        android:layout_marginStart="138dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="139dp"
         android:text="Event Name"
+        android:textAlignment="center"
         android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarPersonalInfo" />
 
@@ -37,102 +47,115 @@
         android:id="@+id/dateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="43dp"
         android:text="Date"
         android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventDescriptionTV" />
+        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
 
     <TextView
         android:id="@+id/TimeTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Time"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="106dp"
+        android:text="Time:"
+        android:textStyle="bold"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTV" />
 
     <TextView
-        android:id="@+id/timeTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="5dp"
-        android:text=":"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/timeETM"
-        app:layout_constraintStart_toEndOf="@+id/timeET"
-        app:layout_constraintTop_toBottomOf="@+id/dateET" />
-
-    <EditText
-        android:id="@+id/timeET"
-        android:layout_width="92dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="5dp"
-        android:ems="10"
-        app:layout_constraintEnd_toStartOf="@+id/timeTV"
-        app:layout_constraintStart_toEndOf="@+id/TimeTV"
-        app:layout_constraintTop_toBottomOf="@+id/dateET" />
-
-    <EditText
-        android:id="@+id/timeETM"
-        android:layout_width="92dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="13dp"
-        android:ems="10"
-        app:layout_constraintStart_toEndOf="@+id/timeTV"
-        app:layout_constraintTop_toBottomOf="@+id/dateET" />
-
-    <TextView
         android:id="@+id/eventDescriptionTV"
         android:layout_width="134dp"
         android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="138dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="139dp"
         android:text="Description"
+        android:textAlignment="center"
         android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventNameTV" />
-
-    <EditText
-        android:id="@+id/dateET"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        app:layout_constraintStart_toEndOf="@+id/dateTV"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/nameOfEventET" />
 
     <EditText
         android:id="@+id/DescriptionEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="356dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
+        android:background="#F7E2E2"
         android:ems="10"
-        app:layout_constraintStart_toEndOf="@+id/eventDescriptionTV"
-        app:layout_constraintTop_toBottomOf="@+id/nameOfEventET" />
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventDescriptionTV" />
 
     <Button
         android:id="@+id/updateButton"
         android:layout_width="356dp"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="264dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#5B7DB1"
         android:text="Update"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/deleteButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeET" />
+        app:layout_constraintTop_toBottomOf="@+id/timePicker" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="356dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="6dp"
+        android:backgroundTint="#5B7DB1"
+        android:text="Delete"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/updateButton" />
+
+    <Button
+        android:id="@+id/date"
+        android:layout_width="237dp"
+        android:layout_height="66dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="78dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="#5B7DB1"
+        android:hint="Select Date..."
+        android:padding="15dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dateTV"
+        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="237dp"
+        android:layout_height="189dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="27dp"
+        android:background="#F7E2E2"
+        android:timePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TimeTV"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
