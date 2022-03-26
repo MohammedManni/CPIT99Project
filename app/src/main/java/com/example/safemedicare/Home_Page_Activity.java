@@ -131,7 +131,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.10/readEvent.php";
+            String medication_url = "http://192.168.100.171/readEvent.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();

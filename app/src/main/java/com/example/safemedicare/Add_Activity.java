@@ -1,10 +1,9 @@
 package com.example.safemedicare;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -15,20 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
-import com.google.mlkit.vision.text.TextRecognition;
-import com.google.mlkit.vision.text.TextRecognizer;
-import com.google.mlkit.vision.text.TextRecognizerOptions;
-
-import static android.Manifest.permission.CAMERA;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 public class Add_Activity extends AppCompatActivity {
     Button Profile, Scheduale, Add, SOS, imageButton;
@@ -79,25 +74,71 @@ public class Add_Activity extends AppCompatActivity {
         captureImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkPermission()){
-                    dispatchTakePictureIntent();
-                }else{
-                    requestPermission();
-                }
-
+                //if (checkPermission()){
+                   // dispatchTakePictureIntent();
+              //  }else{
+                   // requestPermission();
+              //  }
+                doProcess(view);
             }
         });
         
         detectText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                detectTextFromImage();
+               // detectTextFromImage();
 
             }
         });
+
+        //check app level permission is granted for Camera
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            //grant the permission
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, 101);
+        }
     }
 
 
+    public void doProcess(View view) {
+        //open the camera => create an Intent object
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 101);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bundle bundle = data.getExtras();
+        //from bundle, extract the image
+        Bitmap bitmap = (Bitmap) bundle.get("data");
+        //set image in imageview
+        imageView.setImageBitmap(bitmap);
+        //process the image
+        //1. create a FirebaseVisionImage object from a Bitmap object
+        FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap);
+        //2. Get an instance of FirebaseVision
+        FirebaseVision firebaseVision = FirebaseVision.getInstance();
+        //3. Create an instance of FirebaseVisionTextRecognizer
+        FirebaseVisionTextRecognizer firebaseVisionTextRecognizer = firebaseVision.getOnDeviceTextRecognizer();
+        //4. Create a task to process the image
+        Task<FirebaseVisionText> task = firebaseVisionTextRecognizer.processImage(firebaseVisionImage);
+        //5. if task is success
+        task.addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+            @Override
+            public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                String s = firebaseVisionText.getText();
+                textView.setText(s);
+            }
+        });
+        //6. if task is failure
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+/*
     // methods from developers////
 
         //////////////////METHOD TO ALLOW USER OPEN PHONE CAMERA/////////////////////////
@@ -105,10 +146,10 @@ public class Add_Activity extends AppCompatActivity {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 //Toast.makeText(Add_Activity.this,"aaaaaaaaaaaaaaa",Toast.LENGTH_SHORT).show();
-               // startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+               startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            Toast.makeText(Add_Activity.this,"bbbbbbbbb",Toast.LENGTH_SHORT).show();
+            //ystartActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            //Toast.makeText(Add_Activity.this,"bbbbbbbbb",Toast.LENGTH_SHORT).show();
         }
 
     //////////////////METHOD TO GET DATA FROM PHONE CAMERA////////
@@ -152,6 +193,7 @@ public class Add_Activity extends AppCompatActivity {
         InputImage image=InputImage.fromBitmap(imageBitmap,0);
         TextRecognizer recognizer= TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         Task<Text> result=recognizer.process(image).addOnSuccessListener(new OnSuccessListener<Text>() {
+            String elementText;
             @Override
             public void onSuccess(@NonNull Text text) {
                 StringBuilder result=new StringBuilder();
@@ -164,10 +206,10 @@ public class Add_Activity extends AppCompatActivity {
                         Point[] lineCornerPoint = line.getCornerPoints();
                         Rect lineRect = line.getBoundingBox();
                         for(Text.Element element:line.getElements()){
-                            String elementText =element.getText();
-                            result.append(elementText);
+                             elementText =element.getText();
+                            result.append(elementText+" ");
                         }
-                        textView.setText(blockText);
+                        textView.setText(result);
                     }
                 }
             }
@@ -177,6 +219,10 @@ public class Add_Activity extends AppCompatActivity {
                 Toast.makeText(Add_Activity.this,"Error:"+e.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+ */
         /*
         FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(imageBitmap);
         FirebaseVisionTextDetector firebaseVisionTextDetector= FirebaseVision.getInstance().getVisionTextDetector();
@@ -192,7 +238,7 @@ public class Add_Activity extends AppCompatActivity {
             }
         });
          */
-    }
+  //  }
 
     /*private void displayTextFromImage(FirebaseVisionText firebaseVisionText) {
         List<FirebaseVisionText.Block> blockList=firebaseVisionText.getBlocks();
