@@ -269,7 +269,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String addCaregiver = "http://192.168.100.10/pc.php";
+            String addCaregiver = "http://192.168.100.171/pc.php";
             String deleteCaregiver = "http://192.168.100.171/Delete_From_PC.php";
 
             if (operation.equals("AddCaregiver")) {

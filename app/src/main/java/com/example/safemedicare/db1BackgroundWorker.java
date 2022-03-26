@@ -28,11 +28,11 @@ public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String login_url = "http://192.168.100.10/login.php";
-        String register_url = "http://192.168.100.10/register.php";
-        String registerC_url = "http://192.168.100.10/registerC.php";
-        String medication_url = "http://192.168.100.10/medication.php";
-        String event_url = "http://192.168.100.10/event.php";
+        String login_url = "http://192.168.100.171/login.php";
+        String register_url = "http://192.168.100.171/register.php";
+        String registerC_url = "http://192.168.100.171/registerC.php";
+        String medication_url = "http://192.168.100.171/medication.php";
+        String event_url = "http://192.168.100.171/event.php";
 
         if (type.equals("login")) {
             try {
