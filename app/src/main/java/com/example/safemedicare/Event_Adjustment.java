@@ -37,7 +37,7 @@ import java.net.URLEncoder;
 public class Event_Adjustment extends AppCompatActivity {
     private String name, type;
     int eventId;
-    EditText nameOfEventET ,DescriptionEditText,dateET,timeET;
+    EditText nameOfEventET ,DescriptionEditText,dateET,timeET,timeETM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class Event_Adjustment extends AppCompatActivity {
         DescriptionEditText = findViewById(R.id.DescriptionEditText);
         dateET = findViewById(R.id.dateET);
         timeET = findViewById(R.id.timeET);
+        timeETM = findViewById(R.id.timeETM);
         //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -139,11 +140,8 @@ public class Event_Adjustment extends AppCompatActivity {
                         && !dateET.getText().toString().equalsIgnoreCase("")&& !timeET.getText().toString().equalsIgnoreCase("")) {
 
                         //update the information
-                       // updateEvent(view);
-                    nameOfEventET.setText(null);
-                    DescriptionEditText.setText(null);
-                    dateET.setText(null);
-                    timeET.setText(null);
+                        updateEvent(view);
+
 
                 }
             }
@@ -152,16 +150,20 @@ public class Event_Adjustment extends AppCompatActivity {
 
     }
     ////////////////////////////////METHOD FOR UPDATE////////////////////////////////////////////////////////////////
-   /* public void updateEvent(View view) {
+    public void updateEvent(View view) {
 
         String operation = "update";
-        String nameOfEvent=eventName;
-
+        String nameOfEvent=nameOfEventET.getText().toString();
+        String descriptionOfEvent=DescriptionEditText.getText().toString();
+        String dateOfEvent=dateET.getText().toString();
+        String timeH=timeET.getText().toString();
+        String timeM=timeETM.getText().toString();
+        String eventID=String.valueOf(eventId);
         UpdateEvent db1BackgroundWorker = new UpdateEvent(this);
-        db1BackgroundWorker.execute(operation, nameOfEvent);
+        db1BackgroundWorker.execute(operation, nameOfEvent,descriptionOfEvent,dateOfEvent,timeH,timeM,eventID);
 
     }
-    */
+
         ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
         class ConnectionToReadEvent extends AsyncTask<String, String, String> {
             @Override
@@ -214,8 +216,9 @@ public class Event_Adjustment extends AppCompatActivity {
                                 nameOfEventET.setText(eventName);
                                 DescriptionEditText.setText(eventDescription);
                                 dateET.setText(date);
-                                String time=timeH+":"+timeM;
-                                timeET.setText(time);
+                                //String time=timeH+":"+timeM;
+                                timeET.setText(timeH);
+                                timeETM.setText(timeM);
                             }
                         }
                     } else {
@@ -238,15 +241,17 @@ public class Event_Adjustment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String Url_updateEvent = "http://192.168.100.10/updateEvent.php";
+            String Url_updateEvent = "http://192.168.100.171/updateEvent.php";
 
             if (operation.equals("update")) {
                 try {
                     String event_Name = params[1];
-                    String eventDescription = " ";
-                    String date = " ";
-                    String timeH = " ";
-                    String timeM = " ";
+                    String eventDescription = params[2];
+                    String date = params[3];
+
+                    String timeH = params[4];
+                    String timeM = params[5];
+                    String eventID= params[6];
                     URL url = new URL(Url_updateEvent);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -259,7 +264,8 @@ public class Event_Adjustment extends AppCompatActivity {
                             + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8")+ "&"
                             + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8")+ "&"
                             + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8")+ "&"
-                            + URLEncoder.encode("operation", "UTF-8") + "=" + URLEncoder.encode(operation, "UTF-8");
+                            + URLEncoder.encode("operation", "UTF-8") + "=" + URLEncoder.encode(operation, "UTF-8")+ "&"
+                            + URLEncoder.encode("eventID", "UTF-8") + "=" + URLEncoder.encode(eventID, "UTF-8");
                     bufferedWriter.write(post_data);
                     bufferedWriter.flush();
                     bufferedWriter.close();
@@ -295,6 +301,24 @@ public class Event_Adjustment extends AppCompatActivity {
         protected void onPostExecute(String result) {
             alertDialog.setMessage(result);
             alertDialog.show();
+
+            if (result.toString().equalsIgnoreCase("Event Updated")) {
+                Intent myIntent = new Intent(Event_Adjustment.this, Schedule_Activity.class);
+                myIntent.putExtra("USERNAME", name);
+                myIntent.putExtra("TYPE", type);
+                try {
+                    myIntent.wait(3000);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                startActivity(myIntent);
+
+            }else {
+                alertDialog.setMessage(result);
+                alertDialog.show();
+            }
+
         }
 
         @Override

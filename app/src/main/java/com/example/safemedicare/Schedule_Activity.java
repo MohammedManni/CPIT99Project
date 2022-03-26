@@ -39,8 +39,9 @@ public class Schedule_Activity extends AppCompatActivity {
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String currentDate;
-    int eventId;
+
     ArrayList<Event> eventlist = new ArrayList<>();
+    ArrayList<Event> selectedDateEvent = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +154,7 @@ public class Schedule_Activity extends AppCompatActivity {
                             Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
                             intent.putExtra("USERNAME", name);
                             intent.putExtra("TYPE", type);
-                            intent.putExtra("EVENT_ID", eventlist.get(position).getId());
+                            intent.putExtra("EVENT_ID", selectedDateEvent.get(position).getId());
                             startActivity(intent);
                         }
 
@@ -195,6 +196,8 @@ public class Schedule_Activity extends AppCompatActivity {
                 // Toast.makeText(Schedule_Activity.this," You are changed date is : "+dayOfMonth +" -  "+monthOfYear+ " - "+year,Toast.LENGTH_LONG).show();
                 date1 = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                 adapter.clear();
+                eventlist.clear();
+                selectedDateEvent.clear();
                 new ConnectionToReadPatient().execute();
             }
         });
@@ -270,16 +273,20 @@ public class Schedule_Activity extends AppCompatActivity {
                             if (Integer.parseInt(e.getEventTimeH()) >= 12) {
                                 if (Integer.parseInt(e.getEventTimeH()) > 12) {
                                     line = e.getEventName() + " - "  + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
+                                    selectedDateEvent.add(eventlist.get(i));
                                     adapter.add(line);
                                 } else {
                                     line = e.getEventName() + " - "  + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
+                                    selectedDateEvent.add(eventlist.get(i));
                                     adapter.add(line);
                                 }
                             } else if (Integer.parseInt(e.getEventTimeH())==0) {
                                 line = e.getEventName() + " - " + ("12" + ":" + e.getEventTimeM() + " am");
+                                selectedDateEvent.add(eventlist.get(i));
                                 adapter.add(line);
                             } else {
                                 line = e.getEventName() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
+                                selectedDateEvent.add(eventlist.get(i));
                                 adapter.add(line);
                             }
                         }

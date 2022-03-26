@@ -55,14 +55,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTV" />
 
-    <EditText
-        android:id="@+id/timeET"
+    <TextView
+        android:id="@+id/timeTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:text=":"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/timeETM"
+        app:layout_constraintStart_toEndOf="@+id/timeET"
+        app:layout_constraintTop_toBottomOf="@+id/dateET" />
+
+    <EditText
+        android:id="@+id/timeET"
+        android:layout_width="92dp"
+        android:layout_height="40dp"
         android:layout_marginStart="104dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="5dp"
         android:ems="10"
+        app:layout_constraintEnd_toStartOf="@+id/timeTV"
         app:layout_constraintStart_toEndOf="@+id/TimeTV"
+        app:layout_constraintTop_toBottomOf="@+id/dateET" />
+
+    <EditText
+        android:id="@+id/timeETM"
+        android:layout_width="92dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="13dp"
+        android:ems="10"
+        app:layout_constraintStart_toEndOf="@+id/timeTV"
         app:layout_constraintTop_toBottomOf="@+id/dateET" />
 
     <TextView
