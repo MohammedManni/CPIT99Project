@@ -148,6 +148,7 @@ public class Add_Activity extends AppCompatActivity {
     }
 
     private void detectTextFromImage() {
+
         InputImage image=InputImage.fromBitmap(imageBitmap,0);
         TextRecognizer recognizer= TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         Task<Text> result=recognizer.process(image).addOnSuccessListener(new OnSuccessListener<Text>() {
@@ -206,5 +207,6 @@ public class Add_Activity extends AppCompatActivity {
      */
 
     }
+
 
 

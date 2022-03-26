@@ -39,7 +39,8 @@ public class Schedule_Activity extends AppCompatActivity {
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String currentDate;
-    ArrayList eventList = new ArrayList<>();
+    int eventId;
+    ArrayList<Event> eventlist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,23 +147,15 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-                // intent.putExtra("USERNAME", name);
-                // intent.putExtra("TYPE", type);
                 // intent.putExtra("PatientName", p.get(i));
                 //startActivity(intent);
-                buttonAdjustment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(position>=0){
-                            String itemValue=(String)list.getItemAtPosition(position);
+                        if(position>=0) {
                             Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
-                            intent.putExtra("EVENT_NAME", itemValue);
+                            intent.putExtra("USERNAME", name);
+                            intent.putExtra("TYPE", type);
+                            intent.putExtra("EVENT_ID", eventlist.get(position).getId());
                             startActivity(intent);
-                        }else {
-                            Toast.makeText(getApplicationContext(), "Please select any event to adjustment", Toast.LENGTH_LONG).show();
                         }
-                    }
-                });
 
             }
         });
@@ -241,7 +234,6 @@ public class Schedule_Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            ArrayList<Event> eventlist = new ArrayList<>();
             try {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
@@ -251,19 +243,16 @@ public class Schedule_Activity extends AppCompatActivity {
                         JSONObject patientObject = patientData.getJSONObject(i);
                         userName = patientObject.getString("userName");
 
-
                         if (userName.equalsIgnoreCase(name)) {
+                            int id=patientObject.getInt("id");
                             String eventName = patientObject.getString("eventName");
                             String eventDescription = patientObject.getString("eventDescription");
                             String date = patientObject.getString("date");
                             String timeH = patientObject.getString("timeH");
                             String timeM = patientObject.getString("timeM");
                             // add to the array list
-                            eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date));
-
+                            eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date,id));
                         }
-
-
                     }
                     // sort the array list
                     Collections.sort(eventlist, new Comparator<Event>() {
@@ -280,21 +269,17 @@ public class Schedule_Activity extends AppCompatActivity {
                         if (e.getEventDate().matches(date1)) {
                             if (Integer.parseInt(e.getEventTimeH()) >= 12) {
                                 if (Integer.parseInt(e.getEventTimeH()) > 12) {
-                                    //line = e.getEventName() + " - " + e.getEventDate() + " - " + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
-                                    line=e.getEventName();
+                                    line = e.getEventName() + " - "  + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
                                     adapter.add(line);
                                 } else {
-                                    //line = e.getEventName() + " - " + e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
-                                    line=e.getEventName();
+                                    line = e.getEventName() + " - "  + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
                                     adapter.add(line);
                                 }
                             } else if (Integer.parseInt(e.getEventTimeH())==0) {
-                                //line = e.getEventName() + " - " + e.getEventDate() + " - " + ("12" + ":" + e.getEventTimeM() + " am");
-                                line=e.getEventName();
+                                line = e.getEventName() + " - " + ("12" + ":" + e.getEventTimeM() + " am");
                                 adapter.add(line);
                             } else {
-                                //line = e.getEventName() + " - " + e.getEventDate() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
-                                line=e.getEventName();
+                                line = e.getEventName() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
                                 adapter.add(line);
                             }
                         }

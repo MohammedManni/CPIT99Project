@@ -168,6 +168,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
 
                         if (userName.equalsIgnoreCase(name)) {
+                            int id =patientObject.getInt("id");
                             String eventName = patientObject.getString("eventName");
                             String eventDescription = patientObject.getString("eventDescription");
                             String date = patientObject.getString("date");
@@ -175,7 +176,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                             String timeM = patientObject.getString("timeM");
 
                             // add to the array list
-                            eventlist1.add(new Event(eventName, eventDescription, timeH, timeM, date));
+                            eventlist1.add(new Event(eventName, eventDescription, timeH, timeM, date,id));
                         }
 
 

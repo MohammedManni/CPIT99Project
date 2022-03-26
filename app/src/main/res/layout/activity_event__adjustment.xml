@@ -11,34 +11,34 @@
         android:id="@+id/toolbarPersonalInfo"
         ></include>
 
+
+    <EditText
+        android:id="@+id/nameOfEventET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="132dp"
+        android:ems="10"
+        app:layout_constraintStart_toEndOf="@+id/eventNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarPersonalInfo" />
+
     <TextView
         android:id="@+id/eventNameTV"
         android:layout_width="134dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="144dp"
         android:text="Event Name"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarPersonalInfo" />
 
     <TextView
-        android:id="@+id/eventDescriptionTV"
-        android:layout_width="134dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="35dp"
-        android:text="Description"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventNameTV" />
-
-    <TextView
         android:id="@+id/dateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="48dp"
         android:text="Date"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,51 +49,65 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="24dp"
         android:text="Time"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTV" />
 
-
     <EditText
-        android:id="@+id/nameOfEventET"
+        android:id="@+id/timeET"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
-        app:layout_constraintStart_toEndOf="@+id/eventNameTV"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarPersonalInfo" />
+        app:layout_constraintStart_toEndOf="@+id/TimeTV"
+        app:layout_constraintTop_toBottomOf="@+id/dateET" />
+
+    <TextView
+        android:id="@+id/eventDescriptionTV"
+        android:layout_width="134dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Description"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventNameTV" />
+
+    <EditText
+        android:id="@+id/dateET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        app:layout_constraintStart_toEndOf="@+id/dateTV"
+        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
 
     <EditText
         android:id="@+id/DescriptionEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
         app:layout_constraintStart_toEndOf="@+id/eventDescriptionTV"
         app:layout_constraintTop_toBottomOf="@+id/nameOfEventET" />
 
-    <EditText
-        android:id="@+id/dateET"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="109dp"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        app:layout_constraintStart_toEndOf="@+id/dateTV"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionEditText" />
-
-    <EditText
-        android:id="@+id/timeET"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="105dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        app:layout_constraintStart_toEndOf="@+id/TimeTV"
-        app:layout_constraintTop_toBottomOf="@+id/dateET" />
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="356dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="264dp"
+        android:layout_marginBottom="70dp"
+        android:backgroundTint="#5B7DB1"
+        android:text="Update"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeET" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
