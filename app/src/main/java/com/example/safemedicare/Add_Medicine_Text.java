@@ -1,13 +1,17 @@
 package com.example.safemedicare;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -15,15 +19,30 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Add_Medicine_Text extends AppCompatActivity {
-     String name, type;
-    Spinner numberOfTimeSpin,amountNumberSpinner,amountTextSpinner ,numberDurationSpin,textDurationSpin;
+    String name, type;
+    EditText medicineNameET;
+    Spinner numberOfTimeSpin, amountNumberSpinner, amountTextSpinner, numberDurationSpin, textDurationSpin;
+    String NOTS, ANS, ATS, NDS,TDS;
+    CheckBox saturday, sunday, monday, tuesday, wednesday, thursday, friday, all;
     DatePickerDialog datePickerDialog;
+    Button start_day_DATE;
+    ArrayList spin1, spin2, spin3, spin4, spin5;
 
-    ArrayList spin1,spin2,spin3,spin4,spin5 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,23 +61,61 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
         toolbar();
         spinner();
-        EditText medicineNameET  = findViewById(R.id.EditMedicineName);
-         numberOfTimeSpin = (Spinner) findViewById(R.id.numberOfTimeSpin);
-         amountNumberSpinner = (Spinner) findViewById(R.id.amountNumberSpinner);
-         amountTextSpinner = (Spinner) findViewById(R.id.amountTextSpinner);
-         numberDurationSpin = (Spinner) findViewById(R.id.numberDurationSpin);
-         textDurationSpin = (Spinner) findViewById(R.id.TextDurationSpin);
-        CheckBox saturday  = findViewById(R.id.Saturday);
-        CheckBox sunday  = findViewById(R.id.Sunday);
-        CheckBox monday  = findViewById(R.id.Monday);
-        CheckBox tuesday  = findViewById(R.id.Tuesday);
-        CheckBox wednesday  = findViewById(R.id.Wednesday);
-        CheckBox thursday  = findViewById(R.id.Thursday);
-        CheckBox friday  = findViewById(R.id.Friday);
-        CheckBox all  = findViewById(R.id.ALL);
-        Button start_day_DATE = findViewById(R.id.Start_day_DATE);
+        medicineNameET = findViewById(R.id.EditMedicineName);
+        numberOfTimeSpin = (Spinner) findViewById(R.id.numberOfTimeSpin);
+        amountNumberSpinner = (Spinner) findViewById(R.id.amountNumberSpinner);
+        amountTextSpinner = (Spinner) findViewById(R.id.amountTextSpinner);
+        numberDurationSpin = (Spinner) findViewById(R.id.numberDurationSpin);
+        textDurationSpin = (Spinner) findViewById(R.id.TextDurationSpin);
+        saturday = findViewById(R.id.Saturday);
+        sunday = findViewById(R.id.Sunday);
+        monday = findViewById(R.id.Monday);
+        tuesday = findViewById(R.id.Tuesday);
+        wednesday = findViewById(R.id.Wednesday);
+        thursday = findViewById(R.id.Thursday);
+        friday = findViewById(R.id.Friday);
+        all = findViewById(R.id.ALL);
+         start_day_DATE = findViewById(R.id.Start_day_DATE);
         Button add_medicine = findViewById(R.id.Add_medicine);
         Button back = findViewById(R.id.back);
+
+        all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (all.isChecked()) {
+                    saturday.setChecked(true);
+                    saturday.setClickable(false);
+                    sunday.setChecked(true);
+                    sunday.setClickable(false);
+                    monday.setChecked(true);
+                    monday.setClickable(false);
+                    tuesday.setChecked(true);
+                    tuesday.setClickable(false);
+                    wednesday.setChecked(true);
+                    wednesday.setClickable(false);
+                    thursday.setChecked(true);
+                    thursday.setClickable(false);
+                    friday.setChecked(true);
+                    friday.setClickable(false);
+                }else {
+                    saturday.setChecked(false);
+                    saturday.setClickable(true);
+                    sunday.setChecked(false);
+                    sunday.setClickable(true);
+                    monday.setChecked(false);
+                    monday.setClickable(true);
+                    tuesday.setChecked(false);
+                    tuesday.setClickable(true);
+                    wednesday.setChecked(false);
+                    wednesday.setClickable(true);
+                    thursday.setChecked(false);
+                    thursday.setClickable(true);
+                    friday.setChecked(false);
+                    friday.setClickable(true);
+
+                }
+            }
+        });
 
         ///////////////////SELECT THE DATE /////////////////////////////////
         start_day_DATE.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +132,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // set day of month , month and year value in the edit text
-                        start_day_DATE.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
+                        start_day_DATE.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -83,7 +140,18 @@ public class Add_Medicine_Text extends AppCompatActivity {
         });
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        add_medicine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+               // checkBox();
+            }
+        });
+
+
     }
+
     public void spinner() {
         numberOfTimeSpin = (Spinner) findViewById(R.id.numberOfTimeSpin);
         amountNumberSpinner = (Spinner) findViewById(R.id.amountNumberSpinner);
@@ -97,7 +165,44 @@ public class Add_Medicine_Text extends AppCompatActivity {
         spin5 = new ArrayList<>();
 
         forLoopSpinner();
+        ItemSelectedListener();
 
+    }
+
+    public String checkBox() {
+        String day = "";
+        if (all.isChecked()) {
+
+            day = day + ":";
+
+        } else {
+            if (saturday.isChecked()) {
+                day = day + ":";
+            }
+            if (sunday.isChecked()) {
+                day = day + ":";
+            }
+            if (monday.isChecked()) {
+                day = day + ":";
+            }
+            if (tuesday.isChecked()) {
+                day = day + ":";
+            }
+            if (wednesday.isChecked()) {
+                day = day + ":";
+            }
+            if (thursday.isChecked()) {
+                day = day + ":";
+            }
+            if (friday.isChecked()) {
+                day = day + ":";
+            }
+        }
+        return day;
+
+    }
+
+    public void ItemSelectedListener() {
         ArrayAdapter adapter1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spin1);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
@@ -105,8 +210,8 @@ public class Add_Medicine_Text extends AppCompatActivity {
         numberOfTimeSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // wantToDelete = bankNamesDelete.get(i).toString();
-
+                // NOTS = bankNamesDelete.get(i).toString();
+                NOTS = numberOfTimeSpin.getChildAt(i).toString();
             }
 
             @Override
@@ -122,7 +227,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         amountNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // wantToDelete = bankNamesDelete.get(i).toString();
+                ANS = amountNumberSpinner.getChildAt(i).toString();
 
             }
 
@@ -139,7 +244,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         amountTextSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // wantToDelete = bankNamesDelete.get(i).toString();
+                ATS = amountTextSpinner.getChildAt(i).toString();
 
             }
 
@@ -156,8 +261,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         numberDurationSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // wantToDelete = bankNamesDelete.get(i).toString();
-
+                NDS = numberDurationSpin.getChildAt(i).toString();
             }
 
             @Override
@@ -173,7 +277,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         textDurationSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // wantToDelete = bankNamesDelete.get(i).toString();
+                TDS= textDurationSpin.getChildAt(i).toString();
 
             }
 
@@ -182,34 +286,35 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     public void forLoopSpinner() {
-      // for number of time
-        for (int i =1; i<=6;i++){
+        // for number of time
+        for (int i = 1; i <= 6; i++) {
             spin1.add(i);
         }
         // for number of time
-        for (int i =1; i<=4;i++){
+        for (int i = 1; i <= 4; i++) {
             spin2.add(i);
         }
         // for number of time
         //for (int i =1; i<=6;i++){
-            spin3.add("Pills");
+        spin3.add("Pills");
         //}
         // for duration number
-        for (int i =1; i<=30;i++){
+        for (int i = 1; i <= 30; i++) {
             spin4.add(i);
         }
         // for duration text
-            spin5.add("Day");
-            spin5.add("Week");
-            spin5.add("Month");
-            spin5.add("Year");
+        spin5.add("Day");
+        spin5.add("Week");
+        spin5.add("Month");
+        spin5.add("Year");
 
 
     }
-
 
     public void toolbar() {
         // toolbar buttons
@@ -277,5 +382,135 @@ public class Add_Medicine_Text extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void AddEvent(View view) {
+
+        String medicineName = medicineNameET.getText().toString();
+        String numberOfTime = NOTS;
+        String amountNumberSpinner = ANS;
+        String amountTextSpinner = ATS;
+        String numberDurationSpin = NDS;
+        String textDurationSpin = TDS;
+        String Saturday = String.valueOf(saturday.isChecked()) ;
+        String Sunday = String.valueOf(sunday.isChecked()) ;
+        String Monday = String.valueOf(monday.isChecked()) ;
+        String Tuesday =String.valueOf(tuesday.isChecked()) ;
+        String Wednesday = String.valueOf(wednesday.isChecked()) ;
+        String Thursday =String.valueOf(thursday.isChecked()) ;
+        String Friday = String.valueOf(friday.isChecked()) ;
+        String date = start_day_DATE.getText().toString();
+        String userName= name;
+
+
+
+        addEventToDB addEventToDB = new addEventToDB(this);
+        addEventToDB.execute( " ",medicineName ,numberOfTime ,amountNumberSpinner ,
+                amountTextSpinner , numberDurationSpin , textDurationSpin ,
+                Saturday ,Sunday ,Monday , Tuesday ,Wednesday ,Thursday ,
+                Friday ,date , userName);
+
+    }
+
+    public class addEventToDB extends AsyncTask<String, Void, String> {
+        Context context;
+        AlertDialog alertDialog;
+
+        addEventToDB(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String operation = params[0];
+            String login_url = "http://192.168.100.171/AddMedication.php";
+
+
+           // if (operation.equals("AddEvent")) {
+                try {
+
+                    String medicineNameET = params[1];
+                    String numberOfTimeSpin = params[2];
+                    String amountNumberSpinner = params[3];
+                    String amountTextSpinner = params[4];
+                    String numberDurationSpin = params[5];
+                    String textDurationSpin = params[6];
+                    String saturday = params[7];
+                    String sunday = params[8];
+                    String monday = params[9];
+                    String tuesday = params[10];
+                    String wednesday = params[11];
+                    String thursday = params[12];
+                    String friday = params[13];
+                    String all = params[14];
+                    String date = params[15];
+                    String userName= params[16];
+                    URL url = new URL(login_url);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data = URLEncoder.encode("medicineNameET", "UTF-8") + "=" + URLEncoder.encode(medicineNameET, "UTF-8") + "&"
+                            + URLEncoder.encode("numberOfTimeSpin", "UTF-8") + "=" + URLEncoder.encode(numberOfTimeSpin, "UTF-8") + "&"
+                            + URLEncoder.encode("amountNumberSpinner", "UTF-8") + "=" + URLEncoder.encode(amountNumberSpinner, "UTF-8") + "&"
+                            + URLEncoder.encode("amountTextSpinner", "UTF-8") + "=" + URLEncoder.encode(amountTextSpinner, "UTF-8") + "&"
+                            + URLEncoder.encode("numberDurationSpin", "UTF-8") + "=" + URLEncoder.encode(numberDurationSpin, "UTF-8") + "&"
+                            + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8") + "&"
+                            + URLEncoder.encode("saturday", "UTF-8") + "=" + URLEncoder.encode(saturday, "UTF-8") + "&"
+                            + URLEncoder.encode("sunday", "UTF-8") + "=" + URLEncoder.encode(sunday, "UTF-8")+ "&"
+                            + URLEncoder.encode("monday", "UTF-8") + "=" + URLEncoder.encode(monday, "UTF-8")+ "&"
+                            + URLEncoder.encode("tuesday", "UTF-8") + "=" + URLEncoder.encode(tuesday, "UTF-8")+ "&"
+                            + URLEncoder.encode("wednesday", "UTF-8") + "=" + URLEncoder.encode(wednesday, "UTF-8")+ "&"
+                            + URLEncoder.encode("thursday", "UTF-8") + "=" + URLEncoder.encode(thursday, "UTF-8")+ "&"
+                            + URLEncoder.encode("friday", "UTF-8") + "=" + URLEncoder.encode(friday, "UTF-8")+ "&"
+                            + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8")+ "&"
+                            + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+          //  }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            alertDialog = new AlertDialog.Builder(context).create();
+            alertDialog.setTitle("Add Medicine Status");
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+
+            alertDialog.setMessage(result);
+            alertDialog.show();
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
     }
 }
