@@ -68,7 +68,10 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         Button delete = findViewById(R.id.deletePatinetORcaregiver);
         Button BackBT = findViewById(R.id.BackBT);
         BackBT.setVisibility(View.GONE);
-
+        //////////////////////////////Delete it from DB/////////////////////////////////////////////////////////////
+        switchAddCaregiver.setChecked(false);
+        switchAddCaregiver.setVisibility(View.GONE);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
         Spinner spinADD = (Spinner) findViewById(R.id.simpleSpinnerADD);
 
@@ -425,7 +428,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.10/readPC.php";
+            String medication_url = "http://192.168.100.171/readPC.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
@@ -500,7 +503,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.10/readCaregiver.php";
+            String medication_url = "http://192.168.100.171/readCaregiver.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();

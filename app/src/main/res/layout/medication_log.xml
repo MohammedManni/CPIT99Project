@@ -33,7 +33,7 @@
 
 
     <TextView
-        android:id="@+id/amountView"
+        android:id="@+id/amountView1"
         android:layout_width="134dp"
         android:layout_height="35dp"
         android:layout_marginStart="15dp"
@@ -75,11 +75,11 @@
         android:layout_marginTop="35dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toEndOf="@+id/amountView"
+        app:layout_constraintStart_toEndOf="@+id/amountView1"
         app:layout_constraintTop_toBottomOf="@+id/editTextNumberOfTime" />
 
     <Button
-        android:id="@+id/Changes"
+        android:id="@+id/Add_medicine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
@@ -89,10 +89,10 @@
         android:backgroundTint="#5B7DB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button" />
+        app:layout_constraintStart_toEndOf="@+id/back" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
@@ -100,7 +100,7 @@
         android:text="Back"
         android:backgroundTint="#5B7DB1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Changes"
+        app:layout_constraintEnd_toStartOf="@+id/Add_medicine"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

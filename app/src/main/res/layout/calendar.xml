@@ -20,31 +20,20 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbarCalendar" />
 
     <Button
-        android:id="@+id/buttonAdjustment"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="11dp"
-        android:layout_marginBottom="16dp"
-        android:text="Adjustment"
-        android:textSize="20dp"
-        android:backgroundTint="#5B7DB1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAddEvent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/buttonAddEvent"
-        android:layout_width="180dp"
+        android:layout_width="356dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#5B7DB1"
         android:text="Add Event"
         android:textSize="20dp"
-        android:backgroundTint="#5B7DB1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonAdjustment" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ListViewEvent" />
 
     <ListView
         android:id="@+id/ListViewEvent"
@@ -53,9 +42,8 @@
         android:layout_marginTop="456dp"
         android:divider="#1A132F"
         android:dividerHeight="2dp"
-        android:listSelector="#F7E2E2"
         android:footerDividersEnabled="false"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAdjustment"
+        android:listSelector="#F7E2E2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,32 +1,17 @@
 package com.example.safemedicare;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-
 public class Add_Activity extends AppCompatActivity {
-    Button Profile, Scheduale, Add, SOS, imageButton;
     private String name, type;
 
     // text recognition varibles//
@@ -40,7 +25,7 @@ public class Add_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.read_text);
+        setContentView(R.layout.add_medicin);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -61,9 +46,101 @@ public class Add_Activity extends AppCompatActivity {
         Button SOS = findViewById(R.id.SOS);
         ImageButton imageButton = findViewById(R.id.imageButton);
 
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equalsIgnoreCase("patient")) {
+                    Intent intent = new Intent(Add_Activity.this, Profile_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                } else if (type.equalsIgnoreCase("caregiver")) {
+                    Intent intent = new Intent(Add_Activity.this, personal_info_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
+            }
+        });
+
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_Activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_Activity.this, Add_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_Activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equalsIgnoreCase("patient")) {
+                    Intent intent = new Intent(Add_Activity.this, Home_Page_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                } else if (type.equalsIgnoreCase("caregiver")) {
+                    Intent intent = new Intent(Add_Activity.this, caregiver_homePage_activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
+            }
+        });
+
+        //////////////////////////end toolbar buttons////////////////////////////////////////////
+
+        Button addBT = findViewById(R.id.AddBT);
+        addBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_Activity.this, Add_Medicine_Text.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
 
 
-        ////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+        /*
+
+
 
         ///////////////////////Text recognition//////////////////////////////////////
         captureImageButton = findViewById(R.id.capture_image);
@@ -138,6 +215,15 @@ public class Add_Activity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
+
+         */
+
+    }
+
 /*
     // methods from developers////
 

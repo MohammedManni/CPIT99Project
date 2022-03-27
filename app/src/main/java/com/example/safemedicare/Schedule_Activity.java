@@ -137,12 +137,11 @@ public class Schedule_Activity extends AppCompatActivity {
         });
 
         //////////////////////////end toolbar buttons////////////////////////////////////////////
-
+        // fill the list view
+        new ConnectionToReadPatient().execute();
         list = (ListView) findViewById(R.id.ListViewEvent);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         list.setAdapter(adapter);
-        Button buttonAdjustment = findViewById(R.id.buttonAdjustment);
-        Button buttonAddEvent = findViewById(R.id.buttonAddEvent);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -150,50 +149,35 @@ public class Schedule_Activity extends AppCompatActivity {
                 // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
                 // intent.putExtra("PatientName", p.get(i));
                 //startActivity(intent);
-                        if(position>=0) {
-                            Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
-                            intent.putExtra("USERNAME", name);
-                            intent.putExtra("TYPE", type);
-                            intent.putExtra("EVENT_ID", selectedDateEvent.get(position).getId());
-                            startActivity(intent);
-                        }
+                if (position >= 0) {
+                    Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    intent.putExtra("EVENT_ID", selectedDateEvent.get(position).getId());
+                    startActivity(intent);
+                }
 
             }
         });
-        /*
-        buttonAdjustment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-         */
+
+        Button buttonAddEvent = findViewById(R.id.buttonAddEvent);
         buttonAddEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // display the values by using a toast
-                //Toast.makeText(getApplicationContext(), date1, Toast.LENGTH_LONG).show();
-
-
+                // Move to add event xml
                 Intent intent = new Intent(Schedule_Activity.this, Add_event_from_calendar.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
-                //intent.putExtra("DATE", date1);
                 startActivity(intent);
             }
         });
 
         datePicker = (DatePicker) findViewById(R.id.datePicker);
-        new ConnectionToReadPatient().execute();
         date1 = currentDate;
         datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                // Toast.makeText(Schedule_Activity.this," You are changed date is : "+dayOfMonth +" -  "+monthOfYear+ " - "+year,Toast.LENGTH_LONG).show();
+                // use the date choose and update the list view
                 date1 = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                 adapter.clear();
                 eventlist.clear();
@@ -247,14 +231,14 @@ public class Schedule_Activity extends AppCompatActivity {
                         userName = patientObject.getString("userName");
 
                         if (userName.equalsIgnoreCase(name)) {
-                            int id=patientObject.getInt("id");
+                            int id = patientObject.getInt("id");
                             String eventName = patientObject.getString("eventName");
                             String eventDescription = patientObject.getString("eventDescription");
                             String date = patientObject.getString("date");
                             String timeH = patientObject.getString("timeH");
                             String timeM = patientObject.getString("timeM");
                             // add to the array list
-                            eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date,id));
+                            eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
                         }
                     }
                     // sort the array list
@@ -270,24 +254,32 @@ public class Schedule_Activity extends AppCompatActivity {
                         e = eventlist.get(i);
                         String line;
                         if (e.getEventDate().matches(date1)) {
+                            // show the time in 12 hours
                             if (Integer.parseInt(e.getEventTimeH()) >= 12) {
+                                // for pm time
                                 if (Integer.parseInt(e.getEventTimeH()) > 12) {
-                                    line = e.getEventName() + " - "  + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
-                                    selectedDateEvent.add(eventlist.get(i));
+                                    line = e.getEventName() + " - " + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
                                     adapter.add(line);
+                                    // add the line to the selectedDateEvent for further use ( Event ID )
+                                    selectedDateEvent.add(eventlist.get(i));
                                 } else {
-                                    line = e.getEventName() + " - "  + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
-                                    selectedDateEvent.add(eventlist.get(i));
+                                    line = e.getEventName() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
                                     adapter.add(line);
+                                    // add the line to the selectedDateEvent for further use ( Event ID )
+                                    selectedDateEvent.add(eventlist.get(i));
                                 }
-                            } else if (Integer.parseInt(e.getEventTimeH())==0) {
+                            }
+                            // for am time
+                            else if (Integer.parseInt(e.getEventTimeH()) == 0) {
                                 line = e.getEventName() + " - " + ("12" + ":" + e.getEventTimeM() + " am");
-                                selectedDateEvent.add(eventlist.get(i));
                                 adapter.add(line);
+                                // add the line to the selectedDateEvent for further use ( Event ID )
+                                selectedDateEvent.add(eventlist.get(i));
                             } else {
                                 line = e.getEventName() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
-                                selectedDateEvent.add(eventlist.get(i));
                                 adapter.add(line);
+                                // add the line to the selectedDateEvent for further use ( Event ID )
+                                selectedDateEvent.add(eventlist.get(i));
                             }
                         }
                     }

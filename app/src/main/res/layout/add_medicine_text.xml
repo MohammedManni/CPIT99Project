@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <CheckBox
+        android:id="@+id/Monday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="27dp"
+        android:text="Monday"
+        app:layout_constraintStart_toEndOf="@+id/Sunday"
+        app:layout_constraintTop_toBottomOf="@+id/numberDurationSpin" />
+
+    <CheckBox
+        android:id="@+id/Wednesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:text="Wednesday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Saturday" />
+
+    <CheckBox
+        android:id="@+id/Tuesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="40dp"
+        android:text="Tuesday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Monday"
+        app:layout_constraintTop_toBottomOf="@+id/TextDurationSpin" />
+
+    <CheckBox
+        android:id="@+id/Friday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Friday"
+        app:layout_constraintStart_toEndOf="@+id/Thursday"
+        app:layout_constraintTop_toBottomOf="@+id/Monday" />
+
+    <CheckBox
+        android:id="@+id/ALL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="47dp"
+        android:text="ALL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Friday"
+        app:layout_constraintTop_toBottomOf="@+id/Tuesday" />
+
+    <CheckBox
+        android:id="@+id/Saturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="27dp"
+        android:text="Saturday"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DurtaionTextView" />
+
+    <CheckBox
+        android:id="@+id/Thursday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="8dp"
+        android:text="Thursday"
+        app:layout_constraintStart_toEndOf="@+id/Wednesday"
+        app:layout_constraintTop_toBottomOf="@+id/Monday" />
+
+    <CheckBox
+        android:id="@+id/Sunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="27dp"
+        android:text="Sunday"
+        app:layout_constraintStart_toEndOf="@+id/Saturday"
+        app:layout_constraintTop_toBottomOf="@+id/DurtaionTextView" />
+
+    <include
+        android:id="@+id/toolbarMedication"
+        layout="@layout/toolbar"
+        tools:layout_editor_absoluteX="1dp"></include>
+
+    <TextView
+        android:id="@+id/MedicineName"
+        android:layout_width="134dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:text="Medicine Name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMedication" />
+
+    <TextView
+        android:id="@+id/numberOfTimeView"
+        android:layout_width="134dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="40dp"
+        android:text="Number of time per day"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MedicineName" />
+
+
+    <TextView
+        android:id="@+id/amountTextView"
+        android:layout_width="134dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
+        android:text="Amount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberOfTimeView" />
+
+
+    <TextView
+        android:id="@+id/DurtaionTextView"
+        android:layout_width="134dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="43dp"
+        android:text="Duration"
+        app:layout_constraintEnd_toStartOf="@+id/numberDurationSpin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amountTextView" />
+
+    <EditText
+        android:id="@+id/EditMedicineName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Medicine name"
+        android:inputType="textAutoCorrect"
+        app:layout_constraintStart_toEndOf="@+id/MedicineName"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMedication" />
+
+
+    <Button
+        android:id="@+id/Add_medicine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="53dp"
+        android:layout_marginEnd="132dp"
+        android:layout_marginBottom="46dp"
+        android:backgroundTint="#5B7DB1"
+        android:text="Add Medicine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toBottomOf="@+id/Start_day_DATE" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="157dp"
+        android:layout_marginBottom="46dp"
+        android:backgroundTint="#5B7DB1"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/Add_medicine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Wednesday" />
+
+    <Spinner
+        android:id="@+id/numberDurationSpin"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="30dp"
+        android:textAlignment="center"
+        android:spinnerMode="dropdown"
+        android:background="#F7E2E2"
+        app:layout_constraintEnd_toStartOf="@+id/TextDurationSpin"
+        app:layout_constraintStart_toEndOf="@+id/DurtaionTextView"
+        app:layout_constraintTop_toBottomOf="@+id/amountNumberSpinner" />
+
+    <Spinner
+        android:id="@+id/numberOfTimeSpin"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="100dp"
+        android:textAlignment="center"
+        android:spinnerMode="dropdown"
+        android:background="#F7E2E2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/numberOfTimeView"
+        app:layout_constraintTop_toBottomOf="@+id/EditMedicineName" />
+
+    <Spinner
+        android:id="@+id/amountNumberSpinner"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="27dp"
+        android:textAlignment="center"
+        android:spinnerMode="dropdown"
+        android:background="#F7E2E2"
+        app:layout_constraintEnd_toStartOf="@+id/amountTextSpinner"
+        app:layout_constraintStart_toEndOf="@+id/amountTextView"
+        app:layout_constraintTop_toBottomOf="@+id/numberOfTimeSpin" />
+
+    <Spinner
+        android:id="@+id/amountTextSpinner"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="39dp"
+        android:textAlignment="center"
+        android:spinnerMode="dropdown"
+        android:background="#F7E2E2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/amountNumberSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/numberOfTimeSpin" />
+
+    <Spinner
+        android:id="@+id/TextDurationSpin"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="36dp"
+        android:textAlignment="center"
+        android:spinnerMode="dropdown"
+        android:layout_marginEnd="39dp"
+        android:background="#F7E2E2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/numberDurationSpin"
+        app:layout_constraintTop_toBottomOf="@+id/amountTextSpinner" />
+
+    <Button
+        android:id="@+id/Start_day_DATE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="119dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="134dp"
+        android:backgroundTint="#5B7DB1"
+        android:text="Start day DATE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Friday" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

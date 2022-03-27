@@ -40,7 +40,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.medication_log);
+        setContentView(R.layout.add_medicine_text);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -134,7 +134,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         //////// database /////////////////
 
         // saveChange button
-        Button save = findViewById(R.id.Changes);
+        Button save = findViewById(R.id.Add_medicine);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
