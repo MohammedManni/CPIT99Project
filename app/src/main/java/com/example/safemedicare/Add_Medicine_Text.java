@@ -347,7 +347,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Add_Medicine_Text.this, Add_Activity.class);
+                Intent intent = new Intent(Add_Medicine_Text.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -384,7 +384,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         });
     }
 
-    public void AddEvent(View view) {
+    public void AddMedicine(View view) {
 
         String medicineName = medicineNameET.getText().toString();
         String numberOfTime = NOTS;
@@ -404,7 +404,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
 
 
-        addEventToDB addEventToDB = new addEventToDB(this);
+        addMedicineToDB addEventToDB = new addMedicineToDB(this);
         addEventToDB.execute( " ",medicineName ,numberOfTime ,amountNumberSpinner ,
                 amountTextSpinner , numberDurationSpin , textDurationSpin ,
                 Saturday ,Sunday ,Monday , Tuesday ,Wednesday ,Thursday ,
@@ -412,11 +412,11 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
     }
 
-    public class addEventToDB extends AsyncTask<String, Void, String> {
+    public class addMedicineToDB extends AsyncTask<String, Void, String> {
         Context context;
         AlertDialog alertDialog;
 
-        addEventToDB(Context ctx) {
+        addMedicineToDB(Context ctx) {
             context = ctx;
         }
 

@@ -38,7 +38,7 @@
         <activity android:name=".register2Activity" />
         <activity android:name=".Home_Page_Activity" />
         <activity android:name=".Profile_Activity" />
-        <activity android:name=".Add_Activity" />
+        <activity android:name=".Add_Medicine_Activity" />
         <activity android:name=".Schedule_Activity" />
         <activity android:name=".SOS_Activity" />
         <activity android:name=".register1Activity" />

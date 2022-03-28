@@ -78,7 +78,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Add_event_from_calendar.this, Add_Activity.class);
+                Intent intent = new Intent(Add_event_from_calendar.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

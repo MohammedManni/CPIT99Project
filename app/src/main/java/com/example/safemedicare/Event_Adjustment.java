@@ -60,7 +60,7 @@ public class Event_Adjustment extends AppCompatActivity {
         }
         new ConnectionToReadEvent().execute();
         //////////////////////DATABASE VARIABLES///////////////////////////////////////////
-        nameOfEventET = findViewById(R.id.nameOfEventET);
+        nameOfEventET = findViewById(R.id.nameOfMedicineET);
         DescriptionEditText = findViewById(R.id.DescriptionEditText);
 
         //////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +96,7 @@ public class Event_Adjustment extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Event_Adjustment.this, Add_Activity.class);
+                Intent intent = new Intent(Event_Adjustment.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

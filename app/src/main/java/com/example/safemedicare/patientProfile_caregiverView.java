@@ -54,7 +54,7 @@ public class patientProfile_caregiverView extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(patientProfile_caregiverView.this, Add_Activity.class);
+                Intent intent = new Intent(patientProfile_caregiverView.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

@@ -74,7 +74,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, Add_Activity.class);
+                Intent intent = new Intent(Home_Page_Activity.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

@@ -92,7 +92,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(caregiver_homePage_activity.this, Add_Activity.class);
+                Intent intent = new Intent(caregiver_homePage_activity.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

@@ -40,7 +40,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_medicine_text);
+        setContentView(R.layout.medication_log);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -93,7 +93,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, Add_Activity.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
