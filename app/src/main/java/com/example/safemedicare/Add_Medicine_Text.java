@@ -16,6 +16,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,11 +39,13 @@ public class Add_Medicine_Text extends AppCompatActivity {
     String name, type;
     EditText medicineNameET;
     Spinner numberOfTimeSpin, amountNumberSpinner, amountTextSpinner, numberDurationSpin, textDurationSpin;
-    String NOTS, ANS, ATS, NDS,TDS;
+    String NOTS, ANS, ATS, NDS, TDS;
     CheckBox saturday, sunday, monday, tuesday, wednesday, thursday, friday, all;
     DatePickerDialog datePickerDialog;
     Button start_day_DATE;
     ArrayList spin1, spin2, spin3, spin4, spin5;
+    TextView everyH;
+    TimePicker timePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +79,11 @@ public class Add_Medicine_Text extends AppCompatActivity {
         thursday = findViewById(R.id.Thursday);
         friday = findViewById(R.id.Friday);
         all = findViewById(R.id.ALL);
-         start_day_DATE = findViewById(R.id.Start_day_DATE);
+        start_day_DATE = findViewById(R.id.Start_day_DATE);
+        everyH= findViewById(R.id.everyH);
+        timePicker = (TimePicker) findViewById(R.id.timePickerMedicine); // initiate a time picker
+        timePicker.setCurrentHour(12); // before api level 23
+        timePicker.setHour(12); // from api level 23
         Button add_medicine = findViewById(R.id.Add_medicine);
         Button back = findViewById(R.id.back);
 
@@ -97,7 +105,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
                     thursday.setClickable(false);
                     friday.setChecked(true);
                     friday.setClickable(false);
-                }else {
+                } else {
                     saturday.setChecked(false);
                     saturday.setClickable(true);
                     sunday.setChecked(false);
@@ -143,9 +151,9 @@ public class Add_Medicine_Text extends AppCompatActivity {
         add_medicine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //AddMedicine(view);
 
 
-               // checkBox();
             }
         });
 
@@ -164,7 +172,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         spin4 = new ArrayList<>();
         spin5 = new ArrayList<>();
 
-        forLoopSpinner();
+
         ItemSelectedListener();
 
     }
@@ -203,15 +211,20 @@ public class Add_Medicine_Text extends AppCompatActivity {
     }
 
     public void ItemSelectedListener() {
+        forLoopSpinner();
         ArrayAdapter adapter1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spin1);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         //Setting the ArrayAdapter data on the Spinner
         numberOfTimeSpin.setAdapter(adapter1);
         numberOfTimeSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // NOTS = bankNamesDelete.get(i).toString();
-                NOTS = numberOfTimeSpin.getChildAt(i).toString();
+                double EH = Math.round( 24/Double.parseDouble(spin1.get(i).toString())) ;
+                int eh = (int) EH;
+                everyH.setText("Every "+eh+" hr");
+                NOTS = spin1.get(i).toString();
             }
 
             @Override
@@ -227,7 +240,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         amountNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ANS = amountNumberSpinner.getChildAt(i).toString();
+                ANS = spin2.get(i).toString();
 
             }
 
@@ -244,8 +257,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         amountTextSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ATS = amountTextSpinner.getChildAt(i).toString();
-
+                ATS = spin3.get(i).toString();
             }
 
             @Override
@@ -261,7 +273,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         numberDurationSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                NDS = numberDurationSpin.getChildAt(i).toString();
+                NDS = spin4.get(i).toString();
             }
 
             @Override
@@ -277,7 +289,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         textDurationSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                TDS= textDurationSpin.getChildAt(i).toString();
+                TDS = spin5.get(i).toString();
 
             }
 
@@ -385,30 +397,32 @@ public class Add_Medicine_Text extends AppCompatActivity {
     }
 
     public void AddMedicine(View view) {
-
+        int hours = timePicker.getHour(); // after api level 23
+        int minutes = timePicker.getMinute(); // after api level 23
         String medicineName = medicineNameET.getText().toString();
         String numberOfTime = NOTS;
         String amountNumberSpinner = ANS;
         String amountTextSpinner = ATS;
         String numberDurationSpin = NDS;
         String textDurationSpin = TDS;
-        String Saturday = String.valueOf(saturday.isChecked()) ;
-        String Sunday = String.valueOf(sunday.isChecked()) ;
-        String Monday = String.valueOf(monday.isChecked()) ;
-        String Tuesday =String.valueOf(tuesday.isChecked()) ;
-        String Wednesday = String.valueOf(wednesday.isChecked()) ;
-        String Thursday =String.valueOf(thursday.isChecked()) ;
-        String Friday = String.valueOf(friday.isChecked()) ;
+        String Saturday = String.valueOf(saturday.isChecked());
+        String Sunday = String.valueOf(sunday.isChecked());
+        String Monday = String.valueOf(monday.isChecked());
+        String Tuesday = String.valueOf(tuesday.isChecked());
+        String Wednesday = String.valueOf(wednesday.isChecked());
+        String Thursday = String.valueOf(thursday.isChecked());
+        String Friday = String.valueOf(friday.isChecked());
         String date = start_day_DATE.getText().toString();
-        String userName= name;
-
-
+        String userName = name;
+        String timeH = String.valueOf(hours);
+        String timeM = String.valueOf(minutes);
+        String everyH;
 
         addMedicineToDB addEventToDB = new addMedicineToDB(this);
-        addEventToDB.execute( " ",medicineName ,numberOfTime ,amountNumberSpinner ,
-                amountTextSpinner , numberDurationSpin , textDurationSpin ,
-                Saturday ,Sunday ,Monday , Tuesday ,Wednesday ,Thursday ,
-                Friday ,date , userName);
+        addEventToDB.execute(" moooo", medicineName, numberOfTime, amountNumberSpinner,
+                amountTextSpinner, numberDurationSpin, textDurationSpin,
+                Saturday, Sunday, Monday, Tuesday, Wednesday, Thursday,
+                Friday, date, userName);
 
     }
 
@@ -426,69 +440,75 @@ public class Add_Medicine_Text extends AppCompatActivity {
             String login_url = "http://192.168.100.171/AddMedication.php";
 
 
-           // if (operation.equals("AddEvent")) {
-                try {
+            // if (operation.equals("AddEvent")) {
+            try {
 
-                    String medicineNameET = params[1];
-                    String numberOfTimeSpin = params[2];
-                    String amountNumberSpinner = params[3];
-                    String amountTextSpinner = params[4];
-                    String numberDurationSpin = params[5];
-                    String textDurationSpin = params[6];
-                    String saturday = params[7];
-                    String sunday = params[8];
-                    String monday = params[9];
-                    String tuesday = params[10];
-                    String wednesday = params[11];
-                    String thursday = params[12];
-                    String friday = params[13];
-                    String all = params[14];
-                    String date = params[15];
-                    String userName= params[16];
-                    URL url = new URL(login_url);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.setRequestMethod("POST");
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setDoInput(true);
-                    OutputStream outputStream = httpURLConnection.getOutputStream();
-                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                    String post_data = URLEncoder.encode("medicineNameET", "UTF-8") + "=" + URLEncoder.encode(medicineNameET, "UTF-8") + "&"
-                            + URLEncoder.encode("numberOfTimeSpin", "UTF-8") + "=" + URLEncoder.encode(numberOfTimeSpin, "UTF-8") + "&"
-                            + URLEncoder.encode("amountNumberSpinner", "UTF-8") + "=" + URLEncoder.encode(amountNumberSpinner, "UTF-8") + "&"
-                            + URLEncoder.encode("amountTextSpinner", "UTF-8") + "=" + URLEncoder.encode(amountTextSpinner, "UTF-8") + "&"
-                            + URLEncoder.encode("numberDurationSpin", "UTF-8") + "=" + URLEncoder.encode(numberDurationSpin, "UTF-8") + "&"
-                            + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8") + "&"
-                            + URLEncoder.encode("saturday", "UTF-8") + "=" + URLEncoder.encode(saturday, "UTF-8") + "&"
-                            + URLEncoder.encode("sunday", "UTF-8") + "=" + URLEncoder.encode(sunday, "UTF-8")+ "&"
-                            + URLEncoder.encode("monday", "UTF-8") + "=" + URLEncoder.encode(monday, "UTF-8")+ "&"
-                            + URLEncoder.encode("tuesday", "UTF-8") + "=" + URLEncoder.encode(tuesday, "UTF-8")+ "&"
-                            + URLEncoder.encode("wednesday", "UTF-8") + "=" + URLEncoder.encode(wednesday, "UTF-8")+ "&"
-                            + URLEncoder.encode("thursday", "UTF-8") + "=" + URLEncoder.encode(thursday, "UTF-8")+ "&"
-                            + URLEncoder.encode("friday", "UTF-8") + "=" + URLEncoder.encode(friday, "UTF-8")+ "&"
-                            + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8")+ "&"
-                            + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8");
-                    bufferedWriter.write(post_data);
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                    outputStream.close();
-                    InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                    String result = "";
-                    String line = "";
-                    while ((line = bufferedReader.readLine()) != null) {
-                        result += line;
-                    }
-                    bufferedReader.close();
-                    inputStream.close();
-                    httpURLConnection.disconnect();
-                    return result;
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                String medicineNameET = params[1];
+                String numberOfTimeSpin = params[2];
+                String amountNumberSpinner = params[3];
+                String amountTextSpinner = params[4];
+                String numberDurationSpin = params[5];
+                String textDurationSpin = params[6];
+                String saturday = params[7];
+                String sunday = params[8];
+                String monday = params[9];
+                String tuesday = params[10];
+                String wednesday = params[11];
+                String thursday = params[12];
+                String friday = params[13];
+
+                String date = params[14];
+                String userName = params[15];
+                String timeH = params[16];
+                String timeM = params[17];
+
+                URL url = new URL(login_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("medicineNameET", "UTF-8") + "=" + URLEncoder.encode(medicineNameET, "UTF-8") + "&"
+                        + URLEncoder.encode("numberOfTimeSpin", "UTF-8") + "=" + URLEncoder.encode(numberOfTimeSpin, "UTF-8") + "&"
+                        + URLEncoder.encode("amountNumberSpinner", "UTF-8") + "=" + URLEncoder.encode(amountNumberSpinner, "UTF-8") + "&"
+                        + URLEncoder.encode("amountTextSpinner", "UTF-8") + "=" + URLEncoder.encode(amountTextSpinner, "UTF-8") + "&"
+                        + URLEncoder.encode("numberDurationSpin", "UTF-8") + "=" + URLEncoder.encode(numberDurationSpin, "UTF-8") + "&"
+                        + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8") + "&"
+                        + URLEncoder.encode("saturday", "UTF-8") + "=" + URLEncoder.encode(saturday, "UTF-8") + "&"
+                        + URLEncoder.encode("sunday", "UTF-8") + "=" + URLEncoder.encode(sunday, "UTF-8") + "&"
+                        + URLEncoder.encode("monday", "UTF-8") + "=" + URLEncoder.encode(monday, "UTF-8") + "&"
+                        + URLEncoder.encode("tuesday", "UTF-8") + "=" + URLEncoder.encode(tuesday, "UTF-8") + "&"
+                        + URLEncoder.encode("wednesday", "UTF-8") + "=" + URLEncoder.encode(wednesday, "UTF-8") + "&"
+                        + URLEncoder.encode("thursday", "UTF-8") + "=" + URLEncoder.encode(thursday, "UTF-8") + "&"
+                        + URLEncoder.encode("friday", "UTF-8") + "=" + URLEncoder.encode(friday, "UTF-8") + "&"
+                        + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8") + "&"
+                        + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8")+ "&"
+                        + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8")+ "&"
+                        + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8")+ "&"
+                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(everyH.getText().toString(), "UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
                 }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-          //  }
+            //  }
             return null;
         }
 
