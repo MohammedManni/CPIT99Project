@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,7 +47,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
     ArrayList spin1, spin2, spin3, spin4, spin5;
     TextView everyH;
     TimePicker timePicker;
-
+    int eh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +153,31 @@ public class Add_Medicine_Text extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //AddMedicine(view);
+                if (!medicineNameET.getText().toString().isEmpty()){
+                    if (all.isChecked()) {
+                        if (!start_day_DATE.getText().toString().matches("Start day DATE")){
+                            AddMedicine(view);
+                            //Toast.makeText(getApplicationContext(), "went through", Toast.LENGTH_SHORT).show();
+                        }else {
+                            //toast
+                            Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
+                        }
+                    }else if (saturday.isChecked()|| sunday.isChecked() || monday.isChecked() || tuesday.isChecked() ||thursday.isChecked()|| friday.isChecked()){
+                        if (!start_day_DATE.getText().toString().matches("Start day DATE")){
+                            AddMedicine(view);
+                            //Toast.makeText(getApplicationContext(), "went through", Toast.LENGTH_SHORT).show();
+                        }else {
+                            //toast
+                            Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        //toast select day
+                        Toast.makeText(getApplicationContext(), "Please choose the day/days", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    //toast select day
+                    Toast.makeText(getApplicationContext(), "Please Enter the medicine name", Toast.LENGTH_SHORT).show();
+                }
 
 
             }
@@ -222,7 +248,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // NOTS = bankNamesDelete.get(i).toString();
                 double EH = Math.round( 24/Double.parseDouble(spin1.get(i).toString())) ;
-                int eh = (int) EH;
+                 eh = (int) EH;
                 everyH.setText("Every "+eh+" hr");
                 NOTS = spin1.get(i).toString();
             }
@@ -414,15 +440,25 @@ public class Add_Medicine_Text extends AppCompatActivity {
         String Friday = String.valueOf(friday.isChecked());
         String date = start_day_DATE.getText().toString();
         String userName = name;
-        String timeH = String.valueOf(hours);
-        String timeM = String.valueOf(minutes);
-        String everyH;
-
+        String timeH ,timeM;
+        timeH = String.valueOf(hours);
+        timeM = String.valueOf(minutes);
+       /* if (hours<10){
+             timeH = "0"+hours;
+        }else {
+             timeH = String.valueOf(hours);
+        }
+        if (minutes<10){
+            timeM = "0"+minutes;
+        }else {
+            timeM = String.valueOf(minutes);
+        }
+        */
         addMedicineToDB addEventToDB = new addMedicineToDB(this);
-        addEventToDB.execute(" moooo", medicineName, numberOfTime, amountNumberSpinner,
+        addEventToDB.execute("add", medicineName, numberOfTime, amountNumberSpinner,
                 amountTextSpinner, numberDurationSpin, textDurationSpin,
                 Saturday, Sunday, Monday, Tuesday, Wednesday, Thursday,
-                Friday, date, userName);
+                Friday, date, userName,timeH ,timeM );
 
     }
 
@@ -486,7 +522,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
                         + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8")+ "&"
                         + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8")+ "&"
                         + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8")+ "&"
-                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(everyH.getText().toString(), "UTF-8");
+                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(eh), "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
