@@ -86,7 +86,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         timePicker.setCurrentHour(12); // before api level 23
         timePicker.setHour(12); // from api level 23
         Button add_medicine = findViewById(R.id.Add_medicine);
-        Button back = findViewById(R.id.back);
+
 
         all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -202,7 +202,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         ItemSelectedListener();
 
     }
-
+/*
     public String checkBox() {
         String day = "";
         if (all.isChecked()) {
@@ -236,6 +236,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
     }
 
+ */
     public void ItemSelectedListener() {
         forLoopSpinner();
         ArrayAdapter adapter1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spin1);
