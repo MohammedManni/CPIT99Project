@@ -38,13 +38,11 @@ public class caregiver_homePage_activity extends AppCompatActivity {
     ArrayList <String> p=new ArrayList<>();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_caregiver_home_page);
-
-
-
 
 
         Bundle extras = getIntent().getExtras();
@@ -116,14 +114,18 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
                // intent.putExtra("USERNAME", name);
                // intent.putExtra("TYPE", type);
                // intent.putExtra("PatientName", p.get(i));
                 //startActivity(intent);
-
-                Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(caregiver_homePage_activity.this, shared_activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                intent.putExtra("PATIENT_NAME",p.get(position));
+                startActivity(intent);
             }
         });
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -138,7 +140,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readPC.php";
+            String readPatient_url = "http://192.168.100.10/readPC.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -178,7 +180,8 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
                         if (userName.equalsIgnoreCase(name)) {
                             p.add(patientName);
-                            String line = id + " - " + patientName;
+                            //String line = id + " - " + patientName;
+                            String line =patientName;
                             adapter.add(line);
                         }
 
