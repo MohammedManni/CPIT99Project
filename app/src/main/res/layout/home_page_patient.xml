@@ -30,7 +30,7 @@
         android:layout_marginTop="12dp"
         android:horizontalSpacing="5dp"
         android:verticalSpacing="5dp"
-        android:numColumns="2"
+        android:numColumns="1"
         android:scrollbarAlwaysDrawHorizontalTrack="true"
         android:scrollbars="horizontal"
         app:layout_constraintStart_toStartOf="parent"

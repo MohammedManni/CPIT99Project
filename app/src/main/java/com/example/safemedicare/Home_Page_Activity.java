@@ -160,17 +160,17 @@ public class Home_Page_Activity extends AppCompatActivity {
                         if (e.getEventDate().matches(formattedDate)) {
                             if (Integer.parseInt(e.getEventTimeH()) >= 12 && Integer.parseInt(e.getEventTimeH()) < 24) {
                                 if (Integer.parseInt(e.getEventTimeH()) > 12) {
-                                    eventList.add(new GridItem(e.getEventName(), e.getEventDate(), ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm")));
+                                    eventList.add(new GridItem("Name: "+e.getEventName(), "Date: "+e.getEventDate(),"Time: "+ ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm")));
 
                                 } else {
-                                    eventList.add(new GridItem(e.getEventName(), e.getEventDate(), (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm")));
+                                    eventList.add(new GridItem("Name: "+e.getEventName(), "Date: "+e.getEventDate(),"Time: "+ (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm")));
 
                                 }
                             } else if (Integer.parseInt(e.getEventTimeH()) == 0) {
-                                eventList.add(new GridItem(e.getEventName(), e.getEventDate(), ("12" + ":" + e.getEventTimeM() + " am")));
+                                eventList.add(new GridItem("Name: "+e.getEventName(), "Date: "+e.getEventDate(),"Time: "+  ("12" + ":" + e.getEventTimeM() + " am")));
 
                             } else {
-                                eventList.add(new GridItem(e.getEventName(), e.getEventDate(), (e.getEventTimeH() + ":" + e.getEventTimeM() + " am")));
+                                eventList.add(new GridItem("Name: "+e.getEventName(), "Date: "+e.getEventDate(),"Time: "+  (e.getEventTimeH() + ":" + e.getEventTimeM() + " am")));
                             }
                         }
                     }
@@ -220,7 +220,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            //ArrayList<Event> eventlist1 = new ArrayList<>();
+
 
             try {
                 JSONObject jsonResult = new JSONObject(result);
@@ -272,6 +272,32 @@ public class Home_Page_Activity extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+    public void addMedicationChild(){
+        ArrayList medicationChild= new ArrayList();
+        for (int i = 0; i < medicationList.size(); i++) {
+            Medication medication= (Medication) medicationList.get(i);
+            String Duration = medication.getDuration();
+            String DurationText = medication.getTextDurationSpin();
+            if(DurationText.equalsIgnoreCase("Day")){
+                if (Integer.parseInt(Duration)>1){
+                    for (int j = 0; j < Integer.parseInt(Duration); j++) {
+                        int everyH = Integer.parseInt(medication.getEveryH());
+                        if (everyH==24){
+                            medicationChild.add(medicationList.get(i));
+                        }
+                    }
+                }
+            }else if(DurationText.equalsIgnoreCase("Week")){
+
+            }else if(DurationText.equalsIgnoreCase("Month")){
+
+            }else if(DurationText.equalsIgnoreCase("Year")){
+
+            }else {
+
             }
         }
     }
