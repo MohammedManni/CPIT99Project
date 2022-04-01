@@ -197,7 +197,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                         String medicationName = caregiverObject.getString("medicationName");
                         int numOfTime = caregiverObject.getInt("numberOfTime");
                         int med_DoseAmount = caregiverObject.getInt("doseAmount");
-
+/*
                         //try to match the constructor medicationName,  med_numberOfTime,  med_DoseAmount,  id
                         medication= new Medication( medicationName,  numOfTime,  med_DoseAmount,  id);
                        // create the array and add the medication
@@ -206,6 +206,8 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                         String line = id + " - " + medicationName + " - " + numOfTime + " - " + amount;
                         //adapter.add(line);
 
+
+ */
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();

@@ -27,7 +27,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".retriveDB" />
-        <activity android:name=".Decide_Class" />
         <activity android:name=".caregiver_homePage_activity" />
         <activity android:name=".SecondActivity" />
         <activity android:name=".Add_event_from_calendar" />

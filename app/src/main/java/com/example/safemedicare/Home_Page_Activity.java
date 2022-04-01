@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,7 @@ public class Home_Page_Activity extends AppCompatActivity {
     private String name, type, userName, formattedDate;
     GridView gridList;
     ArrayList eventList = new ArrayList<>();
+    ArrayList medicationList = new ArrayList<>();
     GridAdapter myAdapter;
 
     @Override
@@ -48,47 +50,9 @@ public class Home_Page_Activity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
         }
         /////////////////////////////////////////////////////////////////////
-        // toolbar buttons
-        Button Profile = findViewById(R.id.firstB);
-        Button Schedule = findViewById(R.id.SecondB);
-        Button Add = findViewById(R.id.thirdB);
-        Button SOS = findViewById(R.id.SOS);
-        Profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, Profile_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-        Schedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, Schedule_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-        Add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, Add_Medicine_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-        SOS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, SOS_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
+        // toolbar
+        toolbar();
+
         //////////////////////////////  end toolbar button//////////////////////////////////////////////
 
         ///// START GRID VIEW /////
@@ -107,9 +71,10 @@ public class Home_Page_Activity extends AppCompatActivity {
         ///////////////////////////////////END GET CURRENT DATE//////////////////////////////////////////////////////////////////
 
 
-        new Connection().execute();
-        myAdapter = new GridAdapter(this, R.layout.gridview_item, eventList);
+        new ConnectionToReadEvent().execute();
+        new ConnectionToReadMedication().execute();
 
+        myAdapter = new GridAdapter(this, R.layout.gridview_item, eventList);
 
 
         // implement setOnItemClickListener event on GridView
@@ -126,17 +91,17 @@ public class Home_Page_Activity extends AppCompatActivity {
 
     }
 
-    class Connection extends AsyncTask<String, String, String> {
+    class ConnectionToReadEvent extends AsyncTask<String, String, String> {
         // starting the connection
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.171/readEvent.php";
+            String event_url = "http://192.168.100.171/readEvent.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
-                request.setURI(new URI(medication_url));
+                request.setURI(new URI(event_url));
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer stringBuffer = new StringBuffer("");
@@ -146,7 +111,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                     break;
                 }
                 reader.close();
-                result = stringBuffer.toString();
+                result = stringBuffer.toString() ;
             } catch (Exception e) {
                 return new String("error");
             }
@@ -168,7 +133,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
 
                         if (userName.equalsIgnoreCase(name)) {
-                            int id =patientObject.getInt("id");
+                            int id = patientObject.getInt("id");
                             String eventName = patientObject.getString("eventName");
                             String eventDescription = patientObject.getString("eventDescription");
                             String date = patientObject.getString("date");
@@ -176,7 +141,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                             String timeM = patientObject.getString("timeM");
 
                             // add to the array list
-                            eventlist1.add(new Event(eventName, eventDescription, timeH, timeM, date,id));
+                            eventlist1.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
                         }
 
 
@@ -211,6 +176,10 @@ public class Home_Page_Activity extends AppCompatActivity {
                     }
                     gridList.setAdapter(myAdapter);
 
+
+
+
+
                 } else {
                     Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
                 }
@@ -218,5 +187,159 @@ public class Home_Page_Activity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    class ConnectionToReadMedication extends AsyncTask<String, String, String> {
+        // starting the connection
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = "";
+
+            String medication_url = "http://192.168.100.171/readMedication.php";
+            try {
+
+
+                //////////////////////////////////////////////////////////////////////////////////////////
+                HttpClient clientM = new DefaultHttpClient();
+                HttpGet requestM = new HttpGet();
+                requestM.setURI(new URI(medication_url));
+                HttpResponse responseM = clientM.execute(requestM);
+                BufferedReader readerM = new BufferedReader(new InputStreamReader(responseM.getEntity().getContent()));
+                StringBuffer stringBufferM = new StringBuffer("");
+                String lineM = "";
+                while ((lineM = readerM.readLine()) != null) {
+                    stringBufferM.append(lineM);
+                    break;
+                }
+                readerM.close();
+                result =  stringBufferM.toString() ;
+            } catch (Exception e) {
+                return new String("error");
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            //ArrayList<Event> eventlist1 = new ArrayList<>();
+
+            try {
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if (success == 2) {
+                    JSONArray patientData = jsonResult.getJSONArray("medication");
+                    for (int i = 0; i < patientData.length(); i++) {
+                        JSONObject patientObject = patientData.getJSONObject(i);
+                        userName = patientObject.getString("userName");
+
+
+                        if (userName.equalsIgnoreCase(name)) {
+
+
+                            int id = patientObject.getInt("id");
+                            String medicineName = patientObject.getString("medicineName");
+                            String numberOfTime = patientObject.getString("numberOfTime");
+                            String doseAmountNumber = patientObject.getString("doseAmountNumber");
+                            String doseAmountText = patientObject.getString("doseAmountText");
+                            String duration = patientObject.getString("duration");
+                            String durationByText = patientObject.getString("durationByText");
+                            String saturday = patientObject.getString("saturday");
+                            String sunday = patientObject.getString("sunday");
+                            String monday = patientObject.getString("monday");
+                            String tuesday = patientObject.getString("tuesday");
+                            String wednesday = patientObject.getString("wednesday");
+                            String thursday = patientObject.getString("thursday");
+                            String friday = patientObject.getString("friday");
+                            String startDayDate = patientObject.getString("startDayDate");
+                            String timeH = patientObject.getString("timeH");
+                            String timeM = patientObject.getString("timeM");
+                            String everyH = patientObject.getString("everyH");
+
+                            // add to the array list medicationList
+                            Medication m = new Medication(String.valueOf(id),userName, medicineName,numberOfTime , doseAmountNumber, doseAmountText, duration,durationByText, saturday, sunday, monday,  tuesday, wednesday , thursday, friday,  startDayDate,timeH,timeM, everyH);
+
+                            medicationList.add(m);
+                            eventList.add(new GridItem("Medicine: "+m.getMedicineName(),"Amount: "+m.getDoseAmountNumber()+" Pill/s","Time "+m.getTimeH()+" : "+m.getTimeM()));
+
+                        }
+
+
+                    }
+
+                    gridList.setAdapter(myAdapter);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void toolbar() {
+        // toolbar buttons
+        Button Profile = findViewById(R.id.firstB);
+        Button Schedule = findViewById(R.id.SecondB);
+        Button Add = findViewById(R.id.thirdB);
+        Button SOS = findViewById(R.id.SOS);
+        ImageButton imageButton = findViewById(R.id.imageButton);
+
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home_Page_Activity.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home_Page_Activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home_Page_Activity.this, Add_Medicine_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home_Page_Activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equalsIgnoreCase("patient")) {
+                    Intent intent = new Intent(Home_Page_Activity.this, Home_Page_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                } else if (type.equalsIgnoreCase("caregiver")) {
+                    Intent intent = new Intent(Home_Page_Activity.this, caregiver_homePage_activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
+            }
+        });
     }
 }
