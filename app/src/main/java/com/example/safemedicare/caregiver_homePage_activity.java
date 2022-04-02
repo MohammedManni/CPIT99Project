@@ -29,10 +29,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
     ListView list;
     String names[];
     ArrayAdapter<String> adapter;
-    CaregiverClass caregiver;
-    CaregiverClass[] caregiverList;
-    Patient patient;
-    Patient[] patientList;
+
     private String name, type;
     String userName, patientName;
     ArrayList <String> p=new ArrayList<>();
@@ -124,7 +121,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                 Intent intent = new Intent(caregiver_homePage_activity.this, shared_activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
-                intent.putExtra("PATIENT_NAME",p.get(position));
+                intent.putExtra("PATIENT_USERNAME",p.get(position));
                 startActivity(intent);
             }
         });

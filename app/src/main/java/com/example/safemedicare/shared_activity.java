@@ -1,5 +1,6 @@
 package com.example.safemedicare;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -25,7 +26,7 @@ public class shared_activity extends AppCompatActivity {
 
     EditText patientNameET, ageET, phoneET;
     Button medicationLog,schedule,timeline;
-    String name, type, patientName,userName, nameInDB;
+    String name, type, patientUserNameFromGetIntent,userName, userNameInDB;
     String swMedicationLog,swSchedule,swTimeline;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class shared_activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-            patientName = extras.getString("PATIENT_NAME");
+            patientUserNameFromGetIntent = extras.getString("PATIENT_USERNAME");
         }
 
         patientNameET = (EditText) findViewById(R.id.patientNameEditText);
@@ -47,28 +48,15 @@ public class shared_activity extends AppCompatActivity {
         schedule = (Button) findViewById(R.id.scheduleID);
         timeline = (Button) findViewById(R.id.timelineID);
 
-        patientNameET.setText(patientName);
-        patientNameET.setEnabled(false);
 
-        new Patient().execute();
+        new PatientInfo().execute();
         new CheckData().execute();
-        //checkSwitch();
 
-    }
-    public void checkSwitch(){
-        if (swMedicationLog.equalsIgnoreCase("false")){
-            medicationLog.setVisibility(View.GONE);
-        }
-        if (swSchedule.equalsIgnoreCase("false")){
-            schedule.setVisibility(View.GONE);
-        }
-        if (swTimeline.equalsIgnoreCase("false")){
-            timeline.setVisibility(View.GONE);
-        }
+
     }
 
 ///////////////////////////CLASS READ PATIENT/////////////////////////////////
-class Patient extends AsyncTask<String, String, String> {
+class PatientInfo extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
@@ -108,13 +96,16 @@ class Patient extends AsyncTask<String, String, String> {
                 for (int i = 0; i < patientData.length(); i++) {
                     JSONObject patientObject = patientData.getJSONObject(i);
 
-                    nameInDB = patientObject.getString("userName");
+                    userNameInDB = patientObject.getString("userName");
 
-                    if (nameInDB.equalsIgnoreCase(patientName)) {
-                        int phoneNumber = Integer.parseInt(patientObject.getString("phoneNumber"));
-                        int age = Integer.parseInt(patientObject.getString("age"));
+                    if (userNameInDB.equalsIgnoreCase(patientUserNameFromGetIntent)) {
+                       String patientName = patientObject.getString("name");
+                        int phoneNumber = patientObject.getInt("phoneNumber");
+                        int age = patientObject.getInt("age");
 
 
+                        patientNameET.setText(patientName);
+                        patientNameET.setEnabled(false);
                         ageET.setText(String.valueOf(age));
                         phoneET.setText(String.valueOf(phoneNumber));
                         ageET.setEnabled(false);
@@ -170,9 +161,9 @@ class CheckData extends AsyncTask<String, String, String> {
                 for (int i = 0; i < patientData.length(); i++) {
                     JSONObject patientObject = patientData.getJSONObject(i);
                     userName = patientObject.getString("userNameC");
-                    nameInDB = patientObject.getString("userNameP");
+                    userNameInDB = patientObject.getString("userNameP");
 
-                    if (userName.equalsIgnoreCase(name)&&patientName.equalsIgnoreCase(nameInDB)) {
+                    if (userName.equalsIgnoreCase(name)&& patientUserNameFromGetIntent.equalsIgnoreCase(userNameInDB)) {
                       swMedicationLog=patientObject.getString("swMedLog");
                       swSchedule=patientObject.getString("swSchedule");
                       swTimeline=patientObject.getString("swTimeline");
@@ -182,6 +173,20 @@ class CheckData extends AsyncTask<String, String, String> {
                         }
                         if (swSchedule.equalsIgnoreCase("false")){
                             schedule.setVisibility(View.GONE);
+                        }else{
+                            schedule.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(shared_activity.this, shared_schedule.class);
+                                    intent.putExtra("USERNAME", name);
+                                    intent.putExtra("TYPE", type);
+                                    intent.putExtra("PatientUserName", patientUserNameFromGetIntent);
+                                    startActivity(intent);
+
+
+                                }
+                            });
+
                         }
                         if (swTimeline.equalsIgnoreCase("false")){
                             timeline.setVisibility(View.GONE);

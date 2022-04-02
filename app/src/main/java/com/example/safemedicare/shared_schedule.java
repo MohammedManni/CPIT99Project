@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,66 +30,59 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Schedule_Activity extends AppCompatActivity {
-    ListView list;
-    ArrayAdapter<String> adapter;
-    private String name, type, userName, date1,patientName;
+public class shared_schedule extends AppCompatActivity {
+    private String name, type,userName, date1,patientUserName;
     DatePicker datePicker;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String currentDate;
-
+    ListView list;
+    ArrayAdapter<String> adapter;
     ArrayList<Event> eventlist = new ArrayList<>();
     ArrayList<Event> selectedDateEvent = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.calendar);
+        setContentView(R.layout.activity_shared_schedule);
 
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/M/yyyy");
         currentDate = dateFormat.format(calendar.getTime());
-        //Toast.makeText(Schedule_Activity.this," The date is : "+currentDate ,Toast.LENGTH_LONG).show();
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-           // patientName = extras.getString("PATIENT_NAME");
+            patientUserName=extras.getString("PatientUserName");
+
         }
-        /////////////////////////////////////////////////////////////////////
+
 
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
         Button Add = findViewById(R.id.thirdB);
         Button SOS = findViewById(R.id.SOS);
-        ImageButton imageButton = findViewById(R.id.imageButton);
+
 
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (type.equalsIgnoreCase("patient")) {
-                    Intent intent = new Intent(Schedule_Activity.this, Profile_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
+                Intent intent = new Intent(shared_schedule.this, personal_info_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
 
-                } else if (type.equalsIgnoreCase("caregiver")) {
-                    Intent intent = new Intent(Schedule_Activity.this, personal_info_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
 
-                }
             }
         });
 
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Schedule_Activity.class);
+                Intent intent = new Intent(shared_schedule.this, Schedule_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -100,7 +92,7 @@ public class Schedule_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Add_Medicine_Activity.class);
+                Intent intent = new Intent(shared_schedule.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -110,67 +102,40 @@ public class Schedule_Activity extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, SOS_Activity.class);
+                Intent intent = new Intent(shared_schedule.this, SOS_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (type.equalsIgnoreCase("patient")) {
-                    Intent intent = new Intent(Schedule_Activity.this, Home_Page_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-
-                } else if (type.equalsIgnoreCase("caregiver")) {
-                    Intent intent = new Intent(Schedule_Activity.this, caregiver_homePage_activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-
-                }
-            }
-        });
-
-        //////////////////////////end toolbar buttons////////////////////////////////////////////
+        //////////////////////////////  end toolbar button//////////////////////////////////////////////
         // fill the list view
-        new ConnectionToReadPatient().execute();
-        list = (ListView) findViewById(R.id.ListViewEvent);
+        new ReadEvent().execute();
+        list = (ListView) findViewById(R.id.listEvent_sharedSchedule);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         list.setAdapter(adapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
                 // intent.putExtra("PatientName", p.get(i));
                 //startActivity(intent);
+
                 if (position >= 0) {
-                    Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
+                   /* Intent intent = new Intent(Schedule_Activity.this, Event_Adjustment.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     intent.putExtra("EVENT_ID", selectedDateEvent.get(position).getId());
                     startActivity(intent);
+                    */
                 }
 
             }
+
         });
 
-        Button buttonAddEvent = findViewById(R.id.buttonAddEvent);
-        buttonAddEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Move to add event xml
-                Intent intent = new Intent(Schedule_Activity.this, Add_event_from_calendar.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
 
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         date1 = currentDate;
@@ -182,14 +147,15 @@ public class Schedule_Activity extends AppCompatActivity {
                 adapter.clear();
                 eventlist.clear();
                 selectedDateEvent.clear();
-                new ConnectionToReadPatient().execute();
+                new ReadEvent().execute();
             }
         });
 
     }
 
+
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
-    class ConnectionToReadPatient extends AsyncTask<String, String, String> {
+    class ReadEvent extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
@@ -230,7 +196,7 @@ public class Schedule_Activity extends AppCompatActivity {
                         JSONObject patientObject = patientData.getJSONObject(i);
                         userName = patientObject.getString("userName");
 
-                        if (userName.equalsIgnoreCase(name)) {
+                        if (userName.equalsIgnoreCase(patientUserName)) {
                             int id = patientObject.getInt("id");
                             String eventName = patientObject.getString("eventName");
                             String eventDescription = patientObject.getString("eventDescription");
@@ -259,12 +225,12 @@ public class Schedule_Activity extends AppCompatActivity {
                             if (Integer.parseInt(e.getEventTimeH()) >= 12) {
                                 // for pm time
                                 if (Integer.parseInt(e.getEventTimeH()) > 12) {
-                                    line = e.getEventName() + " - " + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
+                                    line ="Event name: "+ e.getEventName() +"  Description: " +e.getEventDetails()+"  Time" + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm");
                                     adapter.add(line);
                                     // add the line to the selectedDateEvent for further use ( Event ID )
                                     selectedDateEvent.add(eventlist.get(i));
                                 } else {
-                                    line = e.getEventName() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
+                                    line ="Event name: "+ e.getEventName() +"  Description: " +e.getEventDetails()+"  Time"+ (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm");
                                     adapter.add(line);
                                     // add the line to the selectedDateEvent for further use ( Event ID )
                                     selectedDateEvent.add(eventlist.get(i));
@@ -272,12 +238,12 @@ public class Schedule_Activity extends AppCompatActivity {
                             }
                             // for am time
                             else if (Integer.parseInt(e.getEventTimeH()) == 0) {
-                                line = e.getEventName() + " - " + ("12" + ":" + e.getEventTimeM() + " am");
+                                line ="Event name: "+ e.getEventName() +"  Description: " +e.getEventDetails()+"  Time"+ ("12" + ":" + e.getEventTimeM() + " am");
                                 adapter.add(line);
                                 // add the line to the selectedDateEvent for further use ( Event ID )
                                 selectedDateEvent.add(eventlist.get(i));
                             } else {
-                                line = e.getEventName() + " - " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
+                                line ="Event name: "+ e.getEventName() +"  Description: "+e.getEventDetails()+"  Time"+ (e.getEventTimeH() + ":" + e.getEventTimeM() + " am");
                                 adapter.add(line);
                                 // add the line to the selectedDateEvent for further use ( Event ID )
                                 selectedDateEvent.add(eventlist.get(i));
