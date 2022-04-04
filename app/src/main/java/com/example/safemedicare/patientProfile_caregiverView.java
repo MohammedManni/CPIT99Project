@@ -23,7 +23,60 @@ public class patientProfile_caregiverView extends AppCompatActivity {
             patientName = extras.getString("PatientName");
         }
         /////////////////////////////////////////////////////////////////////
+        //toolbar
+        toolbar();
 
+
+        // profile page button //
+        Button MedicationLog_CaregiverView = findViewById(R.id.MedicationLog_CaregiverView);
+        Button Schedule_CaregiverView = findViewById(R.id.Schedule_CaregiverView);
+        Button Event_CaregiverView = findViewById(R.id.Event_CaregiverView);
+        Button AddMedicine_CaregiverView = findViewById(R.id.AddMedicine_CaregiverView);
+
+
+        MedicationLog_CaregiverView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(patientProfile_caregiverView.this, personal_info_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Schedule_CaregiverView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(patientProfile_caregiverView.this, medicationLog_page_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+
+        Event_CaregiverView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(patientProfile_caregiverView.this, caregiver_relative_control_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        AddMedicine_CaregiverView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(patientProfile_caregiverView.this, privacy_page.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -92,54 +145,5 @@ public class patientProfile_caregiverView extends AppCompatActivity {
         });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
-
-        // profile page button //
-        Button MedicationLog_CaregiverView = findViewById(R.id.MedicationLog_CaregiverView);
-        Button Schedule_CaregiverView = findViewById(R.id.Schedule_CaregiverView);
-        Button Event_CaregiverView = findViewById(R.id.Event_CaregiverView);
-        Button AddMedicine_CaregiverView = findViewById(R.id.AddMedicine_CaregiverView);
-
-
-        MedicationLog_CaregiverView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(patientProfile_caregiverView.this, personal_info_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        Schedule_CaregiverView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(patientProfile_caregiverView.this, medicationLog_page_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-
-        Event_CaregiverView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(patientProfile_caregiverView.this, caregiver_relative_control_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        AddMedicine_CaregiverView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(patientProfile_caregiverView.this, privacy_page.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
     }
 }

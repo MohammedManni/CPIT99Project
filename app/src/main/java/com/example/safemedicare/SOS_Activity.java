@@ -132,7 +132,7 @@ public class SOS_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 937
-                String PhoneNumber = "+966548966818";
+                String PhoneNumber = "937";
                 Intent i = new Intent(Intent.ACTION_CALL);
                 i.setData(Uri.parse("tel:"+PhoneNumber));
                 startActivity(i);
@@ -143,7 +143,7 @@ public class SOS_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 997
-                String PhoneNumber = "+966548966818";
+                String PhoneNumber = "997";
                 Intent i = new Intent(Intent.ACTION_CALL);
                 i.setData(Uri.parse("tel:"+PhoneNumber));
                 startActivity(i);

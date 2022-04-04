@@ -60,84 +60,8 @@ public class Schedule_Activity extends AppCompatActivity {
 
         }
         /////////////////////////////////////////////////////////////////////
-
-        // toolbar buttons
-        Button Profile = findViewById(R.id.firstB);
-        Button Schedule = findViewById(R.id.SecondB);
-        Button Add = findViewById(R.id.thirdB);
-        Button SOS = findViewById(R.id.SOS);
-        ImageButton imageButton = findViewById(R.id.imageButton);
-
-        Profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (type.equalsIgnoreCase("patient")) {
-                    Intent intent = new Intent(Schedule_Activity.this, Profile_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-
-                } else if (type.equalsIgnoreCase("caregiver")) {
-                    Intent intent = new Intent(Schedule_Activity.this, personal_info_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-
-                }
-            }
-        });
-
-        Schedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Schedule_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        Add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, Add_Medicine_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        SOS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Schedule_Activity.this, SOS_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (type.equalsIgnoreCase("patient")) {
-                    Intent intent = new Intent(Schedule_Activity.this, Home_Page_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-
-                } else if (type.equalsIgnoreCase("caregiver")) {
-                    Intent intent = new Intent(Schedule_Activity.this, caregiver_homePage_activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-
-                }
-            }
-        });
-
-        //////////////////////////end toolbar buttons////////////////////////////////////////////
-        // fill the list view
+        toolbar();
+      // fill the list view
         new ConnectionToReadPatient().execute();
         list = (ListView) findViewById(R.id.ListViewEvent);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -291,5 +215,84 @@ public class Schedule_Activity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    public void toolbar() {
+        // toolbar buttons
+        Button Profile = findViewById(R.id.firstB);
+        Button Schedule = findViewById(R.id.SecondB);
+        Button Add = findViewById(R.id.thirdB);
+        Button SOS = findViewById(R.id.SOS);
+        ImageButton imageButton = findViewById(R.id.imageButton);
+
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equalsIgnoreCase("patient")) {
+                    Intent intent = new Intent(Schedule_Activity.this, Profile_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                } else if (type.equalsIgnoreCase("caregiver")) {
+                    Intent intent = new Intent(Schedule_Activity.this, personal_info_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
+            }
+        });
+
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Schedule_Activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Schedule_Activity.this, Add_Medicine_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Schedule_Activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equalsIgnoreCase("patient")) {
+                    Intent intent = new Intent(Schedule_Activity.this, Home_Page_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                } else if (type.equalsIgnoreCase("caregiver")) {
+                    Intent intent = new Intent(Schedule_Activity.this, caregiver_homePage_activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
+            }
+        });
+
+        //////////////////////////end toolbar buttons////////////////////////////////////////////
+
     }
 }

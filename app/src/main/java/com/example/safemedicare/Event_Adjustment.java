@@ -64,8 +64,68 @@ public class Event_Adjustment extends AppCompatActivity {
         DescriptionEditText = findViewById(R.id.DescriptionEditText);
 
         //////////////////////////////////////////////////////////////////////////////////
+        //toolbar
+        toolbar();
+
+        ////////////////////////////////UPDATE EVENTS///////////////////////////////////////////////////
+        timePicker = (TimePicker) findViewById(R.id.timePicker); // initiate a time picker
+        timePicker.setCurrentHour(12); // before api level 23
+        timePicker.setHour(12); // from api level 23
+        date = (Button) findViewById(R.id.date);
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog = new DatePickerDialog(Event_Adjustment.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // set day of month , month and year value in the edit text
+                        date.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
 
 
+        Button update = findViewById(R.id.updateButton);
+        Button delete = findViewById(R.id.deleteButton);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!nameOfEventET.getText().toString().equalsIgnoreCase("") && !DescriptionEditText.getText().toString().equalsIgnoreCase("")) {
+
+                    //update the information
+                    updateEvent(view);
+                }else {
+                    nameOfEventET.setError("ENTER the Event Name ");
+                    DescriptionEditText.setError("ENTER the Description ");
+                }
+
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                    // Delete the information
+                    DeleteEvent(view);
+
+
+            }
+        });
+
+
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -134,63 +194,6 @@ public class Event_Adjustment extends AppCompatActivity {
 
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
-
-        ////////////////////////////////UPDATE EVENTS///////////////////////////////////////////////////
-        timePicker = (TimePicker) findViewById(R.id.timePicker); // initiate a time picker
-        timePicker.setCurrentHour(12); // before api level 23
-        timePicker.setHour(12); // from api level 23
-        date = (Button) findViewById(R.id.date);
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-                // date picker dialog
-                datePickerDialog = new DatePickerDialog(Event_Adjustment.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // set day of month , month and year value in the edit text
-                        date.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
-                    }
-                }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
-        });
-
-
-        Button update = findViewById(R.id.updateButton);
-        Button delete = findViewById(R.id.deleteButton);
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (!nameOfEventET.getText().toString().equalsIgnoreCase("") && !DescriptionEditText.getText().toString().equalsIgnoreCase("")) {
-
-                    //update the information
-                    updateEvent(view);
-                }else {
-                    nameOfEventET.setError("ENTER the Event Name ");
-                    DescriptionEditText.setError("ENTER the Description ");
-                }
-
-            }
-        });
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                    // Delete the information
-                    DeleteEvent(view);
-
-
-            }
-        });
-
 
     }
 

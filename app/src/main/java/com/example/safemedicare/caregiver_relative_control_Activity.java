@@ -150,8 +150,13 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //toolbar
+        toolbar();
 
 
+
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);

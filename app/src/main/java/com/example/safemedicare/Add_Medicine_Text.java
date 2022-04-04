@@ -111,25 +111,28 @@ public class Add_Medicine_Text extends AppCompatActivity {
                 //AddMedicine(view);
                 if (!medicineNameET.getText().toString().isEmpty()){
 
-                        if (!start_day_DATE.getText().toString().matches("Start day DATE")){
 
-                            //NOTS , ANS, , NDS, TDS, RS;
+
+                          // check if all input interred
                               if ( ANS.equalsIgnoreCase("Select") ){
                                 Toast.makeText(getApplicationContext(), "Please select the Amount", Toast.LENGTH_SHORT).show();
-                            }else  if (  NDS.equalsIgnoreCase("Select") ){
+                            }else  if ( ATS.equalsIgnoreCase("Select") ){
+                                  Toast.makeText(getApplicationContext(), "Please select the Amount type", Toast.LENGTH_SHORT).show();
+                              }else  if (  NDS.equalsIgnoreCase("Select") ){
                                 Toast.makeText(getApplicationContext(), "Please select the Duration", Toast.LENGTH_SHORT).show();
                             }else  if ( TDS.equalsIgnoreCase("Select")  ){
                                 Toast.makeText(getApplicationContext(), "Please select duration in text", Toast.LENGTH_SHORT).show();
                             }else  if ( RS.equalsIgnoreCase("Select") ){
-                                Toast.makeText(getApplicationContext(), "Please select the repetition", Toast.LENGTH_SHORT).show();
-                            }else {
+                                  Toast.makeText(getApplicationContext(), "Please select the repetition", Toast.LENGTH_SHORT).show();
+                              }else  if ( (TDS.equalsIgnoreCase("Month/s") && Integer.parseInt(NDS)>12)  || (TDS.equalsIgnoreCase("Year") && Integer.parseInt(NDS)>1) ){
+                                  Toast.makeText(getApplicationContext(), "Please Change the duration Number", Toast.LENGTH_SHORT).show();
+                              }else  if ( start_day_DATE.getText().toString().matches("Start day DATE") ){
+                                  Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
+                              }else {
                                 AddMedicine(view);
                             }
 
-                        }else {
-                            //toast
-                            Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
-                        }
+
 
                 }else {
                     //toast select day
@@ -225,6 +228,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         numberDurationSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 NDS = spin4.get(i).toString();
             }
 
@@ -241,6 +245,26 @@ public class Add_Medicine_Text extends AppCompatActivity {
         textDurationSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if ( spin5.get(i).toString().equalsIgnoreCase("Month/s") ){
+                   if (Integer.parseInt(NDS)>12){
+                       spin4.clear();
+                       for (int j = 1; j <= 12; j++) {
+                           spin4.add(j);
+                       }
+                       Toast.makeText(getApplicationContext(), "Maximum duration is 12 Months", Toast.LENGTH_SHORT).show();
+
+                   }
+
+                     }else if ( spin5.get(i).toString().equalsIgnoreCase("Year") ){
+                    spin4.clear();
+                    spin4.add("1");
+                    Toast.makeText(getApplicationContext(), "Maximum duration is one year", Toast.LENGTH_SHORT).show();
+                }else {
+                    spin4.clear();
+                    for (int j = 1; j <= 30; j++) {
+                        spin4.add(j);
+                    }
+                }
                 TDS = spin5.get(i).toString();
 
             }
@@ -283,7 +307,9 @@ public class Add_Medicine_Text extends AppCompatActivity {
         }
         // for number of time
         //for (int i =1; i<=6;i++){
-        spin3.add("Pills");
+        spin3.add("Select");
+        spin3.add("Pill/s");
+        spin3.add("Capsule/s");
         //}
         // for duration number
         spin4.add("Select");

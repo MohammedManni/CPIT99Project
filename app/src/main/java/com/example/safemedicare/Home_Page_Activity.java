@@ -1234,7 +1234,7 @@ public class Home_Page_Activity extends AppCompatActivity {
             if (m.getStartDayDate().matches(formattedDate)) {
                 convert12(check);
 
-                eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getStartDayDate() + " Pill/s", "Time: " + timeIn12 + " : " + m.getTimeM()));
+                eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber()+" " + m.getDoseAmountText(), "Time: " + timeIn12 + " : " + m.getTimeM()));
 
             }
         }

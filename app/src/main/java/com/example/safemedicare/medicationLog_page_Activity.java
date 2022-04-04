@@ -24,12 +24,14 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
 
 public class medicationLog_page_Activity extends AppCompatActivity {
 
     EditText medName, numOfTime, amount;
-    public String name, type;
-
+    public String name, type , userName;
+    ArrayList medicationList = new ArrayList<>();
+    ArrayList medicationChild = new ArrayList();
     ////////attributes medication to read from DB/////////
     ListView list;
     ArrayAdapter<String> adapter;
@@ -62,7 +64,22 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         numOfTime = (EditText) findViewById(R.id.editTextNumberOfTime);
         amount = (EditText) findViewById(R.id.editTextAmount);
         ////////////////////////////////////////////////////////////////
+        //toolbar
+        toolbar();
 
+
+        //////// database /////////////////
+
+        // saveChange button
+        Button save = findViewById(R.id.Add_medicine);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                medicationLog(view);
+            }
+        });
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -130,17 +147,6 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
-
-        //////// database /////////////////
-
-        // saveChange button
-        Button save = findViewById(R.id.Add_medicine);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                medicationLog(view);
-            }
-        });
     }
 
     public void medicationLog(View view) {
@@ -155,62 +161,81 @@ public class medicationLog_page_Activity extends AppCompatActivity {
 
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadMedication extends AsyncTask<String, String, String> {
-
+        // starting the connection
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
+
             String medication_url = "http://192.168.100.171/readMedication.php";
             try {
-                HttpClient client = new DefaultHttpClient();
-                HttpGet request = new HttpGet();
-                request.setURI(new URI(medication_url));
-                HttpResponse response = client.execute(request);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                StringBuffer stringBuffer = new StringBuffer("");
-                String line = "";
-                while ((line = reader.readLine()) != null) {
-                    stringBuffer.append(line);
+
+
+                //////////////////////////////////////////////////////////////////////////////////////////
+                HttpClient clientM = new DefaultHttpClient();
+                HttpGet requestM = new HttpGet();
+                requestM.setURI(new URI(medication_url));
+                HttpResponse responseM = clientM.execute(requestM);
+                BufferedReader readerM = new BufferedReader(new InputStreamReader(responseM.getEntity().getContent()));
+                StringBuffer stringBufferM = new StringBuffer("");
+                String lineM = "";
+                while ((lineM = readerM.readLine()) != null) {
+                    stringBufferM.append(lineM);
                     break;
                 }
-                reader.close();
-                result = stringBuffer.toString();
-
-
+                readerM.close();
+                result = stringBufferM.toString();
             } catch (Exception e) {
                 return new String("error");
             }
-
-
             return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
+
+
             try {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
-                if (success == 1) {
-                    JSONArray caregiverData = jsonResult.getJSONArray("medication");
-                    for (int i = 0; i < caregiverData.length(); i++) {
-                        JSONObject caregiverObject = caregiverData.getJSONObject(i);
-                        int id = caregiverObject.getInt("id");
-                        String medicationName = caregiverObject.getString("medicationName");
-                        int numOfTime = caregiverObject.getInt("numberOfTime");
-                        int med_DoseAmount = caregiverObject.getInt("doseAmount");
-/*
-                        //try to match the constructor medicationName,  med_numberOfTime,  med_DoseAmount,  id
-                        medication= new Medication( medicationName,  numOfTime,  med_DoseAmount,  id);
-                       // create the array and add the medication
-                        medicationLog = new MedicationLog();
-                        medicationLog.AddMedication(medication);
-                        String line = id + " - " + medicationName + " - " + numOfTime + " - " + amount;
-                        //adapter.add(line);
+                if (success == 2) {
+                    JSONArray patientData = jsonResult.getJSONArray("medication");
+                    for (int i = 0; i < patientData.length(); i++) {
+                        JSONObject patientObject = patientData.getJSONObject(i);
+                        userName = patientObject.getString("userName");
 
 
- */
+                        if (userName.equalsIgnoreCase(name)) {
+
+
+                            int id = patientObject.getInt("id");
+                            String medicineName = patientObject.getString("medicineName");
+                            String numberOfTime = patientObject.getString("numberOfTime");
+                            String doseAmountNumber = patientObject.getString("doseAmountNumber");
+                            String doseAmountText = patientObject.getString("doseAmountText");
+                            String duration = patientObject.getString("duration");
+                            String durationByText = patientObject.getString("durationByText");
+
+                            String startDayDate = patientObject.getString("startDayDate");
+                            String timeH = patientObject.getString("timeH");
+                            String timeM = patientObject.getString("timeM");
+                            String everyH = patientObject.getString("everyH");
+                            String repeated = patientObject.getString("repeated");
+
+                            // add to the array list medicationList
+                            Medication m = new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated);
+
+                            medicationList.add(m);
+                            //  eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber() + " Pill/s", "Time " + m.getTimeH() + " : " + m.getTimeM()));
+
+                        }
+
+
                     }
+                   // addMedicationChild();
+                    //gridList.setAdapter(myAdapter);
+
                 } else {
-                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
