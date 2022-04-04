@@ -7,91 +7,6 @@
 
     >
 
-    <CheckBox
-        android:id="@+id/Tuesday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="8dp"
-        android:text="Tuesday"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextDurationSpin" />
-
-    <CheckBox
-        android:id="@+id/Sunday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:text="Sunday"
-        app:layout_constraintEnd_toStartOf="@+id/Monday"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Saturday"
-        app:layout_constraintTop_toBottomOf="@+id/DurtaionTextView" />
-
-    <CheckBox
-        android:id="@+id/Friday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Friday"
-        app:layout_constraintEnd_toStartOf="@+id/ALL"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Thursday"
-        app:layout_constraintTop_toBottomOf="@+id/Monday" />
-
-    <CheckBox
-        android:id="@+id/Wednesday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="Wednesday"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Saturday" />
-
-    <CheckBox
-        android:id="@+id/Saturday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="35dp"
-        android:text="Saturday"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DurtaionTextView" />
-
-    <CheckBox
-        android:id="@+id/ALL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:text="ALL"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Tuesday" />
-
-    <CheckBox
-        android:id="@+id/Thursday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Thursday"
-        app:layout_constraintEnd_toStartOf="@+id/Friday"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Wednesday"
-        app:layout_constraintTop_toBottomOf="@+id/Sunday" />
-
-    <CheckBox
-        android:id="@+id/Monday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:text="Monday"
-        app:layout_constraintEnd_toStartOf="@+id/Tuesday"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/Sunday"
-        app:layout_constraintTop_toBottomOf="@+id/numberDurationSpin" />
-
     <include
         android:id="@+id/toolbarMedication"
         layout="@layout/toolbar"
@@ -104,9 +19,10 @@
         android:layout_height="35dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="24dp"
+        android:textSize="15dp"
         android:text="Medicine Name :"
 
-        android:textSize="15dp"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMedication" />
 
@@ -185,6 +101,19 @@
         app:layout_constraintTop_toBottomOf="@+id/amountNumberSpinner" />
 
     <Spinner
+        android:id="@+id/RepeatSpin"
+        android:layout_width="87dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="122dp"
+        android:background="#F7E2E2"
+        android:spinnerMode="dropdown"
+        android:textAlignment="center"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberDurationSpin" />
+
+    <Spinner
         android:id="@+id/numberOfTimeSpin"
         android:layout_width="87dp"
         android:layout_height="40dp"
@@ -240,45 +169,45 @@
         android:id="@+id/Start_day_DATE"
         android:layout_width="274dp"
         android:layout_height="59dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginTop="45dp"
         android:layout_marginEnd="69dp"
-        android:layout_marginBottom="22dp"
         android:backgroundTint="#5B7DB1"
         android:padding="15dp"
         android:text="Start day DATE"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/timePicker"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Wednesday" />
+        app:layout_constraintTop_toBottomOf="@+id/RepeatText" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="Monday,Thursday,ALL,Tuesday,Saturday,Sunday,Wednesday,Friday" />
+        android:layout_height="wrap_content" />
 
     <TimePicker
         android:id="@+id/timePickerMedicine"
         android:layout_width="212dp"
         android:layout_height="94dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="39dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="38dp"
         android:background="#F7E2E2"
         android:timePickerMode="spinner"
         app:layout_constraintBottom_toTopOf="@+id/Add_medicine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/StartDayTime" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/StartDayTime"
+        app:layout_constraintTop_toBottomOf="@+id/Start_day_DATE" />
 
     <TextView
         android:id="@+id/StartDayTime"
         android:layout_width="117dp"
         android:layout_height="41dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginBottom="66dp"
         android:text="Please choose the start time :"
         android:textSize="15dp"
         android:textStyle="bold"
@@ -301,5 +230,16 @@
         app:layout_constraintBottom_toTopOf="@+id/amountTextSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditMedicineName" />
+
+    <TextView
+        android:id="@+id/RepeatText"
+        android:layout_width="175dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="32dp"
+        android:text="Repeat every :"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DurtaionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

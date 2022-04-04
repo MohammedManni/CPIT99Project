@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -39,12 +38,12 @@ import java.util.Calendar;
 public class Add_Medicine_Text extends AppCompatActivity {
     String name, type;
     EditText medicineNameET;
-    Spinner numberOfTimeSpin, amountNumberSpinner, amountTextSpinner, numberDurationSpin, textDurationSpin;
-    String NOTS, ANS, ATS, NDS, TDS;
+    Spinner numberOfTimeSpin, amountNumberSpinner, amountTextSpinner, numberDurationSpin, textDurationSpin, RepeatSpin;
+    String NOTS, ANS, ATS, NDS, TDS, RS;
     CheckBox saturday, sunday, monday, tuesday, wednesday, thursday, friday, all;
     DatePickerDialog datePickerDialog;
     Button start_day_DATE;
-    ArrayList spin1, spin2, spin3, spin4, spin5;
+    ArrayList spin1, spin2, spin3, spin4, spin5, spin6;
     TextView everyH;
     TimePicker timePicker;
     int eh;
@@ -72,14 +71,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         amountTextSpinner = (Spinner) findViewById(R.id.amountTextSpinner);
         numberDurationSpin = (Spinner) findViewById(R.id.numberDurationSpin);
         textDurationSpin = (Spinner) findViewById(R.id.TextDurationSpin);
-        saturday = findViewById(R.id.Saturday);
-        sunday = findViewById(R.id.Sunday);
-        monday = findViewById(R.id.Monday);
-        tuesday = findViewById(R.id.Tuesday);
-        wednesday = findViewById(R.id.Wednesday);
-        thursday = findViewById(R.id.Thursday);
-        friday = findViewById(R.id.Friday);
-        all = findViewById(R.id.ALL);
+
         start_day_DATE = findViewById(R.id.Start_day_DATE);
         everyH= findViewById(R.id.everyH);
         timePicker = (TimePicker) findViewById(R.id.timePickerMedicine); // initiate a time picker
@@ -88,43 +80,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         Button add_medicine = findViewById(R.id.Add_medicine);
 
 
-        all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (all.isChecked()) {
-                    saturday.setChecked(true);
-                    saturday.setClickable(false);
-                    sunday.setChecked(true);
-                    sunday.setClickable(false);
-                    monday.setChecked(true);
-                    monday.setClickable(false);
-                    tuesday.setChecked(true);
-                    tuesday.setClickable(false);
-                    wednesday.setChecked(true);
-                    wednesday.setClickable(false);
-                    thursday.setChecked(true);
-                    thursday.setClickable(false);
-                    friday.setChecked(true);
-                    friday.setClickable(false);
-                } else {
-                    saturday.setChecked(false);
-                    saturday.setClickable(true);
-                    sunday.setChecked(false);
-                    sunday.setClickable(true);
-                    monday.setChecked(false);
-                    monday.setClickable(true);
-                    tuesday.setChecked(false);
-                    tuesday.setClickable(true);
-                    wednesday.setChecked(false);
-                    wednesday.setClickable(true);
-                    thursday.setChecked(false);
-                    thursday.setClickable(true);
-                    friday.setChecked(false);
-                    friday.setClickable(true);
 
-                }
-            }
-        });
 
         ///////////////////SELECT THE DATE /////////////////////////////////
         start_day_DATE.setOnClickListener(new View.OnClickListener() {
@@ -154,26 +110,27 @@ public class Add_Medicine_Text extends AppCompatActivity {
             public void onClick(View view) {
                 //AddMedicine(view);
                 if (!medicineNameET.getText().toString().isEmpty()){
-                    if (all.isChecked()) {
+
                         if (!start_day_DATE.getText().toString().matches("Start day DATE")){
-                            AddMedicine(view);
-                            //Toast.makeText(getApplicationContext(), "went through", Toast.LENGTH_SHORT).show();
+
+                            //NOTS , ANS, , NDS, TDS, RS;
+                              if ( ANS.equalsIgnoreCase("Select") ){
+                                Toast.makeText(getApplicationContext(), "Please select the Amount", Toast.LENGTH_SHORT).show();
+                            }else  if (  NDS.equalsIgnoreCase("Select") ){
+                                Toast.makeText(getApplicationContext(), "Please select the Duration", Toast.LENGTH_SHORT).show();
+                            }else  if ( TDS.equalsIgnoreCase("Select")  ){
+                                Toast.makeText(getApplicationContext(), "Please select duration in text", Toast.LENGTH_SHORT).show();
+                            }else  if ( RS.equalsIgnoreCase("Select") ){
+                                Toast.makeText(getApplicationContext(), "Please select the repetition", Toast.LENGTH_SHORT).show();
+                            }else {
+                                AddMedicine(view);
+                            }
+
                         }else {
                             //toast
                             Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
                         }
-                    }else if (saturday.isChecked()|| sunday.isChecked() || monday.isChecked() || tuesday.isChecked() ||thursday.isChecked()|| friday.isChecked()){
-                        if (!start_day_DATE.getText().toString().matches("Start day DATE")){
-                            AddMedicine(view);
-                            //Toast.makeText(getApplicationContext(), "went through", Toast.LENGTH_SHORT).show();
-                        }else {
-                            //toast
-                            Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
-                        }
-                    }else {
-                        //toast select day
-                        Toast.makeText(getApplicationContext(), "Please choose the day/days", Toast.LENGTH_SHORT).show();
-                    }
+
                 }else {
                     //toast select day
                     Toast.makeText(getApplicationContext(), "Please Enter the medicine name", Toast.LENGTH_SHORT).show();
@@ -192,51 +149,19 @@ public class Add_Medicine_Text extends AppCompatActivity {
         amountTextSpinner = (Spinner) findViewById(R.id.amountTextSpinner);
         numberDurationSpin = (Spinner) findViewById(R.id.numberDurationSpin);
         textDurationSpin = (Spinner) findViewById(R.id.TextDurationSpin);
+        RepeatSpin = (Spinner) findViewById(R.id.RepeatSpin);
         spin1 = new ArrayList<>();
         spin2 = new ArrayList<>();
         spin3 = new ArrayList<>();
         spin4 = new ArrayList<>();
         spin5 = new ArrayList<>();
+        spin6 = new ArrayList<>();
 
 
         ItemSelectedListener();
 
     }
-/*
-    public String checkBox() {
-        String day = "";
-        if (all.isChecked()) {
 
-            day = day + ":";
-
-        } else {
-            if (saturday.isChecked()) {
-                day = day + ":";
-            }
-            if (sunday.isChecked()) {
-                day = day + ":";
-            }
-            if (monday.isChecked()) {
-                day = day + ":";
-            }
-            if (tuesday.isChecked()) {
-                day = day + ":";
-            }
-            if (wednesday.isChecked()) {
-                day = day + ":";
-            }
-            if (thursday.isChecked()) {
-                day = day + ":";
-            }
-            if (friday.isChecked()) {
-                day = day + ":";
-            }
-        }
-        return day;
-
-    }
-
- */
     public void ItemSelectedListener() {
         forLoopSpinner();
         ArrayAdapter adapter1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spin1);
@@ -326,15 +251,33 @@ public class Add_Medicine_Text extends AppCompatActivity {
             }
         });
 
+        ArrayAdapter adapter6 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spin6);
+        adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        RepeatSpin.setAdapter(adapter6);
+        RepeatSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                RS = spin6.get(i).toString();
 
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     public void forLoopSpinner() {
         // for number of time
-        for (int i = 1; i <= 6; i++) {
+
+        for (int i = 1; i <= 4; i++) {
             spin1.add(i);
         }
         // for number of time
+
+        spin2.add("Select");
         for (int i = 1; i <= 4; i++) {
             spin2.add(i);
         }
@@ -343,15 +286,20 @@ public class Add_Medicine_Text extends AppCompatActivity {
         spin3.add("Pills");
         //}
         // for duration number
+        spin4.add("Select");
         for (int i = 1; i <= 30; i++) {
             spin4.add(i);
         }
         // for duration text
-        spin5.add("Day");
-        spin5.add("Week");
-        spin5.add("Month");
+        spin5.add("Select");
+        spin5.add("Day/s");
+        spin5.add("Week/s");
+        spin5.add("Month/s");
         spin5.add("Year");
-
+        spin6.add("Select");
+        spin6.add("Day");
+        spin6.add("Two Days");
+        spin6.add("Three Days");
 
     }
 
@@ -432,34 +380,23 @@ public class Add_Medicine_Text extends AppCompatActivity {
         String amountTextSpinner = ATS;
         String numberDurationSpin = NDS;
         String textDurationSpin = TDS;
-        String Saturday = String.valueOf(saturday.isChecked());
-        String Sunday = String.valueOf(sunday.isChecked());
-        String Monday = String.valueOf(monday.isChecked());
-        String Tuesday = String.valueOf(tuesday.isChecked());
-        String Wednesday = String.valueOf(wednesday.isChecked());
-        String Thursday = String.valueOf(thursday.isChecked());
-        String Friday = String.valueOf(friday.isChecked());
+
         String date = start_day_DATE.getText().toString();
         String userName = name;
-        String timeH ,timeM;
+        String timeH ,timeM, repeated = null;
         timeH = String.valueOf(hours);
         timeM = String.valueOf(minutes);
-       /* if (hours<10){
-             timeH = "0"+hours;
-        }else {
-             timeH = String.valueOf(hours);
+        if (RS.equalsIgnoreCase("Day")){
+            repeated = "1";
+        }else  if (RS.equalsIgnoreCase("Two Days")){
+            repeated = "2";
+        }else  if (RS.equalsIgnoreCase("Three Days")){
+            repeated = "3";
         }
-        if (minutes<10){
-            timeM = "0"+minutes;
-        }else {
-            timeM = String.valueOf(minutes);
-        }
-        */
+
         addMedicineToDB addEventToDB = new addMedicineToDB(this);
-        addEventToDB.execute("add", medicineName, numberOfTime, amountNumberSpinner,
-                amountTextSpinner, numberDurationSpin, textDurationSpin,
-                Saturday, Sunday, Monday, Tuesday, Wednesday, Thursday,
-                Friday, date, userName,timeH ,timeM );
+        addEventToDB.execute( medicineName, numberOfTime, amountNumberSpinner,
+                amountTextSpinner, numberDurationSpin, textDurationSpin, date, userName,timeH ,timeM , repeated);
 
     }
 
@@ -480,25 +417,19 @@ public class Add_Medicine_Text extends AppCompatActivity {
             // if (operation.equals("AddEvent")) {
             try {
 
-                String medicineNameET = params[1];
-                String numberOfTimeSpin = params[2];
-                String amountNumberSpinner = params[3];
-                String amountTextSpinner = params[4];
-                String numberDurationSpin = params[5];
-                String textDurationSpin = params[6];
-                String saturday = params[7];
-                String sunday = params[8];
-                String monday = params[9];
-                String tuesday = params[10];
-                String wednesday = params[11];
-                String thursday = params[12];
-                String friday = params[13];
+                String medicineNameET = params[0];
+                String numberOfTimeSpin = params[1];
+                String amountNumberSpinner = params[2];
+                String amountTextSpinner = params[3];
+                String numberDurationSpin = params[4];
+                String textDurationSpin = params[5];
 
-                String date = params[14];
-                String userName = params[15];
-                String timeH = params[16];
-                String timeM = params[17];
 
+                String date = params[6];
+                String userName = params[7];
+                String timeH = params[8];
+                String timeM = params[9];
+                String repeated = params[10];
                 URL url = new URL(login_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -511,19 +442,13 @@ public class Add_Medicine_Text extends AppCompatActivity {
                         + URLEncoder.encode("amountNumberSpinner", "UTF-8") + "=" + URLEncoder.encode(amountNumberSpinner, "UTF-8") + "&"
                         + URLEncoder.encode("amountTextSpinner", "UTF-8") + "=" + URLEncoder.encode(amountTextSpinner, "UTF-8") + "&"
                         + URLEncoder.encode("numberDurationSpin", "UTF-8") + "=" + URLEncoder.encode(numberDurationSpin, "UTF-8") + "&"
-                        + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8") + "&"
-                        + URLEncoder.encode("saturday", "UTF-8") + "=" + URLEncoder.encode(saturday, "UTF-8") + "&"
-                        + URLEncoder.encode("sunday", "UTF-8") + "=" + URLEncoder.encode(sunday, "UTF-8") + "&"
-                        + URLEncoder.encode("monday", "UTF-8") + "=" + URLEncoder.encode(monday, "UTF-8") + "&"
-                        + URLEncoder.encode("tuesday", "UTF-8") + "=" + URLEncoder.encode(tuesday, "UTF-8") + "&"
-                        + URLEncoder.encode("wednesday", "UTF-8") + "=" + URLEncoder.encode(wednesday, "UTF-8") + "&"
-                        + URLEncoder.encode("thursday", "UTF-8") + "=" + URLEncoder.encode(thursday, "UTF-8") + "&"
-                        + URLEncoder.encode("friday", "UTF-8") + "=" + URLEncoder.encode(friday, "UTF-8") + "&"
+                        + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8")+ "&"
                         + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8") + "&"
                         + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8")+ "&"
                         + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8")+ "&"
                         + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8")+ "&"
-                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(eh), "UTF-8");
+                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(eh), "UTF-8")+ "&"
+                        + URLEncoder.encode("repeated", "UTF-8") + "=" + URLEncoder.encode(repeated, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
