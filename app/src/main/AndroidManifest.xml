@@ -20,6 +20,7 @@
         <activity android:name=".shared_activity"></activity>
         <activity android:name=".Add_Medicine_Text" />
         <activity android:name=".Event_Adjustment" />
+        <activity android:name=".shared_schedule" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -29,13 +29,11 @@ public class caregiver_homePage_activity extends AppCompatActivity {
     ListView list;
     String names[];
     ArrayAdapter<String> adapter;
-    CaregiverClass caregiver;
-    CaregiverClass[] caregiverList;
-    Patient patient;
-    Patient[] patientList;
+
     private String name, type;
     String userName, patientName;
     ArrayList <String> p=new ArrayList<>();
+
 
 
     @Override
@@ -56,7 +54,6 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         }
 
         /////////////////////////////////////////////////////////////////////
-        //toolbar
         toolbar();
 
         ////////////// read from database///////////////////////////
@@ -64,14 +61,18 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-               // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-               // intent.putExtra("USERNAME", name);
-               // intent.putExtra("TYPE", type);
-               // intent.putExtra("PatientName", p.get(i));
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+                // intent.putExtra("USERNAME", name);
+                // intent.putExtra("TYPE", type);
+                // intent.putExtra("PatientName", p.get(i));
                 //startActivity(intent);
-
-                Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(caregiver_homePage_activity.this, shared_activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                intent.putExtra("PATIENT_USERNAME",p.get(position));
+                startActivity(intent);
             }
         });
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -131,31 +132,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
         //////////////////////////////  end toolbar button//////////////////////////////////////////////
 
-        ////////////// read from database///////////////////////////
-        list = (ListView) findViewById(R.id.patientList);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-               // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-               // intent.putExtra("USERNAME", name);
-               // intent.putExtra("TYPE", type);
-               // intent.putExtra("PatientName", p.get(i));
-                //startActivity(intent);
-                //Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(caregiver_homePage_activity.this, shared_activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                intent.putExtra("PATIENT_NAME",p.get(position));
-                startActivity(intent);
-            }
-        });
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        list.setAdapter(adapter);
-        new ConnectionToReadPatient().execute();
-
     }
-
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadPatient extends AsyncTask<String, String, String> {
 

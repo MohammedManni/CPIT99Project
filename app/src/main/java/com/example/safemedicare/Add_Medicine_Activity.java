@@ -1,8 +1,11 @@
 package com.example.safemedicare;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,8 +14,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 public class Add_Medicine_Activity extends AppCompatActivity {
     private String name, type;
@@ -64,6 +78,9 @@ public class Add_Medicine_Activity extends AppCompatActivity {
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                doProcess(view);
+
                 checkBox2.setVisibility(View.VISIBLE);
                 checkBox3.setVisibility(View.VISIBLE);
                 checkBox4.setVisibility(View.VISIBLE);
@@ -164,8 +181,6 @@ public class Add_Medicine_Activity extends AppCompatActivity {
 
 
 
-        /*
-
 
 
         ///////////////////////Text recognition//////////////////////////////////////
@@ -231,6 +246,7 @@ public class Add_Medicine_Activity extends AppCompatActivity {
             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                 String s = firebaseVisionText.getText();
                 textView.setText(s);
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
         });
         //6. if task is failure
@@ -246,9 +262,8 @@ public class Add_Medicine_Activity extends AppCompatActivity {
 
 
 
-         */
 
-    }
+
 
 /*
     // methods from developers////
