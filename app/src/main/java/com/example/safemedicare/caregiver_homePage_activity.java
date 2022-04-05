@@ -44,9 +44,6 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         setContentView(R.layout.activity_caregiver_home_page);
 
 
-
-
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
@@ -134,7 +131,31 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
         //////////////////////////////  end toolbar button//////////////////////////////////////////////
 
+        ////////////// read from database///////////////////////////
+        list = (ListView) findViewById(R.id.patientList);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+               // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+               // intent.putExtra("USERNAME", name);
+               // intent.putExtra("TYPE", type);
+               // intent.putExtra("PatientName", p.get(i));
+                //startActivity(intent);
+                //Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(caregiver_homePage_activity.this, shared_activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                intent.putExtra("PATIENT_NAME",p.get(position));
+                startActivity(intent);
+            }
+        });
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        list.setAdapter(adapter);
+        new ConnectionToReadPatient().execute();
+
     }
+
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadPatient extends AsyncTask<String, String, String> {
 
@@ -181,7 +202,8 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
                         if (userName.equalsIgnoreCase(name)) {
                             p.add(patientName);
-                            String line = id + " - " + patientName;
+                            //String line = id + " - " + patientName;
+                            String line =patientName;
                             adapter.add(line);
                         }
 
