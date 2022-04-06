@@ -1,7 +1,12 @@
 package com.example.safemedicare;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -103,14 +108,11 @@ public class Home_Page_Activity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
         formattedDate = dateFormat.format(getDate);
         //Toast.makeText(getApplicationContext(), formattedDate, Toast.LENGTH_SHORT).show();
-
         ///////////////////////////////////END GET CURRENT DATE//////////////////////////////////////////////////////////////////
 
 
         new Connection().execute();
         myAdapter = new GridAdapter(this, R.layout.gridview_item, eventList);
-
-
 
         // implement setOnItemClickListener event on GridView
         gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -125,13 +127,34 @@ public class Home_Page_Activity extends AppCompatActivity {
 
 
     }
+/*
+    public void notification(ArrayList arrayList) {
+        for (int i = 0; i < arrayList.size(); i++) {
+            Event event = new Event();
+            if (event.getEventDate().equalsIgnoreCase("4/3/2022")) {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(Home_Page_Activity.this, "My Notification");
+                builder.setSmallIcon(R.drawable.logoclear6);
+                builder.setContentTitle("My title");
+                builder.setContentText("Hello from the app");
+                builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                builder.setAutoCancel(true);
+
+                // to notify the user
+                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(Home_Page_Activity.this);
+                // help id give anything / build create notification
+                managerCompat.notify(1, builder.build());
+            }
+        }
+    }
+
+ */
 
     class Connection extends AsyncTask<String, String, String> {
         // starting the connection
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.171/readEvent.php";
+            String medication_url = "http://192.168.100.10/readEvent.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
@@ -168,7 +191,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
 
                         if (userName.equalsIgnoreCase(name)) {
-                            int id =patientObject.getInt("id");
+                            int id = patientObject.getInt("id");
                             String eventName = patientObject.getString("eventName");
                             String eventDescription = patientObject.getString("eventDescription");
                             String date = patientObject.getString("date");
@@ -176,9 +199,50 @@ public class Home_Page_Activity extends AppCompatActivity {
                             String timeM = patientObject.getString("timeM");
 
                             // add to the array list
-                            eventlist1.add(new Event(eventName, eventDescription, timeH, timeM, date,id));
-                        }
+                            eventlist1.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
 
+                            ///////////////CREATE NOTIFICATION////////////////////////////////////////////////
+                            // if version > oreo version
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                //channel id
+                                NotificationChannel channel = new NotificationChannel("My Notification", "My Notification", NotificationManager.IMPORTANCE_DEFAULT);
+                                NotificationManager manager = getSystemService(NotificationManager.class);
+                                manager.createNotificationChannel(channel);
+                                /////// get currentTime
+                                String currentTime = new SimpleDateFormat("H:mm", Locale.getDefault()).format(new Date());
+                               String[]splitedTime=currentTime.split(":");
+                               int hour=Integer.parseInt(splitedTime[0]);
+                                int min=Integer.parseInt(splitedTime[1]);
+                                /////////Time in database///////
+                                String timeInDatabase=timeH+":"+timeM;
+                                //&&Integer.parseInt("4")==hour&&Integer.parseInt("34")==min
+                                if (date.equalsIgnoreCase(formattedDate)) {
+                                    int ii=Integer.parseInt(timeH);
+                                    Intent intent = new Intent(Home_Page_Activity.this, MyBroadcastReceiver.class);
+                                    PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                            Home_Page_Activity.this, 234324243, intent, 0);
+                                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Integer.parseInt(timeInDatabase), pendingIntent);
+                                    //Toast.makeText(Home_Page_Activity.this, ii, Toast.LENGTH_SHORT).show();
+                                    /*
+                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(Home_Page_Activity.this, "My Notification");
+                                    builder.setSmallIcon(R.drawable.ic_baseline_notifications_active_24);
+                                    builder.setContentTitle("Event Name: "+eventName);
+                                    builder.setContentText("Event Description: "+eventDescription);
+                                    builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                                    builder.setAutoCancel(true);
+
+
+                                    // to notify the user
+                                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(Home_Page_Activity.this);
+                                    // help id give anything / build create notification
+                                    managerCompat.notify(1, builder.build());
+
+                                     */
+                                }
+                            }
+                            /////////////////////////////////////////////////////
+                        }
 
                     }
                     // sort the array list

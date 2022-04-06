@@ -210,7 +210,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String login_url = "http://192.168.100.171/AddEvent.php";
+            String login_url = "http://192.168.100.10/AddEvent.php";
 
 
             if (operation.equals("AddEvent")) {

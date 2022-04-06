@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeMedicare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".shared_schedule"></activity>
+        <activity android:name=".shared_schedule" />
         <activity android:name=".shared_activity" />
         <activity android:name=".Add_Medicine_Text" />
         <activity android:name=".Event_Adjustment" />
@@ -52,7 +53,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <receiver android:name="MyBroadcastReceiver" >
+        </receiver>
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
