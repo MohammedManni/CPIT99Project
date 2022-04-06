@@ -65,13 +65,12 @@ public class Home_Page_Activity extends AppCompatActivity {
         gridList = (GridView) findViewById(R.id.gridView);
 
 
-        int logos[] = {R.drawable.logo19, R.drawable.logo19, R.drawable.logo19, R.drawable.logo19,
-                R.drawable.logo19, R.drawable.logo19};
+
         ///////////////////////////////////GET CURRENT DATE//////////////////////////////////////////////////////////////////
         Date getDate = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
         formattedDate = dateFormat.format(getDate);
-        //Toast.makeText(getApplicationContext(), formattedDate, Toast.LENGTH_SHORT).show();
+
 
         ///////////////////////////////////END GET CURRENT DATE//////////////////////////////////////////////////////////////////
 
@@ -90,7 +89,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                 GridItem e = (GridItem) eventList.get(position);
                 String s = e.getEventListName();
                 String[] spilt = s.split(":");
-                //Toast.makeText(getApplicationContext(), spilt[0], Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(Home_Page_Activity.this, SecondActivity.class);
                 if (spilt[0].equalsIgnoreCase("Medicine")){
                     Medication medication=null;
