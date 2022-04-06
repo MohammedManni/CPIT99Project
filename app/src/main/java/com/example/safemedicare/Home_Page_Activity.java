@@ -37,6 +37,7 @@ public class Home_Page_Activity extends AppCompatActivity {
     private String name, type, userName, formattedDate;
     GridView gridList;
     ArrayList eventList = new ArrayList<>();
+    ArrayList<Event> eventlistChild = new ArrayList<>();
     ArrayList medicationList = new ArrayList<>();
     ArrayList medicationChild = new ArrayList();
     GridAdapter myAdapter;
@@ -86,9 +87,60 @@ public class Home_Page_Activity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // set an Intent to Another Activity
+                GridItem e = (GridItem) eventList.get(position);
+                String s = e.getEventListName();
+                String[] spilt = s.split(":");
+                //Toast.makeText(getApplicationContext(), spilt[0], Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Home_Page_Activity.this, SecondActivity.class);
-                intent.putExtra("image", logos[position]); // put image data in Intent
-                startActivity(intent); // start Intent
+                if (spilt[0].equalsIgnoreCase("Medicine")){
+                    Medication medication=null;
+                    int a=0;
+                    for (int i = 0; i < medicationChild.size(); i++) {
+                         medication= (Medication) medicationChild.get(i);
+                        if (spilt[1].equalsIgnoreCase(" "+medication.getMedicineName())){
+
+                            //intent.putExtra("image", logos[position]); // put image data in Intent
+                            intent.putExtra("operation", "1");
+                            //intent.putExtra("userName", medication.getUser_name());
+                            intent.putExtra("NameM", medication.getMedicineName());
+                            intent.putExtra("numberOfTime", medication.getNumberOfTime());
+                            intent.putExtra("doseAmountNumber", medication.getDoseAmountNumber());
+                            intent.putExtra("doseAmountText", medication.getDoseAmountText());
+                            intent.putExtra("duration", medication.getDuration());
+                            intent.putExtra("durationByText", medication.getTextDurationSpin());
+                            intent.putExtra("startDayDate", medication.getStartDayDate());
+                            intent.putExtra("timeH", medication.getTimeH());
+                            intent.putExtra("timeM", medication.getTimeM());
+                            intent.putExtra("everyH", medication.getEveryH());
+                            intent.putExtra("repeated", medication.getRepeated());
+
+                        }
+
+                    } startActivity(intent); // start Intent
+
+                }else if (spilt[0].equalsIgnoreCase("Name")){
+                    for (int i = 0; i < eventlistChild.size(); i++) {
+                       Event event= (Event) eventlistChild.get(i);
+
+                        if (spilt[1].matches(" "+event.getEventName())){
+
+                            //intent.putExtra("image", logos[position]); // put image data in Intent
+                            intent.putExtra("operation", "2");
+                            //intent.putExtra("userName", event.getEventName());
+                            intent.putExtra("eventName", event.getEventName());
+                            intent.putExtra("eventDescription", event.getEventDetails());
+                            intent.putExtra("date", event.getEventDate());
+                            intent.putExtra("timeH", event.getEventTimeH());
+                            intent.putExtra("timeM", event.getEventTimeM());
+
+                        }
+                    }   //Toast.makeText(getApplicationContext(),spilt[1] +" not found", Toast.LENGTH_SHORT).show();
+                    startActivity(intent); // start Intent
+                }
+
+
+
+
             }
         });
 
@@ -124,7 +176,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            ArrayList<Event> eventlist1 = new ArrayList<>();
+
 
             try {
                 JSONObject jsonResult = new JSONObject(result);
@@ -145,22 +197,22 @@ public class Home_Page_Activity extends AppCompatActivity {
                             String timeM = patientObject.getString("timeM");
 
                             // add to the array list
-                            eventlist1.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
+                            eventlistChild.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
                         }
 
 
                     }
                     // sort the array list
-                    Collections.sort(eventlist1, new Comparator<Event>() {
+                    Collections.sort(eventlistChild, new Comparator<Event>() {
                         @Override
                         public int compare(Event event1, Event event2) {
                             return event1.getEventTimeH().compareTo(event2.getEventTimeH());
                         }
                     });
                     // add the array list to the event list related to the grid view
-                    for (int i = 0; i < eventlist1.size(); i++) {
+                    for (int i = 0; i < eventlistChild.size(); i++) {
                         Event e = new Event();
-                        e = eventlist1.get(i);
+                        e = eventlistChild.get(i);
                         int check = Integer.parseInt(e.getEventTimeH());
                         if (e.getEventDate().matches(formattedDate)) {
                             convert12(check);
@@ -311,8 +363,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     year++;
                                 }
                             }
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days once
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days once
 
                             medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, medication.getTimeH(), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                             day = day + 2;
@@ -334,8 +385,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                         }
 
 
-                    }
-                    else if (everyH == 12) {
+                    } else if (everyH == 12) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day twice
 
@@ -357,8 +407,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
                             //
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days twice
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days twice
                             for (int k = 0; k < 2; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 12;
@@ -377,8 +426,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
 
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days twice
+                        } else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days twice
                             for (int k = 0; k < 2; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 12;
@@ -399,8 +447,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
                         }
 
-                    }
-                    else if (everyH == 8) {
+                    } else if (everyH == 8) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day three times
 
@@ -421,8 +468,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     year++;
                                 }
                             }
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days three times
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days three times
                             for (int k = 0; k < 3; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 8;
@@ -441,8 +487,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
 
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days three times
+                        } else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days three times
                             for (int k = 0; k < 3; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 8;
@@ -462,8 +507,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                             }
 
                         }
-                    }
-                    else if (everyH == 6) {
+                    } else if (everyH == 6) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day 4 times
 
@@ -527,8 +571,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
 
                 }
-            }
-            else if (DurationText.equalsIgnoreCase("Week/s")) {
+            } else if (DurationText.equalsIgnoreCase("Week/s")) {
 
                 for (int j = 0; j < (Integer.parseInt(Duration) * 7); j++) {
                     int everyH = Integer.parseInt(medication.getEveryH());
@@ -544,8 +587,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     year++;
                                 }
                             }
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days once
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days once
 
                             medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, medication.getTimeH(), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                             day = day + 2;
@@ -567,8 +609,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                         }
 
 
-                    }
-                    else if (everyH == 12) {
+                    } else if (everyH == 12) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day twice
 
@@ -590,8 +631,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
                             //
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days twice
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days twice
                             for (int k = 0; k < 2; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 12;
@@ -610,8 +650,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
 
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days twice
+                        } else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days twice
                             for (int k = 0; k < 2; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 12;
@@ -632,8 +671,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
                         }
 
-                    }
-                    else if (everyH == 8) {
+                    } else if (everyH == 8) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day three times
 
@@ -654,8 +692,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     year++;
                                 }
                             }
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days three times
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days three times
                             for (int k = 0; k < 3; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 8;
@@ -674,8 +711,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
 
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days three times
+                        } else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days three times
                             for (int k = 0; k < 3; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 8;
@@ -695,8 +731,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                             }
 
                         }
-                    }
-                    else if (everyH == 6) {
+                    } else if (everyH == 6) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day 4 times
 
@@ -759,8 +794,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                     }
                 }
 
-            }
-            else if (DurationText.equalsIgnoreCase("Month/s")) {
+            } else if (DurationText.equalsIgnoreCase("Month/s")) {
                 for (int j = 0; j < (Integer.parseInt(Duration) * 30); j++) {
                     int everyH = Integer.parseInt(medication.getEveryH());
                     if (everyH == 24) {
@@ -775,8 +809,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     year++;
                                 }
                             }
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days once
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days once
 
                             medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, medication.getTimeH(), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                             day = day + 2;
@@ -798,8 +831,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                         }
 
 
-                    }
-                    else if (everyH == 12) {
+                    } else if (everyH == 12) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day twice
 
@@ -821,8 +853,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
                             //
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days twice
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days twice
                             for (int k = 0; k < 2; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 12;
@@ -841,8 +872,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
 
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days twice
+                        } else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days twice
                             for (int k = 0; k < 2; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 12;
@@ -863,8 +893,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
                         }
 
-                    }
-                    else if (everyH == 8) {
+                    } else if (everyH == 8) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day three times
 
@@ -885,8 +914,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     year++;
                                 }
                             }
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days three times
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days three times
                             for (int k = 0; k < 3; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 8;
@@ -905,8 +933,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
 
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days three times
+                        } else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days three times
                             for (int k = 0; k < 3; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 8;
@@ -926,8 +953,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                             }
 
                         }
-                    }
-                    else if (everyH == 6) {
+                    } else if (everyH == 6) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day 4 times
 
@@ -1004,8 +1030,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     year++;
                                 }
                             }
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days once
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days once
 
                             medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, medication.getTimeH(), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                             day = day + 2;
@@ -1027,8 +1052,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                         }
 
 
-                    }
-                    else if (everyH == 12) {
+                    } else if (everyH == 12) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day twice
 
@@ -1050,8 +1074,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
                             //
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days twice
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days twice
                             for (int k = 0; k < 2; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 12;
@@ -1070,8 +1093,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
 
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days twice
+                        } else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days twice
                             for (int k = 0; k < 2; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 12;
@@ -1092,8 +1114,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
                         }
 
-                    }
-                    else if (everyH == 8) {
+                    } else if (everyH == 8) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day three times
 
@@ -1114,8 +1135,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                     year++;
                                 }
                             }
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days three times
+                        } else if (medication.getRepeated().equalsIgnoreCase("2")) { // every two days three times
                             for (int k = 0; k < 3; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 8;
@@ -1134,8 +1154,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                                 }
                             }
 
-                        }
-                        else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days three times
+                        } else if (medication.getRepeated().equalsIgnoreCase("3")) {// every three days three times
                             for (int k = 0; k < 3; k++) {
                                 medicationChild.add(new Medication(medication.getId(), medication.getUser_name(), medication.getMedicineName(), medication.getNumberOfTime(), medication.getDoseAmountNumber(), medication.getDoseAmountText(), medication.getDuration(), medication.getTextDurationSpin(), day + "/" + month + "/" + year, String.valueOf(h), medication.getTimeM(), medication.getEveryH(), medication.getRepeated()));
                                 h = h + 8;
@@ -1155,8 +1174,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                             }
 
                         }
-                    }
-                    else if (everyH == 6) {
+                    } else if (everyH == 6) {
                         int h = Integer.parseInt(medication.getTimeH());
                         if (medication.getRepeated().equalsIgnoreCase("1")) {//every day 4 times
 
@@ -1234,7 +1252,7 @@ public class Home_Page_Activity extends AppCompatActivity {
             if (m.getStartDayDate().matches(formattedDate)) {
                 convert12(check);
 
-                eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber()+" " + m.getDoseAmountText(), "Time: " + timeIn12 + " : " + m.getTimeM()));
+                eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber() + " " + m.getDoseAmountText(), "Time: " + timeIn12 + " : " + m.getTimeM()));
 
             }
         }
