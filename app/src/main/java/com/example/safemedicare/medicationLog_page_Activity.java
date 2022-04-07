@@ -50,13 +50,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
             type = extras.getString("TYPE");
 
         }
-        //////////attributes medication to read from DB////////////////////////////////////////////////
 
-
-
-
-        new ConnectionToReadMedication().execute();
-        /////////////////////////////////////////////////////////////////////////////////////////
 
 
         // Edit text
@@ -69,7 +63,10 @@ public class medicationLog_page_Activity extends AppCompatActivity {
 
 
         //////// database /////////////////
+        //////////attributes medication to read from DB////////////////////////////////////////////////
 
+        new ConnectionToReadMedication().execute();
+        /////////////////////////////////////////////////////////////////////////////////////////
         // saveChange button
         Button save = findViewById(R.id.Add_medicine);
         save.setOnClickListener(new View.OnClickListener() {
@@ -214,7 +211,6 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                             String doseAmountText = patientObject.getString("doseAmountText");
                             String duration = patientObject.getString("duration");
                             String durationByText = patientObject.getString("durationByText");
-
                             String startDayDate = patientObject.getString("startDayDate");
                             String timeH = patientObject.getString("timeH");
                             String timeM = patientObject.getString("timeM");
