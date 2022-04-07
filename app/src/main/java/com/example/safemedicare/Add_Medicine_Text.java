@@ -3,6 +3,7 @@ package com.example.safemedicare;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -30,6 +39,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -43,10 +53,10 @@ public class Add_Medicine_Text extends AppCompatActivity {
     CheckBox saturday, sunday, monday, tuesday, wednesday, thursday, friday, all;
     DatePickerDialog datePickerDialog;
     Button start_day_DATE;
-    ArrayList spin1, spin2, spin3, spin4, spin5, spin6;
+    ArrayList spin1, spin2, spin3, spin4, spin5, spin6 , conflictMedicine, actionMedicine;
     TextView everyH;
     TimePicker timePicker;
-    int eh;
+    int eh, lastACTION;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +75,8 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
         toolbar();
         spinner();
+        actionMedicine = new ArrayList<>();
+        lastACTION=0;
         medicineNameET = findViewById(R.id.EditMedicineName);
         numberOfTimeSpin = (Spinner) findViewById(R.id.numberOfTimeSpin);
         amountNumberSpinner = (Spinner) findViewById(R.id.amountNumberSpinner);
@@ -129,7 +141,9 @@ public class Add_Medicine_Text extends AppCompatActivity {
                               }else  if ( start_day_DATE.getText().toString().matches("Start day DATE") ){
                                   Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
                               }else {
-                                AddMedicine(view);
+                                  new ConnectionToMedicationConflict().execute();
+
+
                             }
 
 
@@ -138,14 +152,297 @@ public class Add_Medicine_Text extends AppCompatActivity {
                     //toast select day
                     Toast.makeText(getApplicationContext(), "Please Enter the medicine name", Toast.LENGTH_SHORT).show();
                 }
-
+                if (lastACTION<=0){
+                    AddMedicine();
+                }
 
             }
         });
 
 
     }
+    class ConnectionToMedicationConflict extends AsyncTask<String, String, String> {
+        // starting the connection
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = "";
+            String event_url = "http://192.168.100.171/Medication_Conflicte.php";
+            try {
 
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(event_url));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer stringBuffer = new StringBuffer("");
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    stringBuffer.append(line);
+                    break;
+                }
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                return new String("error");
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+
+            try {
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if (success == 1) {
+                    JSONArray patientData = jsonResult.getJSONArray("medication");
+                    for (int i = 0; i < patientData.length(); i++) {
+                        JSONObject patientObject = patientData.getJSONObject(i);
+                        String medication = patientObject.getString("medicine_name");
+                        String conflict = patientObject.getString("conflict");
+                        String[] s= conflict.split(",");
+                        //Toast.makeText(getApplicationContext(),medication, Toast.LENGTH_LONG).show();
+
+                       if (medication.equalsIgnoreCase(medicineNameET.getText().toString())){
+                           conflictMedicine = new ArrayList<>();
+                           for (int j = 0; j < s.length; j++) {
+                               conflictMedicine.add(s[j]);
+                           }
+                           new ConnectionToMedicine().execute();
+                       }
+
+
+
+                    }
+
+                    }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    class ConnectionToMedicine extends AsyncTask<String, String, String> {
+        // starting the connection
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = "";
+            String event_url = "http://192.168.100.171/readMedication.php";
+            try {
+
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(event_url));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer stringBuffer = new StringBuffer("");
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    stringBuffer.append(line);
+                    break;
+                }
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                return new String("error");
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+
+            try {
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if (success == 2) {
+                    JSONArray patientData = jsonResult.getJSONArray("medication");
+                    for (int i = 0; i < patientData.length(); i++) {
+                        JSONObject patientObject = patientData.getJSONObject(i);
+                        String userName = patientObject.getString("userName");
+                        String medicineName = null;
+
+                        if (name.equalsIgnoreCase(userName)){
+                            medicineName = patientObject.getString("medicineName");
+
+                            for (int j = 0; j < conflictMedicine.size(); j++) {
+
+                                if (conflictMedicine.get(j).toString().equalsIgnoreCase(medicineName)){
+                                    //Toast.makeText(getApplicationContext(),"conflict found with "+ conflictMedicine.get(j).toString(), Toast.LENGTH_LONG).show();
+                                    actionMedicine.add(conflictMedicine.get(j).toString());
+                                    lastACTION++;
+                                }
+                            }
+
+                        }
+
+
+
+                    }
+                     if (lastACTION>0){
+                        Alert();
+                    }
+
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public class addMedicineToDB extends AsyncTask<String, Void, String> {
+        Context context;
+        AlertDialog alertDialog;
+
+        addMedicineToDB(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String operation = params[0];
+            String login_url = "http://192.168.100.171/AddMedication.php";
+
+
+            // if (operation.equals("AddEvent")) {
+            try {
+
+                String medicineNameET = params[0];
+                String numberOfTimeSpin = params[1];
+                String amountNumberSpinner = params[2];
+                String amountTextSpinner = params[3];
+                String numberDurationSpin = params[4];
+                String textDurationSpin = params[5];
+
+
+                String date = params[6];
+                String userName = params[7];
+                String timeH = params[8];
+                String timeM = params[9];
+                String repeated = params[10];
+                URL url = new URL(login_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("medicineNameET", "UTF-8") + "=" + URLEncoder.encode(medicineNameET, "UTF-8") + "&"
+                        + URLEncoder.encode("numberOfTimeSpin", "UTF-8") + "=" + URLEncoder.encode(numberOfTimeSpin, "UTF-8") + "&"
+                        + URLEncoder.encode("amountNumberSpinner", "UTF-8") + "=" + URLEncoder.encode(amountNumberSpinner, "UTF-8") + "&"
+                        + URLEncoder.encode("amountTextSpinner", "UTF-8") + "=" + URLEncoder.encode(amountTextSpinner, "UTF-8") + "&"
+                        + URLEncoder.encode("numberDurationSpin", "UTF-8") + "=" + URLEncoder.encode(numberDurationSpin, "UTF-8") + "&"
+                        + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8")+ "&"
+                        + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8") + "&"
+                        + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8")+ "&"
+                        + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8")+ "&"
+                        + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8")+ "&"
+                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(eh), "UTF-8")+ "&"
+                        + URLEncoder.encode("repeated", "UTF-8") + "=" + URLEncoder.encode(repeated, "UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //  }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            alertDialog = new AlertDialog.Builder(context).create();
+            alertDialog.setTitle("Add Medicine Status");
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+
+            alertDialog.setMessage(result);
+            alertDialog.show();
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+    }
+    // Declare the onBackPressed method
+    // when the back button is pressed
+    // this method will call
+
+    public void Alert() {
+
+        // Create the object of
+        // AlertDialog Builder class
+        AlertDialog.Builder builder = new AlertDialog.Builder(Add_Medicine_Text.this);
+
+        // Set the message show for the Alert time
+        builder.setMessage("There is a medication conflict with another medicine\nYou need to check with your Doctor \nDo you stile want to add the medicine");
+
+        // Set Alert Title
+        builder.setTitle("Conflict Check Alert !");
+
+        // Set Cancelable false
+        // for when the user clicks on the outside
+        // the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        // Set the positive button with yes name
+        // OnClickListener method is use of
+        // DialogInterface interface.
+
+        builder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,int which){
+                                // When the user click yes button
+                                // then app will role back
+                               // finish();
+                                AddMedicine();
+                            }
+                        });
+
+        // Set the Negative button with No name
+        // OnClickListener method is use
+        // of DialogInterface interface.
+        builder.setNegativeButton("No", new DialogInterface .OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which){
+                                // If user click no
+                                // then dialog box is canceled.
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+    }
     public void spinner() {
         numberOfTimeSpin = (Spinner) findViewById(R.id.numberOfTimeSpin);
         amountNumberSpinner = (Spinner) findViewById(R.id.amountNumberSpinner);
@@ -397,7 +694,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         });
     }
 
-    public void AddMedicine(View view) {
+    public void AddMedicine() {
         int hours = timePicker.getHour(); // after api level 23
         int minutes = timePicker.getMinute(); // after api level 23
         String medicineName = medicineNameET.getText().toString();
@@ -426,99 +723,5 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
     }
 
-    public class addMedicineToDB extends AsyncTask<String, Void, String> {
-        Context context;
-        AlertDialog alertDialog;
 
-        addMedicineToDB(Context ctx) {
-            context = ctx;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String operation = params[0];
-            String login_url = "http://192.168.100.171/AddMedication.php";
-
-
-            // if (operation.equals("AddEvent")) {
-            try {
-
-                String medicineNameET = params[0];
-                String numberOfTimeSpin = params[1];
-                String amountNumberSpinner = params[2];
-                String amountTextSpinner = params[3];
-                String numberDurationSpin = params[4];
-                String textDurationSpin = params[5];
-
-
-                String date = params[6];
-                String userName = params[7];
-                String timeH = params[8];
-                String timeM = params[9];
-                String repeated = params[10];
-                URL url = new URL(login_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("medicineNameET", "UTF-8") + "=" + URLEncoder.encode(medicineNameET, "UTF-8") + "&"
-                        + URLEncoder.encode("numberOfTimeSpin", "UTF-8") + "=" + URLEncoder.encode(numberOfTimeSpin, "UTF-8") + "&"
-                        + URLEncoder.encode("amountNumberSpinner", "UTF-8") + "=" + URLEncoder.encode(amountNumberSpinner, "UTF-8") + "&"
-                        + URLEncoder.encode("amountTextSpinner", "UTF-8") + "=" + URLEncoder.encode(amountTextSpinner, "UTF-8") + "&"
-                        + URLEncoder.encode("numberDurationSpin", "UTF-8") + "=" + URLEncoder.encode(numberDurationSpin, "UTF-8") + "&"
-                        + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8")+ "&"
-                        + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8") + "&"
-                        + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8")+ "&"
-                        + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8")+ "&"
-                        + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8")+ "&"
-                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(eh), "UTF-8")+ "&"
-                        + URLEncoder.encode("repeated", "UTF-8") + "=" + URLEncoder.encode(repeated, "UTF-8");
-                bufferedWriter.write(post_data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                String result = "";
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    result += line;
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return result;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //  }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            alertDialog = new AlertDialog.Builder(context).create();
-            alertDialog.setTitle("Add Medicine Status");
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-
-            alertDialog.setMessage(result);
-            alertDialog.show();
-
-
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-    }
 }
