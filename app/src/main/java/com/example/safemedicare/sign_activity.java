@@ -86,8 +86,8 @@ public class sign_activity extends AppCompatActivity {
     }
 
     public void OnLogin(View view) {
-        String username = Username.getText().toString();
-        String password = Password.getText().toString();
+        String username = Username.getText().toString().trim();
+        String password = Password.getText().toString().trim();
         String type = "login";
         db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
         backgroundWorker.execute(type, username, password);

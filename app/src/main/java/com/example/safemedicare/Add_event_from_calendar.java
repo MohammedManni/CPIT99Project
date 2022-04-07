@@ -190,7 +190,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         String operation = "AddEvent";
         String username = name;
         String type1 = type;
-        String eventName = eventNameET.getText().toString();
+        String eventName = eventNameET.getText().toString().trim();
         String Description = DescriptionET.getText().toString();
         String Date = date.getText().toString();
         String timeH = String.valueOf(hours);

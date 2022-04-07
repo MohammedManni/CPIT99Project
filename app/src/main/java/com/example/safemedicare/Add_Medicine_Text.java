@@ -152,9 +152,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
                     //toast select day
                     Toast.makeText(getApplicationContext(), "Please Enter the medicine name", Toast.LENGTH_SHORT).show();
                 }
-                if (lastACTION<=0){
-                    AddMedicine();
-                }
+
 
             }
         });
@@ -190,7 +188,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-
+            conflictMedicine = new ArrayList<>();
 
             try {
                 JSONObject jsonResult = new JSONObject(result);
@@ -204,8 +202,8 @@ public class Add_Medicine_Text extends AppCompatActivity {
                         String[] s= conflict.split(",");
                         //Toast.makeText(getApplicationContext(),medication, Toast.LENGTH_LONG).show();
 
-                       if (medication.equalsIgnoreCase(medicineNameET.getText().toString())){
-                           conflictMedicine = new ArrayList<>();
+                       if (medication.equalsIgnoreCase(medicineNameET.getText().toString().trim())){
+
                            for (int j = 0; j < s.length; j++) {
                                conflictMedicine.add(s[j]);
                            }
@@ -214,6 +212,9 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
 
 
+                    }
+                    if (conflictMedicine.isEmpty()){
+                        AddMedicine();
                     }
 
                     }
@@ -273,7 +274,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
                                 if (conflictMedicine.get(j).toString().equalsIgnoreCase(medicineName)){
                                     //Toast.makeText(getApplicationContext(),"conflict found with "+ conflictMedicine.get(j).toString(), Toast.LENGTH_LONG).show();
                                     actionMedicine.add(conflictMedicine.get(j).toString());
-                                    lastACTION++;
+                                    lastACTION=1;
                                 }
                             }
 
@@ -282,7 +283,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
 
                     }
-                     if (lastACTION>0){
+                    if (lastACTION==1){
                         Alert();
                     }
 
@@ -395,8 +396,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
     public void Alert() {
 
-        // Create the object of
-        // AlertDialog Builder class
+        // Create the object of AlertDialog Builder class
         AlertDialog.Builder builder = new AlertDialog.Builder(Add_Medicine_Text.this);
 
         // Set the message show for the Alert time
@@ -405,34 +405,25 @@ public class Add_Medicine_Text extends AppCompatActivity {
         // Set Alert Title
         builder.setTitle("Conflict Check Alert !");
 
-        // Set Cancelable false
-        // for when the user clicks on the outside
-        // the Dialog Box then it will remain show
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
         builder.setCancelable(false);
 
-        // Set the positive button with yes name
-        // OnClickListener method is use of
-        // DialogInterface interface.
+        // Set the positive button with yes name OnClickListener method is use of DialogInterface interface.
 
         builder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog,int which){
-                                // When the user click yes button
-                                // then app will role back
-                               // finish();
+                                // When the user click yes button then app will role back
                                 AddMedicine();
                             }
                         });
 
-        // Set the Negative button with No name
-        // OnClickListener method is use
-        // of DialogInterface interface.
+        // Set the Negative button with No name OnClickListener method is use of DialogInterface interface.
         builder.setNegativeButton("No", new DialogInterface .OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which){
-                                // If user click no
-                                // then dialog box is canceled.
+                                // If user click no then dialog box is canceled.
                                 dialog.cancel();
                             }
                         });
@@ -697,7 +688,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
     public void AddMedicine() {
         int hours = timePicker.getHour(); // after api level 23
         int minutes = timePicker.getMinute(); // after api level 23
-        String medicineName = medicineNameET.getText().toString();
+        String medicineName = medicineNameET.getText().toString().trim();
         String numberOfTime = NOTS;
         String amountNumberSpinner = ANS;
         String amountTextSpinner = ATS;
