@@ -52,10 +52,11 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
     DatePickerDialog datePickerDialog;
     Button start_day_DATE;
-    ArrayList spin1, spin2, spin3, spin4, spin5, spin6 , conflictMedicine, actionMedicine;
+    ArrayList spin1, spin2, spin3, spin4, spin5, spin6, conflictMedicine, actionMedicine;
     TextView everyH;
     TimePicker timePicker;
     int eh, lastACTION;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +76,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         toolbar();
         spinner();
         actionMedicine = new ArrayList<>();
-        lastACTION=0;
+        lastACTION = 0;
         medicineNameET = findViewById(R.id.EditMedicineName);
         numberOfTimeSpin = (Spinner) findViewById(R.id.numberOfTimeSpin);
         amountNumberSpinner = (Spinner) findViewById(R.id.amountNumberSpinner);
@@ -84,13 +85,11 @@ public class Add_Medicine_Text extends AppCompatActivity {
         textDurationSpin = (Spinner) findViewById(R.id.TextDurationSpin);
 
         start_day_DATE = findViewById(R.id.Start_day_DATE);
-        everyH= findViewById(R.id.everyH);
+        everyH = findViewById(R.id.everyH);
         timePicker = (TimePicker) findViewById(R.id.timePickerMedicine); // initiate a time picker
         timePicker.setCurrentHour(12); // before api level 23
         timePicker.setHour(12); // from api level 23
         Button add_medicine = findViewById(R.id.Add_medicine);
-
-
 
 
         ///////////////////SELECT THE DATE /////////////////////////////////
@@ -120,34 +119,32 @@ public class Add_Medicine_Text extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //AddMedicine(view);
-                if (!medicineNameET.getText().toString().isEmpty()){
+                if (!medicineNameET.getText().toString().isEmpty()) {
 
 
-
-                          // check if all input interred
-                              if ( ANS.equalsIgnoreCase("Select") ){
-                                Toast.makeText(getApplicationContext(), "Please select the Amount", Toast.LENGTH_SHORT).show();
-                            }else  if ( ATS.equalsIgnoreCase("Select") ){
-                                  Toast.makeText(getApplicationContext(), "Please select the Amount type", Toast.LENGTH_SHORT).show();
-                              }else  if (  NDS.equalsIgnoreCase("Select") ){
-                                Toast.makeText(getApplicationContext(), "Please select the Duration", Toast.LENGTH_SHORT).show();
-                            }else  if ( TDS.equalsIgnoreCase("Select")  ){
-                                Toast.makeText(getApplicationContext(), "Please select duration in text", Toast.LENGTH_SHORT).show();
-                            }else  if ( RS.equalsIgnoreCase("Select") ){
-                                  Toast.makeText(getApplicationContext(), "Please select the repetition", Toast.LENGTH_SHORT).show();
-                              }else  if ( (TDS.equalsIgnoreCase("Month/s") && Integer.parseInt(NDS)>12)  || (TDS.equalsIgnoreCase("Year") && Integer.parseInt(NDS)>1) ){
-                                  Toast.makeText(getApplicationContext(), "Please Change the duration Number", Toast.LENGTH_SHORT).show();
-                              }else  if ( start_day_DATE.getText().toString().matches("Start day DATE") ){
-                                  Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
-                              }else {
-                                  new ConnectionToMedicationConflict().execute();
-
-
-                            }
+                    // check if all input interred
+                    if (ANS.equalsIgnoreCase("Select")) {
+                        Toast.makeText(getApplicationContext(), "Please select the Amount", Toast.LENGTH_SHORT).show();
+                    } else if (ATS.equalsIgnoreCase("Select")) {
+                        Toast.makeText(getApplicationContext(), "Please select the Amount type", Toast.LENGTH_SHORT).show();
+                    } else if (NDS.equalsIgnoreCase("Select")) {
+                        Toast.makeText(getApplicationContext(), "Please select the Duration", Toast.LENGTH_SHORT).show();
+                    } else if (TDS.equalsIgnoreCase("Select")) {
+                        Toast.makeText(getApplicationContext(), "Please select duration in text", Toast.LENGTH_SHORT).show();
+                    } else if (RS.equalsIgnoreCase("Select")) {
+                        Toast.makeText(getApplicationContext(), "Please select the repetition", Toast.LENGTH_SHORT).show();
+                    } else if ((TDS.equalsIgnoreCase("Month/s") && Integer.parseInt(NDS) > 12) || (TDS.equalsIgnoreCase("Year") && Integer.parseInt(NDS) > 1)) {
+                        Toast.makeText(getApplicationContext(), "Please Change the duration Number", Toast.LENGTH_SHORT).show();
+                    } else if (start_day_DATE.getText().toString().matches("Start day DATE")) {
+                        Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
+                    } else {
+                        new ConnectionToMedicationConflict().execute();
 
 
+                    }
 
-                }else {
+
+                } else {
                     //toast select day
                     Toast.makeText(getApplicationContext(), "Please Enter the medicine name", Toast.LENGTH_SHORT).show();
                 }
@@ -158,6 +155,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
 
     }
+
     class ConnectionToMedicationConflict extends AsyncTask<String, String, String> {
         // starting the connection
         @Override
@@ -198,25 +196,24 @@ public class Add_Medicine_Text extends AppCompatActivity {
                         JSONObject patientObject = patientData.getJSONObject(i);
                         String medication = patientObject.getString("medicine_name");
                         String conflict = patientObject.getString("conflict");
-                        String[] s= conflict.split(",");
+                        String[] s = conflict.split(",");
                         //Toast.makeText(getApplicationContext(),medication, Toast.LENGTH_LONG).show();
 
-                       if (medication.equalsIgnoreCase(medicineNameET.getText().toString().trim())){
+                        if (medication.equalsIgnoreCase(medicineNameET.getText().toString().trim())) {
 
-                           for (int j = 0; j < s.length; j++) {
-                               conflictMedicine.add(s[j]);
-                           }
-                           new ConnectionToMedicine().execute();
-                       }
-
+                            for (int j = 0; j < s.length; j++) {
+                                conflictMedicine.add(s[j]);
+                            }
+                            new ConnectionToMedicine().execute();
+                        }
 
 
                     }
-                    if (conflictMedicine.isEmpty()){
+                    if (conflictMedicine.isEmpty()) {
                         AddMedicine();
                     }
 
-                    }
+                }
 
 
             } catch (JSONException e) {
@@ -224,6 +221,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
             }
         }
     }
+
     class ConnectionToMedicine extends AsyncTask<String, String, String> {
         // starting the connection
         @Override
@@ -265,24 +263,23 @@ public class Add_Medicine_Text extends AppCompatActivity {
                         String userName = patientObject.getString("userName");
                         String medicineName = null;
 
-                        if (name.equalsIgnoreCase(userName)){
+                        if (name.equalsIgnoreCase(userName)) {
                             medicineName = patientObject.getString("medicineName");
 
                             for (int j = 0; j < conflictMedicine.size(); j++) {
 
-                                if (conflictMedicine.get(j).toString().equalsIgnoreCase(medicineName)){
+                                if (conflictMedicine.get(j).toString().equalsIgnoreCase(medicineName)) {
                                     //Toast.makeText(getApplicationContext(),"conflict found with "+ conflictMedicine.get(j).toString(), Toast.LENGTH_LONG).show();
-                                   // actionMedicine.add(conflictMedicine.get(j).toString());
-                                    lastACTION=1;
+                                    // actionMedicine.add(conflictMedicine.get(j).toString());
+                                    lastACTION = 1;
                                 }
                             }
 
                         }
 
 
-
                     }
-                    if (lastACTION==1){
+                    if (lastACTION == 1) {
                         Alert();
                     }
 
@@ -294,6 +291,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
             }
         }
     }
+
     public class addMedicineToDB extends AsyncTask<String, Void, String> {
         Context context;
         AlertDialog alertDialog;
@@ -336,12 +334,12 @@ public class Add_Medicine_Text extends AppCompatActivity {
                         + URLEncoder.encode("amountNumberSpinner", "UTF-8") + "=" + URLEncoder.encode(amountNumberSpinner, "UTF-8") + "&"
                         + URLEncoder.encode("amountTextSpinner", "UTF-8") + "=" + URLEncoder.encode(amountTextSpinner, "UTF-8") + "&"
                         + URLEncoder.encode("numberDurationSpin", "UTF-8") + "=" + URLEncoder.encode(numberDurationSpin, "UTF-8") + "&"
-                        + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8")+ "&"
+                        + URLEncoder.encode("textDurationSpin", "UTF-8") + "=" + URLEncoder.encode(textDurationSpin, "UTF-8") + "&"
                         + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8") + "&"
-                        + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8")+ "&"
-                        + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8")+ "&"
-                        + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8")+ "&"
-                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(eh), "UTF-8")+ "&"
+                        + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(userName, "UTF-8") + "&"
+                        + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8") + "&"
+                        + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8") + "&"
+                        + URLEncoder.encode("everyH", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(eh), "UTF-8") + "&"
                         + URLEncoder.encode("repeated", "UTF-8") + "=" + URLEncoder.encode(repeated, "UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
@@ -407,23 +405,23 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
         // Set the positive button with yes name OnClickListener method is use of DialogInterface interface.
 
-        builder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,int which){
-                                // When the user click yes button then app will role back
-                                AddMedicine();
-                            }
-                        });
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // When the user click yes button then app will role back
+                AddMedicine();
+            }
+        });
 
         // Set the Negative button with No name OnClickListener method is use of DialogInterface interface.
-        builder.setNegativeButton("No", new DialogInterface .OnClickListener() {
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which){
-                                // If user click no then dialog box is canceled.
-                                dialog.cancel();
-                            }
-                        });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // If user click no then dialog box is canceled.
+                dialog.cancel();
+            }
+        });
 
         // Create the Alert dialog
         AlertDialog alertDialog = builder.create();
@@ -431,6 +429,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         // Show the Alert Dialog box
         alertDialog.show();
     }
+
     public void spinner() {
         numberOfTimeSpin = (Spinner) findViewById(R.id.numberOfTimeSpin);
         amountNumberSpinner = (Spinner) findViewById(R.id.amountNumberSpinner);
@@ -461,9 +460,9 @@ public class Add_Medicine_Text extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // NOTS = bankNamesDelete.get(i).toString();
-                double EH = Math.round( 24/Double.parseDouble(spin1.get(i).toString())) ;
-                 eh = (int) EH;
-                everyH.setText("Every "+eh+" hr");
+                double EH = Math.round(24 / Double.parseDouble(spin1.get(i).toString()));
+                eh = (int) EH;
+                everyH.setText("Every " + eh + " hr");
                 NOTS = spin1.get(i).toString();
             }
 
@@ -530,22 +529,26 @@ public class Add_Medicine_Text extends AppCompatActivity {
         textDurationSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if ( spin5.get(i).toString().equalsIgnoreCase("Month/s") ){
-                   if (Integer.parseInt(NDS)>12){
-                       spin4.clear();
-                       for (int j = 1; j <= 12; j++) {
-                           spin4.add(j);
-                       }
-                       Toast.makeText(getApplicationContext(), "Maximum duration is 12 Months", Toast.LENGTH_SHORT).show();
+                if (spin5.get(i).toString().equalsIgnoreCase("Month/s")) {
+                    if (Integer.parseInt(NDS) > 12) {
+                        spin4.clear();
+                        for (int j = 1; j <= 12; j++) {
+                            spin4.add(j);
+                        }
+                        Toast.makeText(getApplicationContext(), "Maximum duration is 12 Months", Toast.LENGTH_SHORT).show();
 
-                   }
+                    }
 
-                     }else if ( spin5.get(i).toString().equalsIgnoreCase("Year") ){
+                }
+                /*else if ( spin5.get(i).toString().equalsIgnoreCase("Year") ){
                     spin4.clear();
                     spin4.add("Select");
                     spin4.add("1");
                     Toast.makeText(getApplicationContext(), "Maximum duration is one year", Toast.LENGTH_SHORT).show();
-                }else {
+                }
+                                 */
+                else {
+
                     spin4.clear();
                     spin4.add("Select");
                     for (int j = 1; j <= 30; j++) {
@@ -608,7 +611,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         spin5.add("Day/s");
         spin5.add("Week/s");
         spin5.add("Month/s");
-        spin5.add("Year");
+        //spin5.add("Year");
         spin6.add("Select");
         spin6.add("Day");
         spin6.add("Two Days");
@@ -696,20 +699,20 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
         String date = start_day_DATE.getText().toString();
         String userName = name;
-        String timeH ,timeM, repeated = null;
+        String timeH, timeM, repeated = null;
         timeH = String.valueOf(hours);
         timeM = String.valueOf(minutes);
-        if (RS.equalsIgnoreCase("Day")){
+        if (RS.equalsIgnoreCase("Day")) {
             repeated = "1";
-        }else  if (RS.equalsIgnoreCase("Two Days")){
+        } else if (RS.equalsIgnoreCase("Two Days")) {
             repeated = "2";
-        }else  if (RS.equalsIgnoreCase("Three Days")){
+        } else if (RS.equalsIgnoreCase("Three Days")) {
             repeated = "3";
         }
 
         addMedicineToDB addEventToDB = new addMedicineToDB(this);
-        addEventToDB.execute( medicineName, numberOfTime, amountNumberSpinner,
-                amountTextSpinner, numberDurationSpin, textDurationSpin, date, userName,timeH ,timeM , repeated);
+        addEventToDB.execute(medicineName, numberOfTime, amountNumberSpinner,
+                amountTextSpinner, numberDurationSpin, textDurationSpin, date, userName, timeH, timeM, repeated);
 
     }
 

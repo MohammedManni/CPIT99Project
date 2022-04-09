@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 public class Home_Page_Activity extends AppCompatActivity {
 
@@ -148,10 +149,16 @@ public class Home_Page_Activity extends AppCompatActivity {
 
     }
 
-    private void startAlarm(Calendar c) {
+    private void startAlarm(Calendar c,String eventName,String eventDescription) {
+
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, MyBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        intent.putExtra("EVENT_NAME", eventName);
+        intent.putExtra("EVENT_DESCRIPTION", eventDescription);
+
+        Random random = new Random();
+        int requestCode = random.nextInt(9999 - 1000) + 1000;
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
 
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
@@ -160,14 +167,14 @@ public class Home_Page_Activity extends AppCompatActivity {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
-    public void onTimeSet(int hourOfDay, int minute) {
+    public void onTimeSet(int hourOfDay, int minute,String eventName,String eventDescription) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
         //Toast.makeText(getApplicationContext(), ""+formattedDate, Toast.LENGTH_SHORT).show();
 
-        startAlarm(c);
+        startAlarm(c,eventName,eventDescription);
     }
 
 
@@ -223,8 +230,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                             // add to the array list
                             eventlistChild.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
                             if (date.equalsIgnoreCase(formattedDate)) {
-                                //Toast.makeText(getApplicationContext(), ""+Integer.parseInt(timeH)+" "+Integer.parseInt(timeM)), Toast.LENGTH_SHORT).show();
-                                onTimeSet(Integer.parseInt(timeH), Integer.parseInt(timeM));
+                                onTimeSet(Integer.parseInt(timeH),Integer.parseInt(timeM),"Event Name: "+eventName,eventDescription);
                             }
                         }
 
@@ -1273,6 +1279,7 @@ public class Home_Page_Activity extends AppCompatActivity {
             }
         }
         setAdapterForMedicationChild();
+        notificationForMedicine();
     }
 
     public void setAdapterForMedicationChild() {
@@ -1296,7 +1303,16 @@ public class Home_Page_Activity extends AppCompatActivity {
         });
         gridList.setAdapter(myAdapter);
     }
+    public void notificationForMedicine() {
+        for (int i = 0; i < medicationChild.size(); i++) {
+            Medication m = (Medication) medicationChild.get(i);
+            if (m.getStartDayDate().equalsIgnoreCase(formattedDate)) {
 
+                onTimeSet(Integer.parseInt(m.getTimeH()),Integer.parseInt(m.getTimeM()),"Medicine Name: "+m.getMedicineName(),"Take "+m.getDoseAmountNumber()+" "+m.getDoseAmountText());
+            }
+        }
+
+    }
     public void convert12(int h1) {
 
         // Get Hours

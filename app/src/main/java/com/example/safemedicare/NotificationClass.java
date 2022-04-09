@@ -14,6 +14,7 @@ public class NotificationClass {
 
     private NotificationManager notificationManager;
 
+
     public NotificationClass(Context context) {
         this.context = context;
         createChannel();
@@ -35,10 +36,10 @@ public class NotificationClass {
         return notificationManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification() {
+    public NotificationCompat.Builder getChannelNotification(String eventName, String eventDescription) {
         return new NotificationCompat.Builder(context, channelID)
-                .setContentTitle("Alarm!")
-                .setContentText("Your AlarmManager is working.")
+                .setContentTitle(eventName)
+                .setContentText("Description: "+eventDescription)
                 .setSmallIcon(R.drawable.ic_baseline_notifications_active_24);
     }
 }
