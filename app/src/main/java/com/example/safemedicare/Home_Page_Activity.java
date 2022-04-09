@@ -68,7 +68,6 @@ public class Home_Page_Activity extends AppCompatActivity {
         gridList = (GridView) findViewById(R.id.gridView);
 
 
-
         ///////////////////////////////////GET CURRENT DATE//////////////////////////////////////////////////////////////////
         Date getDate = Calendar.getInstance().getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy", Locale.getDefault());
@@ -94,12 +93,12 @@ public class Home_Page_Activity extends AppCompatActivity {
                 String[] spilt = s.split(":");
 
                 Intent intent = new Intent(Home_Page_Activity.this, SecondActivity.class);
-                if (spilt[0].equalsIgnoreCase("Medicine")){
-                    Medication medication=null;
-                    int a=0;
+                if (spilt[0].equalsIgnoreCase("Medicine")) {
+                    Medication medication = null;
+                    int a = 0;
                     for (int i = 0; i < medicationChild.size(); i++) {
-                         medication= (Medication) medicationChild.get(i);
-                        if (spilt[1].equalsIgnoreCase(" "+medication.getMedicineName())){
+                        medication = (Medication) medicationChild.get(i);
+                        if (spilt[1].equalsIgnoreCase(" " + medication.getMedicineName())) {
 
                             //intent.putExtra("image", logos[position]); // put image data in Intent
                             intent.putExtra("operation", "1");
@@ -121,11 +120,11 @@ public class Home_Page_Activity extends AppCompatActivity {
                     }
                     startActivity(intent); // start Intent
 
-                }else if (spilt[0].equalsIgnoreCase("Name")){
+                } else if (spilt[0].equalsIgnoreCase("Name")) {
                     for (int i = 0; i < eventlistChild.size(); i++) {
-                       Event event= (Event) eventlistChild.get(i);
+                        Event event = (Event) eventlistChild.get(i);
 
-                        if (spilt[1].matches(" "+event.getEventName())){
+                        if (spilt[1].matches(" " + event.getEventName())) {
 
                             //intent.putExtra("image", logos[position]); // put image data in Intent
                             intent.putExtra("operation", "2");
@@ -141,8 +140,6 @@ public class Home_Page_Activity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(),spilt[1] +" not found", Toast.LENGTH_SHORT).show();
                     startActivity(intent); // start Intent
                 }
-
-
 
 
             }
@@ -162,6 +159,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
+
     public void onTimeSet(int hourOfDay, int minute) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -171,87 +169,83 @@ public class Home_Page_Activity extends AppCompatActivity {
 
         startAlarm(c);
     }
+
+
     class ConnectionToReadEvent extends AsyncTask<String, String, String> {
+        // starting the connection
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = "";
+            String event_url = "http://192.168.100.171/readEvent.php";
+            try {
 
-
-
-
-
-        class ConnectionToReadEvent extends AsyncTask<String, String, String> {
-            // starting the connection
-            @Override
-            protected String doInBackground(String... strings) {
-                String result = "";
-                String event_url = "http://192.168.100.171/readEvent.php";
-                try {
-
-                    HttpClient client = new DefaultHttpClient();
-                    HttpGet request = new HttpGet();
-                    request.setURI(new URI(event_url));
-                    HttpResponse response = client.execute(request);
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                    StringBuffer stringBuffer = new StringBuffer("");
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        stringBuffer.append(line);
-                        break;
-                    }
-                    reader.close();
-                    result = stringBuffer.toString();
-                } catch (Exception e) {
-                    return new String("error");
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(event_url));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer stringBuffer = new StringBuffer("");
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    stringBuffer.append(line);
+                    break;
                 }
-                return result;
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                return new String("error");
             }
+            return result;
+        }
 
-            @Override
-            protected void onPostExecute(String result) {
-
-
-                try {
-                    JSONObject jsonResult = new JSONObject(result);
-                    int success = jsonResult.getInt("success");
-                    if (success == 1) {
-                        JSONArray patientData = jsonResult.getJSONArray("event");
-                        for (int i = 0; i < patientData.length(); i++) {
-                            JSONObject patientObject = patientData.getJSONObject(i);
-                            userName = patientObject.getString("userName");
+        @Override
+        protected void onPostExecute(String result) {
 
 
-                            if (userName.equalsIgnoreCase(name)) {
-                                int id = patientObject.getInt("id");
-                                String eventName = patientObject.getString("eventName");
-                                String eventDescription = patientObject.getString("eventDescription");
-                                String date = patientObject.getString("date");
-                                String timeH = patientObject.getString("timeH");
-                                String timeM = patientObject.getString("timeM");
+            try {
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if (success == 1) {
+                    JSONArray patientData = jsonResult.getJSONArray("event");
+                    for (int i = 0; i < patientData.length(); i++) {
+                        JSONObject patientObject = patientData.getJSONObject(i);
+                        userName = patientObject.getString("userName");
 
-                                // add to the array list
-                                eventlistChild.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
-                                if (date.equalsIgnoreCase(formattedDate)) {
-                                    //Toast.makeText(getApplicationContext(), ""+Integer.parseInt(timeH)+" "+Integer.parseInt(timeM)), Toast.LENGTH_SHORT).show();
-                                    onTimeSet(Integer.parseInt(timeH),Integer.parseInt(timeM));
-                                }
+
+                        if (userName.equalsIgnoreCase(name)) {
+                            int id = patientObject.getInt("id");
+                            String eventName = patientObject.getString("eventName");
+                            String eventDescription = patientObject.getString("eventDescription");
+                            String date = patientObject.getString("date");
+                            String timeH = patientObject.getString("timeH");
+                            String timeM = patientObject.getString("timeM");
+
+                            // add to the array list
+                            eventlistChild.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
+                            if (date.equalsIgnoreCase(formattedDate)) {
+                                //Toast.makeText(getApplicationContext(), ""+Integer.parseInt(timeH)+" "+Integer.parseInt(timeM)), Toast.LENGTH_SHORT).show();
+                                onTimeSet(Integer.parseInt(timeH), Integer.parseInt(timeM));
                             }
-
-
                         }
-                        // sort the array list
-                        Collections.sort(eventlistChild, new Comparator<Event>() {
-                            @Override
-                            public int compare(Event event1, Event event2) {
-                                return event1.getEventTimeH().compareTo(event2.getEventTimeH());
-                            }
-                        });
-                        // add the array list to the event list related to the grid view
-                        for (int i = 0; i < eventlistChild.size(); i++) {
-                            Event e = new Event();
-                            e = eventlistChild.get(i);
-                            int check = Integer.parseInt(e.getEventTimeH());
-                            if (e.getEventDate().matches(formattedDate)) {
-                                convert12(check);
-                                eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (timeIn12 + " : " + e.getEventTimeM())));
-                            }
+
+
+                    }
+                    // sort the array list
+                    Collections.sort(eventlistChild, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event event1, Event event2) {
+                            return event1.getEventTimeH().compareTo(event2.getEventTimeH());
+                        }
+                    });
+                    // add the array list to the event list related to the grid view
+                    for (int i = 0; i < eventlistChild.size(); i++) {
+                        Event e = new Event();
+                        e = eventlistChild.get(i);
+                        int check = Integer.parseInt(e.getEventTimeH());
+                        if (e.getEventDate().matches(formattedDate)) {
+                            convert12(check);
+                            eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (timeIn12 + " : " + e.getEventTimeM())));
+                        }
                         /*
                         if (e.getEventDate().matches(formattedDate)) {
                             if (Integer.parseInt(e.getEventTimeH()) >= 12 && Integer.parseInt(e.getEventTimeH()) < 24) {
@@ -272,20 +266,20 @@ public class Home_Page_Activity extends AppCompatActivity {
                     }
 
  */
-                        }
-                        gridList.setAdapter(myAdapter);
-
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    gridList.setAdapter(myAdapter);
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
+    }
 
-        class ConnectionToReadMedication extends AsyncTask<String, String, String> {
+    class ConnectionToReadMedication extends AsyncTask<String, String, String> {
         // starting the connection
         @Override
         protected String doInBackground(String... strings) {
@@ -605,7 +599,8 @@ public class Home_Page_Activity extends AppCompatActivity {
 
 
                 }
-            } else if (DurationText.equalsIgnoreCase("Week/s")) {
+            }
+            else if (DurationText.equalsIgnoreCase("Week/s")) {
 
                 for (int j = 0; j < (Integer.parseInt(Duration) * 7); j++) {
                     int everyH = Integer.parseInt(medication.getEveryH());
@@ -828,7 +823,8 @@ public class Home_Page_Activity extends AppCompatActivity {
                     }
                 }
 
-            } else if (DurationText.equalsIgnoreCase("Month/s")) {
+            }
+            else if (DurationText.equalsIgnoreCase("Month/s")) {
                 for (int j = 0; j < (Integer.parseInt(Duration) * 30); j++) {
                     int everyH = Integer.parseInt(medication.getEveryH());
                     if (everyH == 24) {
@@ -1049,7 +1045,8 @@ public class Home_Page_Activity extends AppCompatActivity {
                         }
                     }
                 }
-            } else if (DurationText.equalsIgnoreCase("Year")) {
+            }
+            else if (DurationText.equalsIgnoreCase("Year")) {
                 for (int j = 0; j < (Integer.parseInt(Duration) * 365); j++) {
                     int everyH = Integer.parseInt(medication.getEveryH());
                     if (everyH == 24) {
@@ -1270,7 +1267,8 @@ public class Home_Page_Activity extends AppCompatActivity {
                         }
                     }
                 }
-            } else {
+            }
+            else {
 
             }
         }
