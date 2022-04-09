@@ -138,13 +138,19 @@ public class Home_Page_Activity extends AppCompatActivity {
     }
 
     private void startAlarm(Calendar c,String eventName,String eventDescription) {
+        Intent clickNotification = new Intent(this, Home_Page_Activity.class);
+        clickNotification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntentToOpenActivity = PendingIntent.getActivity(this, 1, clickNotification, PendingIntent.FLAG_IMMUTABLE);
+
+
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, MyBroadcastReceiver.class);
         intent.putExtra("EVENT_NAME", eventName);
         intent.putExtra("EVENT_DESCRIPTION", eventDescription);
+        intent.putExtra("INTENT", pendingIntentToOpenActivity);
         Random random = new Random();
-        int m = random.nextInt(9999 - 1000) + 1000;
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, m, intent, 0);
+        int requestCode = random.nextInt(9999 - 1000) + 1000;
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
 
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);

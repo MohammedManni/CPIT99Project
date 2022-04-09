@@ -2,6 +2,7 @@ package com.example.safemedicare;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
 
@@ -36,10 +37,11 @@ public class NotificationClass {
         return notificationManager;
     }
 
-    public NotificationCompat.Builder getChannelNotification(String eventName,String eventDescription) {
+    public NotificationCompat.Builder getChannelNotification(String eventName, String eventDescription, PendingIntent str) {
         return new NotificationCompat.Builder(context, channelID)
                 .setContentTitle("Event Name: "+eventName)
                 .setContentText("Event Description: "+eventDescription)
+                .setContentIntent(str)
                 .setSmallIcon(R.drawable.ic_baseline_notifications_active_24);
     }
 }
