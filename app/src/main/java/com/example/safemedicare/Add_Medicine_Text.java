@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -50,7 +49,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
     EditText medicineNameET;
     Spinner numberOfTimeSpin, amountNumberSpinner, amountTextSpinner, numberDurationSpin, textDurationSpin, RepeatSpin;
     String NOTS, ANS, ATS, NDS, TDS, RS;
-    CheckBox saturday, sunday, monday, tuesday, wednesday, thursday, friday, all;
+
     DatePickerDialog datePickerDialog;
     Button start_day_DATE;
     ArrayList spin1, spin2, spin3, spin4, spin5, spin6 , conflictMedicine, actionMedicine;
@@ -273,7 +272,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
                                 if (conflictMedicine.get(j).toString().equalsIgnoreCase(medicineName)){
                                     //Toast.makeText(getApplicationContext(),"conflict found with "+ conflictMedicine.get(j).toString(), Toast.LENGTH_LONG).show();
-                                    actionMedicine.add(conflictMedicine.get(j).toString());
+                                   // actionMedicine.add(conflictMedicine.get(j).toString());
                                     lastACTION=1;
                                 }
                             }
@@ -390,9 +389,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
     }
-    // Declare the onBackPressed method
-    // when the back button is pressed
-    // this method will call
+
 
     public void Alert() {
 
@@ -545,10 +542,12 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
                      }else if ( spin5.get(i).toString().equalsIgnoreCase("Year") ){
                     spin4.clear();
+                    spin4.add("Select");
                     spin4.add("1");
                     Toast.makeText(getApplicationContext(), "Maximum duration is one year", Toast.LENGTH_SHORT).show();
                 }else {
                     spin4.clear();
+                    spin4.add("Select");
                     for (int j = 1; j <= 30; j++) {
                         spin4.add(j);
                     }
@@ -596,7 +595,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         // for number of time
         //for (int i =1; i<=6;i++){
         spin3.add("Select");
-        spin3.add("Pill/s");
+        spin3.add("Tablet/s");
         spin3.add("Capsule/s");
         //}
         // for duration number

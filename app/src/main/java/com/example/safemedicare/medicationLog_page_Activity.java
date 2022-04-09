@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,7 +29,8 @@ import java.net.URI;
 import java.util.ArrayList;
 
 public class medicationLog_page_Activity extends AppCompatActivity {
-
+    GridView gridList;
+    GridAdapterMedicationLog myAdapter;
     EditText medName, numOfTime, amount;
     public String name, type , userName;
     ArrayList medicationList = new ArrayList<>();
@@ -51,30 +54,45 @@ public class medicationLog_page_Activity extends AppCompatActivity {
 
         }
 
-
-
-        // Edit text
-        medName = (EditText) findViewById(R.id.EditMedicineName);
-        numOfTime = (EditText) findViewById(R.id.editTextNumberOfTime);
-        amount = (EditText) findViewById(R.id.editTextAmount);
-        ////////////////////////////////////////////////////////////////
         //toolbar
         toolbar();
 
-
-        //////// database /////////////////
         //////////attributes medication to read from DB////////////////////////////////////////////////
-
         new ConnectionToReadMedication().execute();
-        /////////////////////////////////////////////////////////////////////////////////////////
-        // saveChange button
-        Button save = findViewById(R.id.Add_medicine);
-        save.setOnClickListener(new View.OnClickListener() {
+
+        ///// START GRID VIEW /////
+        gridList = (GridView) findViewById(R.id.gridViewM);
+        myAdapter = new GridAdapterMedicationLog(this, R.layout.grid_adapter_medication_log, medicationList);
+        // implement setOnItemClickListener
+        gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                medicationLog(view);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // set an Intent to Another Activity
+                Medication m = (Medication) medicationList.get(position);
+                Intent intent = new Intent(medicationLog_page_Activity.this, MedicationLog_Adjustment.class);
+                intent.putExtra("id", m.getId());
+                intent.putExtra("NameM", m.getMedicineName());
+                intent.putExtra("numberOfTime", m.getNumberOfTime());
+                intent.putExtra("doseAmountNumber", m.getDoseAmountNumber());
+                intent.putExtra("doseAmountText", m.getDoseAmountText());
+                intent.putExtra("duration", m.getDuration());
+                intent.putExtra("durationByText", m.getTextDurationSpin());
+                intent.putExtra("startDayDate", m.getStartDayDate());
+                intent.putExtra("timeH", m.getTimeH());
+                intent.putExtra("timeM", m.getTimeM());
+                intent.putExtra("everyH", m.getEveryH());
+                intent.putExtra("repeated", m.getRepeated());
+
+                startActivity(intent); // start Intent
+
             }
         });
+        //////// database /////////////////
+
+
+
+
+
     }
     public void toolbar() {
         // toolbar buttons
@@ -147,13 +165,13 @@ public class medicationLog_page_Activity extends AppCompatActivity {
     }
 
     public void medicationLog(View view) {
-        String medicationName = medName.getText().toString();
-        String numberOfTime = numOfTime.getText().toString();
-        String doseAmount = amount.getText().toString();
+       // String medicationName = medName.getText().toString();
+     //   String numberOfTime = numOfTime.getText().toString();
+       // String doseAmount = amount.getText().toString();
 
-        String type = "medication";
-        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(type, medicationName, numberOfTime, doseAmount);
+     //   String type = "medication";
+     //   db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
+     //   db1BackgroundWorker.execute(type, medicationName, numberOfTime, doseAmount);
     }
 
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
@@ -218,18 +236,15 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                             String repeated = patientObject.getString("repeated");
 
                             // add to the array list medicationList
-                            Medication m = new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated);
+                           // Medication m = new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated);
 
-                            medicationList.add(m);
-                            //  eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber() + " Pill/s", "Time " + m.getTimeH() + " : " + m.getTimeM()));
+                            medicationList.add(new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated));
 
                         }
 
 
                     }
-                   // addMedicationChild();
-                    //gridList.setAdapter(myAdapter);
-
+                    gridList.setAdapter(myAdapter);
                 } else {
                     Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
                 }

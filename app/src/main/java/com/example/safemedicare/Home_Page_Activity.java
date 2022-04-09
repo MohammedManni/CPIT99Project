@@ -115,7 +115,8 @@ public class Home_Page_Activity extends AppCompatActivity {
 
                         }
 
-                    } startActivity(intent); // start Intent
+                    }
+                    startActivity(intent); // start Intent
 
                 }else if (spilt[0].equalsIgnoreCase("Name")){
                     for (int i = 0; i < eventlistChild.size(); i++) {
@@ -133,7 +134,8 @@ public class Home_Page_Activity extends AppCompatActivity {
                             intent.putExtra("timeM", event.getEventTimeM());
 
                         }
-                    }   //Toast.makeText(getApplicationContext(),spilt[1] +" not found", Toast.LENGTH_SHORT).show();
+                    }
+                    //Toast.makeText(getApplicationContext(),spilt[1] +" not found", Toast.LENGTH_SHORT).show();
                     startActivity(intent); // start Intent
                 }
 

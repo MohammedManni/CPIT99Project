@@ -55,9 +55,9 @@ public class CourseAdapter extends RecyclerView.Adapter<com.example.safemedicare
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
-            courseIV = itemView.findViewById(R.id.idIVCourseImage);
-            courseNameTV = itemView.findViewById(R.id.idTVCourseName);
-            courseRatingTV = itemView.findViewById(R.id.idTVCourseRating);
+           // courseIV = itemView.findViewById(R.id.idIVCourseImage);
+            //courseNameTV = itemView.findViewById(R.id.idTVCourseName);
+            //courseRatingTV = itemView.findViewById(R.id.idTVCourseRating);
         }
     }
 }

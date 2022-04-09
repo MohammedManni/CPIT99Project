@@ -16,14 +16,14 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.gridview_details);
         //lift
-        textView1= findViewById(R.id.textView1);
-        textView2= findViewById(R.id.textView2);
-        text3= findViewById(R.id.text3);
-        textView4= findViewById(R.id.textView4);
-        textView6= findViewById(R.id.textView6);
-        textView7= findViewById(R.id.textView7);
+        textView1= findViewById(R.id.View1);
+        textView2= findViewById(R.id.View2);
+        text3= findViewById(R.id.View3);
+        textView4= findViewById(R.id.View4);
+        textView6= findViewById(R.id.View6);
+        textView7= findViewById(R.id.View5);
 
         //right
         textView13= findViewById(R.id.textView13);

@@ -11,96 +11,17 @@
         layout="@layout/toolbar"
         tools:layout_editor_absoluteX="1dp"></include>
 
-    <TextView
-        android:id="@+id/MedicineName"
-        android:layout_width="134dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="92dp"
-        android:text="Medicine Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarMedication" />
+    <GridView
+        android:id="@+id/gridViewM"
+        android:layout_width="match_parent"
+        android:layout_height="665dp"
+        android:layout_marginTop="10dp"
+        android:numColumns="1"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:scrollbars="horizontal"
+        android:verticalSpacing="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMedication"
+        tools:layout_editor_absoluteX="0dp">
 
-    <TextView
-        android:id="@+id/numberOfTimeView"
-        android:layout_width="134dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="40dp"
-        android:text="Number of time per day"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MedicineName" />
-
-
-    <TextView
-        android:id="@+id/amountView1"
-        android:layout_width="134dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="50dp"
-        android:text="Amount"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberOfTimeView" />
-
-    <EditText
-        android:id="@+id/EditMedicineName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="85dp"
-        android:ems="10"
-        android:hint="Medicine name"
-        android:inputType="textAutoCorrect"
-        app:layout_constraintStart_toEndOf="@+id/MedicineName"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarMedication" />
-
-
-    <EditText
-        android:id="@+id/editTextNumberOfTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="35dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintStart_toEndOf="@+id/numberOfTimeView"
-        app:layout_constraintTop_toBottomOf="@+id/EditMedicineName" />
-
-
-    <EditText
-        android:id="@+id/editTextAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="35dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toEndOf="@+id/amountView1"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberOfTime" />
-
-    <Button
-        android:id="@+id/Add_medicine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginEnd="132dp"
-        android:layout_marginBottom="46dp"
-        android:text="Save Changes"
-        android:backgroundTint="#5B7DB1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/back" />
-
-    <Button
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:layout_marginBottom="46dp"
-        android:text="Back"
-        android:backgroundTint="#5B7DB1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Add_medicine"
-        app:layout_constraintStart_toStartOf="parent" />
-
+    </GridView>
 </androidx.constraintlayout.widget.ConstraintLayout>
