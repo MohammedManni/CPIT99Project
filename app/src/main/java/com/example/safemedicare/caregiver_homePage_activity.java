@@ -59,28 +59,6 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         ////////////// read from database///////////////////////////
         list = (ListView) findViewById(R.id.patientList);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-                // intent.putExtra("USERNAME", name);
-                // intent.putExtra("TYPE", type);
-                // intent.putExtra("PatientName", p.get(i));
-                //startActivity(intent);
-                //Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(caregiver_homePage_activity.this, shared_activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                intent.putExtra("PATIENT_USERNAME",p.get(position));
-                startActivity(intent);
-            }
-        });
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        list.setAdapter(adapter);
-        new ConnectionToReadPatient().execute();
-
-    }
-    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -132,7 +110,31 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
         //////////////////////////////  end toolbar button//////////////////////////////////////////////
 
+        ////////////// read from database///////////////////////////
+        list = (ListView) findViewById(R.id.patientList);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+               // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
+               // intent.putExtra("USERNAME", name);
+               // intent.putExtra("TYPE", type);
+               // intent.putExtra("PatientName", p.get(i));
+                //startActivity(intent);
+                //Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(caregiver_homePage_activity.this, shared_activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                intent.putExtra("PATIENT_USERNAME",p.get(position));
+                startActivity(intent);
+            }
+        });
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        list.setAdapter(adapter);
+        new ConnectionToReadPatient().execute();
+
     }
+
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadPatient extends AsyncTask<String, String, String> {
 

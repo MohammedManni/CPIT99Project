@@ -55,8 +55,8 @@ public class shared_activity extends AppCompatActivity {
 
     }
 
-    ///////////////////////////CLASS READ PATIENT/////////////////////////////////
-    class PatientInfo extends AsyncTask<String, String, String> {
+///////////////////////////CLASS READ PATIENT/////////////////////////////////
+class PatientInfo extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
@@ -96,32 +96,32 @@ public class shared_activity extends AppCompatActivity {
                     for (int i = 0; i < patientData.length(); i++) {
                         JSONObject patientObject = patientData.getJSONObject(i);
 
-                        userNameInDB = patientObject.getString("userName");
+                    userNameInDB = patientObject.getString("userName");
 
-                        if (userNameInDB.equalsIgnoreCase(patientUserNameFromGetIntent)) {
-                            String patientName = patientObject.getString("name");
-                            int phoneNumber = patientObject.getInt("phoneNumber");
-                            int age = patientObject.getInt("age");
+                    if (userNameInDB.equalsIgnoreCase(patientUserNameFromGetIntent)) {
+                       String patientName = patientObject.getString("name");
+                        int phoneNumber = patientObject.getInt("phoneNumber");
+                        int age = patientObject.getInt("age");
 
 
-                            patientNameET.setText(patientName);
-                            patientNameET.setEnabled(false);
-                            ageET.setText(String.valueOf(age));
-                            phoneET.setText(String.valueOf(phoneNumber));
-                            ageET.setEnabled(false);
-                            phoneET.setEnabled(false);
-                        }
+                        patientNameET.setText(patientName);
+                        patientNameET.setEnabled(false);
+                        ageET.setText(String.valueOf(age));
+                        phoneET.setText(String.valueOf(phoneNumber));
+                        ageET.setEnabled(false);
+                        phoneET.setEnabled(false);
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
-    ///////////////////////////CLASS TO CHECK WHICH DATA CAN SHOW BY CAREGIVER/////////////////////////////////
-    class CheckData extends AsyncTask<String, String, String> {
+}
+///////////////////////////CLASS TO CHECK WHICH DATA CAN SHOW BY CAREGIVER/////////////////////////////////
+class CheckData extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
@@ -151,59 +151,59 @@ public class shared_activity extends AppCompatActivity {
             return result;
         }
 
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                JSONObject jsonResult = new JSONObject(result);
-                int success = jsonResult.getInt("success");
-                if (success == 1) {
-                    JSONArray patientData = jsonResult.getJSONArray("patient");
-                    for (int i = 0; i < patientData.length(); i++) {
-                        JSONObject patientObject = patientData.getJSONObject(i);
-                        userName = patientObject.getString("userNameC");
-                        userNameInDB = patientObject.getString("userNameP");
+    @Override
+    protected void onPostExecute(String result) {
+        try {
+            JSONObject jsonResult = new JSONObject(result);
+            int success = jsonResult.getInt("success");
+            if (success == 1) {
+                JSONArray patientData = jsonResult.getJSONArray("patient");
+                for (int i = 0; i < patientData.length(); i++) {
+                    JSONObject patientObject = patientData.getJSONObject(i);
+                    userName = patientObject.getString("userNameC");
+                    userNameInDB = patientObject.getString("userNameP");
 
-                        if (userName.equalsIgnoreCase(name)&& patientUserNameFromGetIntent.equalsIgnoreCase(userNameInDB)) {
-                            swMedicationLog=patientObject.getString("swMedLog");
-                            swSchedule=patientObject.getString("swSchedule");
-                            swTimeline=patientObject.getString("swTimeline");
+                    if (userName.equalsIgnoreCase(name)&& patientUserNameFromGetIntent.equalsIgnoreCase(userNameInDB)) {
+                      swMedicationLog=patientObject.getString("swMedLog");
+                      swSchedule=patientObject.getString("swSchedule");
+                      swTimeline=patientObject.getString("swTimeline");
 
-                            if (swMedicationLog.equalsIgnoreCase("false")){
-                                medicationLog.setVisibility(View.GONE);
-                            }
-                            if (swSchedule.equalsIgnoreCase("false")){
-                                schedule.setVisibility(View.GONE);
-                            }else{
-                                schedule.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(shared_activity.this, shared_schedule.class);
-                                        intent.putExtra("USERNAME", name);
-                                        intent.putExtra("TYPE", type);
-                                        intent.putExtra("PatientUserName", patientUserNameFromGetIntent);
-                                        startActivity(intent);
+                        if (swMedicationLog.equalsIgnoreCase("false")){
+                            medicationLog.setVisibility(View.GONE);
+                        }
+                        if (swSchedule.equalsIgnoreCase("false")){
+                            schedule.setVisibility(View.GONE);
+                        }else{
+                            schedule.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(shared_activity.this, shared_schedule.class);
+                                    intent.putExtra("USERNAME", name);
+                                    intent.putExtra("TYPE", type);
+                                    intent.putExtra("PatientUserName", patientUserNameFromGetIntent);
+                                    startActivity(intent);
 
 
-                                    }
-                                });
-
-                            }
-                            if (swTimeline.equalsIgnoreCase("false")){
-                                timeline.setVisibility(View.GONE);
-                            }
+                                }
+                            });
 
                         }
-
-
+                        if (swTimeline.equalsIgnoreCase("false")){
+                            timeline.setVisibility(View.GONE);
+                        }
 
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
+
+
+
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
+}
 
 }

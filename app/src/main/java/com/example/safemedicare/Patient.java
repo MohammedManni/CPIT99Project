@@ -1,57 +1,54 @@
 package com.example.safemedicare;
 
-public class Patient extends User {
-    public Patient(String fullName, String username, int id, int linkID, int phone_number, int age) {
-        super(fullName, username, id, linkID, phone_number, age);
+public class Patient {
+    String userName, name;
+    int id,phone_number,age;
+
+    public Patient(int id,String userName, String name, int phone_number, int age) {
+        this.userName = userName;
+        this.name = name;
+        this.id = id;
+        this.phone_number = phone_number;
+        this.age = age;
     }
 
-    @Override
-    public String getFullName() {
-        return super.getFullName();
+    public String getUserName() {
+        return userName;
     }
 
-    @Override
-    public void setFullName(String fullName) {
-        super.setFullName(fullName);
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    @Override
-    public String getUsername() {
-        return super.getUsername();
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public void setUsername(String username) {
-        super.setUsername(username);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
     public int getId() {
-        return super.getId();
+        return id;
     }
 
-    @Override
     public void setId(int id) {
-        super.setId(id);
+        this.id = id;
     }
 
-    @Override
     public int getPhone_number() {
-        return super.getPhone_number();
+        return phone_number;
     }
 
-    @Override
     public void setPhone_number(int phone_number) {
-        super.setPhone_number(phone_number);
+        this.phone_number = phone_number;
     }
 
-    @Override
     public int getAge() {
-        return super.getAge();
+        return age;
     }
 
-    @Override
     public void setAge(int age) {
-        super.setAge(age);
+        this.age = age;
     }
 }

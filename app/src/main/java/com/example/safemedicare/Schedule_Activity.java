@@ -34,7 +34,7 @@ import java.util.Comparator;
 public class Schedule_Activity extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
-    private String name, type, userName, date1;
+    private String name, type, userName, date1,patientName;
     DatePicker datePicker;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
@@ -57,7 +57,7 @@ public class Schedule_Activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-
+           // patientName = extras.getString("PATIENT_NAME");
         }
         /////////////////////////////////////////////////////////////////////
         toolbar();
@@ -118,7 +118,7 @@ public class Schedule_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readEvent.php";
+            String readPatient_url = "http://192.168.100.10/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -164,6 +164,7 @@ public class Schedule_Activity extends AppCompatActivity {
                             // add to the array list
                             eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
                         }
+
                     }
                     // sort the array list
                     Collections.sort(eventlist, new Comparator<Event>() {
