@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 public class Home_Page_Activity extends AppCompatActivity {
 
@@ -39,6 +40,7 @@ public class Home_Page_Activity extends AppCompatActivity {
     GridView gridList;
     ArrayList eventList = new ArrayList<>();
     GridAdapter myAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,6 @@ public class Home_Page_Activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-            //Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
         }
         /////////////////////////////////////////////////////////////////////
         // toolbar buttons
@@ -126,20 +127,24 @@ public class Home_Page_Activity extends AppCompatActivity {
 
     }
 
-    public void onTimeSet(int hourOfDay, int minute) {
+    public void onTimeSet(int hourOfDay, int minute,String eventName,String eventDescription) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
         //Toast.makeText(getApplicationContext(), ""+formattedDate, Toast.LENGTH_SHORT).show();
 
-        startAlarm(c);
+        startAlarm(c,eventName,eventDescription);
     }
 
-    private void startAlarm(Calendar c) {
+    private void startAlarm(Calendar c,String eventName,String eventDescription) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, MyBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        intent.putExtra("EVENT_NAME", eventName);
+        intent.putExtra("EVENT_DESCRIPTION", eventDescription);
+        Random random = new Random();
+        int m = random.nextInt(9999 - 1000) + 1000;
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, m, intent, 0);
 
         if (c.before(Calendar.getInstance())) {
             c.add(Calendar.DATE, 1);
@@ -206,7 +211,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
                                 if (date.equalsIgnoreCase(formattedDate)) {
                                     //Toast.makeText(getApplicationContext(), ""+Integer.parseInt(timeH)+" "+Integer.parseInt(timeM)), Toast.LENGTH_SHORT).show();
-                                    onTimeSet(Integer.parseInt(timeH),Integer.parseInt(timeM));
+                                    onTimeSet(Integer.parseInt(timeH),Integer.parseInt(timeM),eventName,eventDescription);
                             }
                             /////////////////////////////////////////////////////
                         }
