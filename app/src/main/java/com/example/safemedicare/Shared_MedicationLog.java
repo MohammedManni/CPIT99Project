@@ -26,7 +26,7 @@ import java.net.URI;
 import java.util.ArrayList;
 
 public class Shared_MedicationLog extends AppCompatActivity {
-    String name, type,patientUserName,userNamePatient;
+    String name, type,patientUserName, userNamePatientDB;
     GridView gridList;
     GridAdapterMedicationLog myAdapter;
     ArrayList medicationList = new ArrayList<>();
@@ -192,11 +192,11 @@ public class Shared_MedicationLog extends AppCompatActivity {
                     JSONArray patientData = jsonResult.getJSONArray("medication");
                     for (int i = 0; i < patientData.length(); i++) {
                         JSONObject patientObject = patientData.getJSONObject(i);
-                        userNamePatient = patientObject.getString("userName");
+                        userNamePatientDB = patientObject.getString("userName");
                         //Toast.makeText(getApplicationContext(), userNamePatient, Toast.LENGTH_SHORT).show();
 
-                        if (userNamePatient.equalsIgnoreCase(patientUserName)) {
-                            Toast.makeText(getApplicationContext(), userNamePatient, Toast.LENGTH_SHORT).show();
+                        if (userNamePatientDB.equalsIgnoreCase(patientUserName)) {
+                            //Toast.makeText(getApplicationContext(), userNamePatient, Toast.LENGTH_SHORT).show();
 
                             int id = patientObject.getInt("id");
                             String medicineName = patientObject.getString("medicineName");
@@ -211,7 +211,7 @@ public class Shared_MedicationLog extends AppCompatActivity {
                             String everyH = patientObject.getString("everyH");
                             String repeated = patientObject.getString("repeated");
 
-                            medicationList.add(new Medication(String.valueOf(id), userNamePatient, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated));
+                            medicationList.add(new Medication(String.valueOf(id), userNamePatientDB, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated));
 
                         }
 

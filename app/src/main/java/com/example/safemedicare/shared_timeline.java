@@ -36,33 +36,37 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-public class Home_Page_Activity extends AppCompatActivity {
-
-    private String name, type, userName, formattedDate;
+public class shared_timeline extends AppCompatActivity {
+    String name, type, userName, formattedDate, patientUserNameFromGetIntent;
     GridView gridList;
     ArrayList eventList = new ArrayList<>();
     ArrayList<Event> eventlistChild = new ArrayList<>();
     ArrayList medicationList = new ArrayList<>();
     ArrayList medicationChild = new ArrayList();
     GridAdapter myAdapter;
-    String Meridien;
     int timeIn12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_page_patient);
+        setContentView(R.layout.activity_shared_timeline);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
+            patientUserNameFromGetIntent = extras.getString("PatientUserName");
 
+            Button SecondB = findViewById(R.id.SecondB);
+            Button add = findViewById(R.id.thirdB);
+            if (type.matches("caregiver")) {
+                SecondB.setVisibility(View.GONE);
+                add.setVisibility(View.GONE);
+            }
         }
-        /////////////////////////////////////////////////////////////////////
+
         // toolbar
         toolbar();
-        //////////////////////////////  end toolbar button//////////////////////////////////////////////
-
         ///// START GRID VIEW /////
         gridList = (GridView) findViewById(R.id.gridView);
 
@@ -91,7 +95,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                 String s = e.getEventListName();
                 String[] spilt = s.split(":");
 
-                Intent intent = new Intent(Home_Page_Activity.this, SecondActivity.class);
+                Intent intent = new Intent(shared_timeline.this, SecondActivity.class);
                 if (spilt[0].equalsIgnoreCase("Medicine")) {
                     Medication medication = null;
                     int a = 0;
@@ -99,7 +103,6 @@ public class Home_Page_Activity extends AppCompatActivity {
                         medication = (Medication) medicationChild.get(i);
                         if (spilt[1].equalsIgnoreCase(" " + medication.getMedicineName())) {
 
-                            //intent.putExtra("image", logos[position]); // put image data in Intent
                             intent.putExtra("operation", "1");
                             //intent.putExtra("userName", medication.getUser_name());
                             intent.putExtra("NameM", medication.getMedicineName());
@@ -147,7 +150,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
     }
 
-    private void startAlarm(Calendar c,String eventName,String eventDescription) {
+    private void startAlarm(Calendar c, String eventName, String eventDescription) {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, MyBroadcastReceiver.class);
@@ -165,14 +168,14 @@ public class Home_Page_Activity extends AppCompatActivity {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
-    public void onTimeSet(int hourOfDay, int minute,String eventName,String eventDescription) {
+    public void onTimeSet(int hourOfDay, int minute, String eventName, String eventDescription) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
         //Toast.makeText(getApplicationContext(), ""+formattedDate, Toast.LENGTH_SHORT).show();
 
-        startAlarm(c,eventName,eventDescription);
+        startAlarm(c, eventName, eventDescription);
     }
 
 
@@ -217,7 +220,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                         userName = patientObject.getString("userName");
 
 
-                        if (userName.equalsIgnoreCase(name)) {
+                        if (userName.equalsIgnoreCase(patientUserNameFromGetIntent)) {
                             int id = patientObject.getInt("id");
                             String eventName = patientObject.getString("eventName");
                             String eventDescription = patientObject.getString("eventDescription");
@@ -228,7 +231,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                             // add to the array list
                             eventlistChild.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
                             if (date.equalsIgnoreCase(formattedDate)) {
-                                onTimeSet(Integer.parseInt(timeH),Integer.parseInt(timeM),"Event Name: "+eventName,eventDescription);
+                                onTimeSet(Integer.parseInt(timeH), Integer.parseInt(timeM), "Event Name: " + eventName, eventDescription);
                             }
                         }
 
@@ -327,7 +330,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                         userName = patientObject.getString("userName");
 
 
-                        if (userName.equalsIgnoreCase(name)) {
+                        if (userName.equalsIgnoreCase(patientUserNameFromGetIntent)) {
 
 
                             int id = patientObject.getInt("id");
@@ -603,8 +606,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
 
                 }
-            }
-            else if (DurationText.equalsIgnoreCase("Week/s")) {
+            } else if (DurationText.equalsIgnoreCase("Week/s")) {
 
                 for (int j = 0; j < (Integer.parseInt(Duration) * 7); j++) {
                     int everyH = Integer.parseInt(medication.getEveryH());
@@ -827,8 +829,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                     }
                 }
 
-            }
-            else if (DurationText.equalsIgnoreCase("Month/s")) {
+            } else if (DurationText.equalsIgnoreCase("Month/s")) {
                 for (int j = 0; j < (Integer.parseInt(Duration) * 30); j++) {
                     int everyH = Integer.parseInt(medication.getEveryH());
                     if (everyH == 24) {
@@ -1049,8 +1050,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                         }
                     }
                 }
-            }
-            else if (DurationText.equalsIgnoreCase("Year")) {
+            } else if (DurationText.equalsIgnoreCase("Year")) {
                 for (int j = 0; j < (Integer.parseInt(Duration) * 365); j++) {
                     int everyH = Integer.parseInt(medication.getEveryH());
                     if (everyH == 24) {
@@ -1271,8 +1271,7 @@ public class Home_Page_Activity extends AppCompatActivity {
                         }
                     }
                 }
-            }
-            else {
+            } else {
 
             }
         }
@@ -1301,16 +1300,18 @@ public class Home_Page_Activity extends AppCompatActivity {
         });
         gridList.setAdapter(myAdapter);
     }
+
     public void notificationForMedicine() {
         for (int i = 0; i < medicationChild.size(); i++) {
             Medication m = (Medication) medicationChild.get(i);
             if (m.getStartDayDate().equalsIgnoreCase(formattedDate)) {
 
-                onTimeSet(Integer.parseInt(m.getTimeH()),Integer.parseInt(m.getTimeM()),"Medicine Name: "+m.getMedicineName(),"Take "+m.getDoseAmountNumber()+" "+m.getDoseAmountText());
+                onTimeSet(Integer.parseInt(m.getTimeH()), Integer.parseInt(m.getTimeM()), "Medicine Name: " + m.getMedicineName(), "Take " + m.getDoseAmountNumber() + " " + m.getDoseAmountText());
             }
         }
 
     }
+
     public void convert12(int h1) {
 
         // Get Hours
@@ -1331,20 +1332,6 @@ public class Home_Page_Activity extends AppCompatActivity {
 
     }
 
-    public void AmPm(int h1) {
-        // Finding out the Meridien of time
-        // ie. AM or PM
-
-        if (h1 < 12) {
-            Meridien = "am";
-
-        } else {
-            Meridien = "pm";
-        }
-
-
-    }
-
     public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
@@ -1356,7 +1343,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(shared_timeline.this, personal_info_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -1366,7 +1353,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, Schedule_Activity.class);
+                Intent intent = new Intent(shared_timeline.this, Schedule_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -1376,7 +1363,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, Add_Medicine_Activity.class);
+                Intent intent = new Intent(shared_timeline.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -1386,7 +1373,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, SOS_Activity.class);
+                Intent intent = new Intent(shared_timeline.this, SOS_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -1397,18 +1384,19 @@ public class Home_Page_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (type.equalsIgnoreCase("patient")) {
-                    Intent intent = new Intent(Home_Page_Activity.this, Home_Page_Activity.class);
+                    Intent intent = new Intent(shared_timeline.this, Home_Page_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
 
                 } else if (type.equalsIgnoreCase("caregiver")) {
-                    Intent intent = new Intent(Home_Page_Activity.this, caregiver_homePage_activity.class);
+                    Intent intent = new Intent(shared_timeline.this, caregiver_homePage_activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
 
                 }
+
             }
         });
     }

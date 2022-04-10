@@ -50,9 +50,12 @@ public class personal_info_Activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
+
             Button SecondB = findViewById(R.id.SecondB);
-            if (type.matches("caregiver")){
+            Button add = findViewById(R.id.thirdB);
+            if (type.matches("caregiver")) {
                 SecondB.setVisibility(View.GONE);
+                add.setVisibility(View.GONE);
             }
             new ConnectionToCaregiver().execute();
         }
@@ -209,7 +212,7 @@ public class personal_info_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/returnINFO.php";
+            String readPatient_url = "http://192.168.100.10/returnINFO.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -293,7 +296,7 @@ public class personal_info_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String UrlPaasPhone = "http://192.168.100.171/UpdatePassword.php";
+            String UrlPaasPhone = "http://192.168.100.10/UpdatePassword.php";
 
             if (operation.equals("password")) {
                 try {

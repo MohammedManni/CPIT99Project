@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeMedicare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Shared_MedicationLog"></activity>
+        <activity android:name=".shared_timeline"></activity>
+        <activity android:name=".Shared_MedicationLog" />
         <activity android:name=".GridAdapterMedicationLog" />
         <activity android:name=".MedicationLog_Adjustment" />
         <activity android:name=".shared_activity" />
@@ -56,7 +57,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".MyBroadcastReceiver"></receiver>
+        <receiver android:name=".MyBroadcastReceiver" />
 
         <uses-library
             android:name="org.apache.http.legacy"

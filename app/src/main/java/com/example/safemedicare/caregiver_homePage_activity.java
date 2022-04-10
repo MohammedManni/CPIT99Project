@@ -44,9 +44,12 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
+
             Button SecondB = findViewById(R.id.SecondB);
+            Button add = findViewById(R.id.thirdB);
             if (type.matches("caregiver")) {
                 SecondB.setVisibility(View.GONE);
+                add.setVisibility(View.GONE);
             }
             // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
         }

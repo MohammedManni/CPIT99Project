@@ -42,8 +42,10 @@ public class shared_activity extends AppCompatActivity {
             patientUserNameFromGetIntent = extras.getString("PATIENT_USERNAME");
 
             Button SecondB = findViewById(R.id.SecondB);
+            Button add = findViewById(R.id.thirdB);
             if (type.matches("caregiver")) {
                 SecondB.setVisibility(View.GONE);
+                add.setVisibility(View.GONE);
             }
         }
 
@@ -215,11 +217,20 @@ public class shared_activity extends AppCompatActivity {
                             }
                             if (swTimeline.equalsIgnoreCase("false")) {
                                 timeline.setVisibility(View.GONE);
+                            }else {
+                                timeline.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(shared_activity.this, shared_timeline.class);
+                                        intent.putExtra("USERNAME", name);
+                                        intent.putExtra("TYPE", type);
+                                        intent.putExtra("PatientUserName", patientUserNameFromGetIntent);
+                                        startActivity(intent);
+                                    }
+                                });
+
                             }
-
                         }
-
-
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
