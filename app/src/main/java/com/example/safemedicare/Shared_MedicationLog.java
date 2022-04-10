@@ -5,12 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,36 +25,24 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 
-public class medicationLog_page_Activity extends AppCompatActivity {
+public class Shared_MedicationLog extends AppCompatActivity {
+    String name, type,patientUserName,userNamePatient;
     GridView gridList;
     GridAdapterMedicationLog myAdapter;
-    EditText medName, numOfTime, amount;
-    public String name, type , userName;
     ArrayList medicationList = new ArrayList<>();
-    ArrayList medicationChild = new ArrayList();
-    ////////attributes medication to read from DB/////////
-    ListView list;
-    ArrayAdapter<String> adapter;
-    Medication medication;
-    MedicationLog medicationLog ;
-    /////////////////////////////////////////////
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.medication_log);
+        setContentView(R.layout.activity_shared__medication_log);
 
+        // toolbar
+        toolbar();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-
+            patientUserName = extras.getString("PatientUserName");
         }
-
-        //toolbar
-        toolbar();
-
-        //////////attributes medication to read from DB////////////////////////////////////////////////
         new ConnectionToReadMedication().execute();
 
         ///// START GRID VIEW /////
@@ -68,8 +53,8 @@ public class medicationLog_page_Activity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // set an Intent to Another Activity
-                Medication m = (Medication) medicationList.get(position);
-                Intent intent = new Intent(medicationLog_page_Activity.this, MedicationLog_Adjustment.class);
+                /*Medication m = (Medication) medicationList.get(position);
+                Intent intent = new Intent(Shared_MedicationLog.this, MedicationLog_Adjustment.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 intent.putExtra("id", m.getId());
@@ -86,13 +71,9 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                 intent.putExtra("repeated", m.getRepeated());
 
                 startActivity(intent); // start Intent
-
+                 */
             }
         });
-        //////// database /////////////////
-
-
-
 
 
     }
@@ -107,17 +88,19 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(Shared_MedicationLog.this, personal_info_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
+
+
             }
         });
 
         Schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, Schedule_Activity.class);
+                Intent intent = new Intent(Shared_MedicationLog.this, Schedule_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -127,7 +110,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, Add_Medicine_Activity.class);
+                Intent intent = new Intent(Shared_MedicationLog.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -137,7 +120,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         SOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, SOS_Activity.class);
+                Intent intent = new Intent(Shared_MedicationLog.this, SOS_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -147,35 +130,26 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (type.equalsIgnoreCase("patient")){
-                    Intent intent = new Intent(medicationLog_page_Activity.this, Home_Page_Activity.class);
+                if (type.equalsIgnoreCase("patient")) {
+                    Intent intent = new Intent(Shared_MedicationLog.this, Home_Page_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
 
-                }else if (type.equalsIgnoreCase("caregiver")){
-                    Intent intent = new Intent(medicationLog_page_Activity.this, caregiver_homePage_activity.class);
+                } else if (type.equalsIgnoreCase("caregiver")) {
+                    Intent intent = new Intent(Shared_MedicationLog.this, caregiver_homePage_activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
 
                 }
+
             }
         });
 
-        ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
+        //////////////////////////////  end toolbar button//////////////////////////////////////////////
+
     }
-
-    public void medicationLog(View view) {
-       // String medicationName = medName.getText().toString();
-     //   String numberOfTime = numOfTime.getText().toString();
-       // String doseAmount = amount.getText().toString();
-
-     //   String type = "medication";
-     //   db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-     //   db1BackgroundWorker.execute(type, medicationName, numberOfTime, doseAmount);
-    }
-
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadMedication extends AsyncTask<String, String, String> {
         // starting the connection
@@ -218,11 +192,11 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                     JSONArray patientData = jsonResult.getJSONArray("medication");
                     for (int i = 0; i < patientData.length(); i++) {
                         JSONObject patientObject = patientData.getJSONObject(i);
-                        userName = patientObject.getString("userName");
+                        userNamePatient = patientObject.getString("userName");
+                        //Toast.makeText(getApplicationContext(), userNamePatient, Toast.LENGTH_SHORT).show();
 
-
-                        if (userName.equalsIgnoreCase(name)) {
-
+                        if (userNamePatient.equalsIgnoreCase(patientUserName)) {
+                            Toast.makeText(getApplicationContext(), userNamePatient, Toast.LENGTH_SHORT).show();
 
                             int id = patientObject.getInt("id");
                             String medicineName = patientObject.getString("medicineName");
@@ -237,10 +211,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                             String everyH = patientObject.getString("everyH");
                             String repeated = patientObject.getString("repeated");
 
-                            // add to the array list medicationList
-                           // Medication m = new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated);
-
-                            medicationList.add(new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated));
+                            medicationList.add(new Medication(String.valueOf(id), userNamePatient, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated));
 
                         }
 

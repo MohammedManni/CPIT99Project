@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class shared_schedule extends AppCompatActivity {
-     String name, type,userName, date1,patientUserName;
+    String name, type,userName, date1,patientUserName;
     DatePicker datePicker;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
@@ -62,9 +62,6 @@ public class shared_schedule extends AppCompatActivity {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
             patientUserName=extras.getString("PatientUserName");
-            Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext(), patientUserName, Toast.LENGTH_SHORT).show();
             Button SecondB = findViewById(R.id.SecondB);
             if (type.matches("caregiver")) {
                 SecondB.setVisibility(View.GONE);
@@ -124,7 +121,7 @@ public class shared_schedule extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readEvent.php";
+            String readPatient_url = "http://192.168.100.10/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();

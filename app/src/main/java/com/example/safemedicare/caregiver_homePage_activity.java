@@ -27,7 +27,6 @@ import java.util.ArrayList;
 
 public class caregiver_homePage_activity extends AppCompatActivity {
     ListView list;
-    String names[];
     ArrayAdapter<String> adapter;
 
     private String name, type;
@@ -53,9 +52,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         }
 
         /////////////////////////////////////////////////////////////////////<include
-        //        layout="@layout/toolbar"
-        //        android:id="@+id/toolbarh"
-        //        ></include>
+
         toolbar();
 
         ////////////// read from database///////////////////////////
@@ -146,7 +143,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readPC.php";
+            String readPatient_url = "http://192.168.100.10/readPC.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
