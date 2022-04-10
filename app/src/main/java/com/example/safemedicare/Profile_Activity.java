@@ -24,7 +24,60 @@ public class Profile_Activity extends AppCompatActivity {
 
         }
         /////////////////////////////////////////////////////////////////////
+        // toolbar
+        toolbar();
 
+
+        // profile page button //
+        Button personalInfo = findViewById(R.id.buttonPersonalInfo);
+        Button medicationLog = findViewById(R.id.buttonMedicationLog);
+        Button caregiver_relative_control = findViewById(R.id.buttonCaregiver);
+        Button privacy = findViewById(R.id.buttonPrivacy);
+        privacy.setVisibility(View.GONE);
+
+        personalInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile_Activity.this, personal_info_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        medicationLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile_Activity.this, medicationLog_page_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+
+        caregiver_relative_control.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile_Activity.this, caregiver_relative_control_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+        privacy.setEnabled(false);
+        privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile_Activity.this, privacy_page.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -93,54 +146,5 @@ public class Profile_Activity extends AppCompatActivity {
         });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
-
-        // profile page button //
-        Button personalInfo = findViewById(R.id.buttonPersonalInfo);
-        Button medicationLog = findViewById(R.id.buttonMedicationLog);
-        Button caregiver_relative_control = findViewById(R.id.buttonCaregiver);
-        Button privacy = findViewById(R.id.buttonPrivacy);
-        privacy.setVisibility(View.GONE);
-
-        personalInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Profile_Activity.this, personal_info_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        medicationLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Profile_Activity.this, medicationLog_page_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-
-        caregiver_relative_control.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Profile_Activity.this, caregiver_relative_control_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-        privacy.setEnabled(false);
-        privacy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Profile_Activity.this, privacy_page.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
     }
 }

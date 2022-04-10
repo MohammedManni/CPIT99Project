@@ -176,6 +176,20 @@
             app:layout_constraintStart_toEndOf="@+id/View5"
             app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
+        <Switch
+            android:id="@+id/takenMedicineSwitch"
+            android:layout_width="299dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="109dp"
+            android:layout_marginEnd="165dp"
+            android:text="The Medicine have been Taken"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/View5" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

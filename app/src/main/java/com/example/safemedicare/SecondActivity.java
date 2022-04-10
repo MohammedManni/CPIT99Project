@@ -3,6 +3,7 @@ package com.example.safemedicare;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +12,7 @@ public class SecondActivity extends AppCompatActivity {
 
     TextView textView1, textView2, text3, textView4,  textView6, textView7, textView13, textView14, textView15, textView16, textView17, textView18,  textView20, textView21, textView22;
     String operation, NameM,numberOfTime, doseAmountNumber,doseAmountText, duration,durationByText,timeH, timeM, everyH, repeated ,eventDescription, date ;
-
+    Switch takenMedicineSwitch;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class SecondActivity extends AppCompatActivity {
         textView21= findViewById(R.id.textView21);
         textView22= findViewById(R.id.textView22);
 
+        takenMedicineSwitch= findViewById(R.id.takenMedicineSwitch);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             operation = extras.getString("operation");
@@ -104,6 +106,8 @@ public class SecondActivity extends AppCompatActivity {
                 textView20.setVisibility(View.GONE);
                 textView21.setVisibility(View.GONE);
                 textView22.setVisibility(View.GONE);
+
+                takenMedicineSwitch.setVisibility(View.GONE);
 
             }
 

@@ -2,15 +2,18 @@ package com.example.safemedicare;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.apache.http.HttpResponse;
@@ -31,7 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class shared_schedule extends AppCompatActivity {
-    private String name, type,userName, date1,patientUserName;
+     String name, type,userName, date1,patientUserName;
     DatePicker datePicker;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
@@ -41,6 +44,7 @@ public class shared_schedule extends AppCompatActivity {
     ArrayList<Event> eventlist = new ArrayList<>();
     ArrayList<Event> selectedDateEvent = new ArrayList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,66 +54,26 @@ public class shared_schedule extends AppCompatActivity {
         dateFormat = new SimpleDateFormat("dd/M/yyyy");
         currentDate = dateFormat.format(calendar.getTime());
 
+        // toolbar
+        toolbar();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
             patientUserName=extras.getString("PatientUserName");
-
+            Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), type, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), patientUserName, Toast.LENGTH_SHORT).show();
+            Button SecondB = findViewById(R.id.SecondB);
+            if (type.matches("caregiver")) {
+                SecondB.setVisibility(View.GONE);
+            }
         }
 
 
-        // toolbar buttons
-        Button Profile = findViewById(R.id.firstB);
-        Button Schedule = findViewById(R.id.SecondB);
-        Button Add = findViewById(R.id.thirdB);
-        Button SOS = findViewById(R.id.SOS);
 
 
-        Profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(shared_schedule.this, personal_info_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-
-
-            }
-        });
-
-        Schedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(shared_schedule.this, Schedule_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        Add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(shared_schedule.this, Add_Medicine_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        SOS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(shared_schedule.this, SOS_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
-
-        //////////////////////////////  end toolbar button//////////////////////////////////////////////
         // fill the list view
         new ReadEvent().execute();
         list = (ListView) findViewById(R.id.listEvent_sharedSchedule);
@@ -160,7 +124,7 @@ public class shared_schedule extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.10/readEvent.php";
+            String readPatient_url = "http://192.168.100.171/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -258,5 +222,77 @@ public class shared_schedule extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+    public void toolbar() {
+        // toolbar buttons
+        Button Profile = findViewById(R.id.firstB);
+        Button Schedule = findViewById(R.id.SecondB);
+        Button Add = findViewById(R.id.thirdB);
+        Button SOS = findViewById(R.id.SOS);
+        ImageButton imageButton = findViewById(R.id.imageButton);
+
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(shared_schedule.this, personal_info_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+
+
+            }
+        });
+
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(shared_schedule.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(shared_schedule.this, Add_Medicine_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(shared_schedule.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equalsIgnoreCase("patient")) {
+                    Intent intent = new Intent(shared_schedule.this, Home_Page_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                } else if (type.equalsIgnoreCase("caregiver")) {
+                    Intent intent = new Intent(shared_schedule.this, caregiver_homePage_activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
+
+            }
+        });
+
+        //////////////////////////////  end toolbar button//////////////////////////////////////////////
     }
 }

@@ -70,6 +70,8 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                 // set an Intent to Another Activity
                 Medication m = (Medication) medicationList.get(position);
                 Intent intent = new Intent(medicationLog_page_Activity.this, MedicationLog_Adjustment.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
                 intent.putExtra("id", m.getId());
                 intent.putExtra("NameM", m.getMedicineName());
                 intent.putExtra("numberOfTime", m.getNumberOfTime());

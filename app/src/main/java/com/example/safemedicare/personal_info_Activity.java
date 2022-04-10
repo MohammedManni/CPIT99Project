@@ -185,7 +185,7 @@ public class personal_info_Activity extends AppCompatActivity {
 
         String password = Password.getText().toString();
 
-        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
+        UpdatePassword db1BackgroundWorker = new UpdatePassword(this);
         db1BackgroundWorker.execute(operation, username, type1, password);
 
     }
@@ -197,7 +197,7 @@ public class personal_info_Activity extends AppCompatActivity {
         String phoneNumber =  PhoneNumberINProfileEditText.getText().toString();
 
 
-        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
+        UpdatePassword db1BackgroundWorker = new UpdatePassword(this);
         db1BackgroundWorker.execute(operation, username, type1, phoneNumber);
 
     }
@@ -258,7 +258,7 @@ public class personal_info_Activity extends AppCompatActivity {
                             caregiver.setPhone_number(phoneNumber);
                             caregiver.setAge(age);
 
-                            UserNameINProfileEDITText.setText(caregiver.getUsername());
+                            UserNameINProfileEDITText.setText(userName);
                             PersonNameINProfileEditText.setText(caregiver.getFullName());
                             PhoneNumberINProfileEditText.setText(String.valueOf(caregiver.getPhone_number()));
                             AgeEditText.setText(String.valueOf(caregiver.getAge()));
@@ -282,11 +282,11 @@ public class personal_info_Activity extends AppCompatActivity {
     ///////////////////////////// DO NOT CHANGE ANYTHING  ( UNTIL HERE ) ///////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////// Update class ///////////////////////////////////////////////////////////////////////////////////
-    public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
+    public class UpdatePassword extends AsyncTask<String, Void, String> {
         Context context;
         AlertDialog alertDialog;
 
-        db1BackgroundWorker(Context ctx) {
+        UpdatePassword(Context ctx) {
             context = ctx;
         }
 

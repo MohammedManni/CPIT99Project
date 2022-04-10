@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MedicationLog_Adjustment extends AppCompatActivity {
-
+    private String name, type;
     TextView textView1, textView2, text3, textView4, textView6, textView5, textView7, textView13, textView14, textView15, textView16, textView17, textView18, textView20, textView21, textView22;
     String id, NameM, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, timeH, timeM, everyH, repeated, eventDescription, date;
     String NOTS, ANS, ATS, NDS, TDS, RS;
@@ -58,6 +60,8 @@ public class MedicationLog_Adjustment extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            name = extras.getString("USERNAME");
+            type = extras.getString("TYPE");
             id = extras.getString("id");
             NameM = extras.getString("NameM");
             numberOfTime = extras.getString("numberOfTime");
@@ -75,6 +79,10 @@ public class MedicationLog_Adjustment extends AppCompatActivity {
 
         }
 
+        // toolbar
+        toolbar();
+
+
         medicineNameET = findViewById(R.id.EditMedicineName0);
         spinner();
         start_day_DATE = findViewById(R.id.Start_day_DATE0);
@@ -91,7 +99,14 @@ public class MedicationLog_Adjustment extends AppCompatActivity {
         spin3.set(0,doseAmountText);
         spin4.set(0,duration);
         spin5.set(0,durationByText);
-        spin6.set(0,repeated);
+        if (repeated.equalsIgnoreCase("1")){
+            spin6.set(0,"Day");
+        }else if (repeated.equalsIgnoreCase("2")){
+            spin6.set(0,"Two Days");
+        }else if (repeated.equalsIgnoreCase("3")){
+            spin6.set(0,"Three Days");
+        }
+
         start_day_DATE.setText(date);
         timePicker.setHour(Integer.parseInt(timeH));
         timePicker.setMinute(Integer.parseInt(timeM));
@@ -532,5 +547,67 @@ public class MedicationLog_Adjustment extends AppCompatActivity {
         spin6.add("Two Days");
         spin6.add("Three Days");
 
+    }
+
+    public void toolbar() {
+        // toolbar buttons
+        Button Profile = findViewById(R.id.firstB);
+        Button Schedule = findViewById(R.id.SecondB);
+        Button Add = findViewById(R.id.thirdB);
+        Button SOS = findViewById(R.id.SOS);
+        ImageButton imageButton = findViewById(R.id.imageButton);
+
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MedicationLog_Adjustment.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MedicationLog_Adjustment.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MedicationLog_Adjustment.this, Add_Medicine_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MedicationLog_Adjustment.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    Intent intent = new Intent(MedicationLog_Adjustment.this, Home_Page_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+
+            }
+        });
     }
 }

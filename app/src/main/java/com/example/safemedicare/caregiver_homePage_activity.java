@@ -52,7 +52,10 @@ public class caregiver_homePage_activity extends AppCompatActivity {
             // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
         }
 
-        /////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////<include
+        //        layout="@layout/toolbar"
+        //        android:id="@+id/toolbarh"
+        //        ></include>
         toolbar();
 
         ////////////// read from database///////////////////////////
