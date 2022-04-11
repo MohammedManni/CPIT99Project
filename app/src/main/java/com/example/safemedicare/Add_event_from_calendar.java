@@ -124,7 +124,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Add_event_from_calendar.this, Profile_Activity.class);
+                Intent intent = new Intent(Add_event_from_calendar.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -197,19 +197,17 @@ public class Add_event_from_calendar extends AppCompatActivity {
         String timeM = String.valueOf(minutes);
 
 
-        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(operation, username, type1, eventName, Description, Date, timeH, timeM);
+        AddEventToDB AddEventToDB = new AddEventToDB(this);
+        AddEventToDB.execute(operation, username, type1, eventName, Description, Date, timeH, timeM);
 
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////// Add to DB //////////////////////////////////////////////////////////////////////////
-    public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
+    public class AddEventToDB extends AsyncTask<String, Void, String> {
         Context context;
         AlertDialog alertDialog;
 
-        db1BackgroundWorker(Context ctx) {
+        AddEventToDB(Context ctx) {
             context = ctx;
         }
 

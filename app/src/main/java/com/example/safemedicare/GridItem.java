@@ -16,7 +16,7 @@ public class GridItem {
 
     public GridItem(String eventListName, int eventListImage) {
         this.eventListName = eventListName;
-        //this.eventListImage = eventListImage;
+
     }
 
     public String getEventListDate() {
@@ -43,13 +43,5 @@ public class GridItem {
         this.eventListName = eventListName;
     }
 
-   /* public int getEventListImage() {
-        return eventListImage;
-    }
 
-    public void setEventListImage(int eventListImage) {
-        this.eventListImage = eventListImage;
-    }
-    \
-    */
 }

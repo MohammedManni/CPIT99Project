@@ -15,7 +15,6 @@ public class Medication {
         this.doseAmountText = doseAmountText;
         this.duration = duration;
         this.textDurationSpin = textDurationSpin;
-
         this.startDayDate = startDayDate;
         this.timeH = timeH;
         this.timeM = timeM;

@@ -32,11 +32,10 @@ public class GridAdapter extends ArrayAdapter {
         TextView eventListNameID = (TextView) v.findViewById(R.id.eventListNameID);
         TextView eventListDateID = (TextView) v.findViewById(R.id.eventListDateID);
         TextView eventListTimeID = (TextView) v.findViewById(R.id.eventListTimeID);
-       // ImageView imageView = (ImageView) v.findViewById(R.id.imageViewGrid);
+
         eventListNameID.setText(eventList.get(position).getEventListName());
         eventListDateID.setText(eventList.get(position).getEventListDate());
         eventListTimeID.setText(eventList.get(position).getEventListTime());
-        //imageView.setImageResource(eventList.get(position).getEventListImage());
         return v;
 
     }

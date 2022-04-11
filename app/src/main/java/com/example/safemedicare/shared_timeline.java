@@ -95,7 +95,7 @@ public class shared_timeline extends AppCompatActivity {
                 String s = e.getEventListName();
                 String[] spilt = s.split(":");
 
-                Intent intent = new Intent(shared_timeline.this, SecondActivity.class);
+                Intent intent = new Intent(shared_timeline.this, Medication_Information.class);
                 if (spilt[0].equalsIgnoreCase("Medicine")) {
                     Medication medication = null;
                     int a = 0;
@@ -104,7 +104,7 @@ public class shared_timeline extends AppCompatActivity {
                         if (spilt[1].equalsIgnoreCase(" " + medication.getMedicineName())) {
 
                             intent.putExtra("operation", "1");
-                            //intent.putExtra("userName", medication.getUser_name());
+                            intent.putExtra("type", type);
                             intent.putExtra("NameM", medication.getMedicineName());
                             intent.putExtra("numberOfTime", medication.getNumberOfTime());
                             intent.putExtra("doseAmountNumber", medication.getDoseAmountNumber());
@@ -130,7 +130,7 @@ public class shared_timeline extends AppCompatActivity {
 
                             //intent.putExtra("image", logos[position]); // put image data in Intent
                             intent.putExtra("operation", "2");
-                            //intent.putExtra("userName", event.getEventName());
+                            intent.putExtra("type", type);
                             intent.putExtra("eventName", event.getEventName());
                             intent.putExtra("eventDescription", event.getEventDetails());
                             intent.putExtra("date", event.getEventDate());
@@ -173,8 +173,6 @@ public class shared_timeline extends AppCompatActivity {
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
-        //Toast.makeText(getApplicationContext(), ""+formattedDate, Toast.LENGTH_SHORT).show();
-
         startAlarm(c, eventName, eventDescription);
     }
 
@@ -231,7 +229,7 @@ public class shared_timeline extends AppCompatActivity {
                             // add to the array list
                             eventlistChild.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
                             if (date.equalsIgnoreCase(formattedDate)) {
-                                onTimeSet(Integer.parseInt(timeH), Integer.parseInt(timeM), "Event Name: " + eventName, eventDescription);
+                                onTimeSet(Integer.parseInt(timeH), Integer.parseInt(timeM), "The patient "+patientUserNameFromGetIntent+"\nHas Event Name: " + eventName, eventDescription);
                             }
                         }
 
@@ -253,26 +251,7 @@ public class shared_timeline extends AppCompatActivity {
                             convert12(check);
                             eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (timeIn12 + " : " + e.getEventTimeM())));
                         }
-                        /*
-                        if (e.getEventDate().matches(formattedDate)) {
-                            if (Integer.parseInt(e.getEventTimeH()) >= 12 && Integer.parseInt(e.getEventTimeH()) < 24) {
-                                if (Integer.parseInt(e.getEventTimeH()) > 12) {
-                                    eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm")));
 
-                                } else {
-                                    eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm")));
-
-                                }
-                            } else if (Integer.parseInt(e.getEventTimeH()) == 0) {
-                                eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + ("12" + ":" + e.getEventTimeM() + " am")));
-
-                            } else {
-                                eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am")));
-                            }
-                        }
-                    }
-
- */
                     }
                     gridList.setAdapter(myAdapter);
 
@@ -351,6 +330,9 @@ public class shared_timeline extends AppCompatActivity {
                             Medication m = new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated);
 
                             medicationList.add(m);
+                            if (startDayDate.equalsIgnoreCase(formattedDate)) {
+                                onTimeSet(Integer.parseInt(timeH), Integer.parseInt(timeM), "Medicine Name: " + medicineName, "The patient "+patientUserNameFromGetIntent+"\nShould Take "+doseAmountNumber+" "+doseAmountText);
+                            }
                             //  eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber() + " Pill/s", "Time " + m.getTimeH() + " : " + m.getTimeM()));
 
                         }

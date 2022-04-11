@@ -63,8 +63,10 @@ public class shared_schedule extends AppCompatActivity {
             type = extras.getString("TYPE");
             patientUserName=extras.getString("PatientUserName");
             Button SecondB = findViewById(R.id.SecondB);
+            Button add = findViewById(R.id.thirdB);
             if (type.matches("caregiver")) {
                 SecondB.setVisibility(View.GONE);
+                add.setVisibility(View.GONE);
             }
         }
 

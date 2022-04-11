@@ -144,7 +144,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         BackBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(caregiver_relative_control_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(caregiver_relative_control_Activity.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -167,7 +167,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(caregiver_relative_control_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(caregiver_relative_control_Activity.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -409,7 +409,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
-            // if caregiver was not found with the patient
+            // if caregiver was not found with the patient in PC table
             else if (result.toString().equalsIgnoreCase(user_name + " not found")) {
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
@@ -433,12 +433,12 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.171/readPC.php";
+            String readPC_url = "http://192.168.100.171/readPC.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
-                request.setURI(new URI(medication_url));
+                request.setURI(new URI(readPC_url));
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer stringBuffer = new StringBuffer("");
@@ -475,24 +475,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
 
                     }
-                } else if (success == 2) {
-                    JSONArray caregiverData = jsonResult.getJSONArray("caregiver");
-                    for (int i = 0; i < caregiverData.length(); i++) {
-                        JSONObject patientObject = caregiverData.getJSONObject(i);
-                        String userName = patientObject.getString("userName");
-
-                        for (int j = 0; j < bankNamesDelete.size(); j++) {
-                            if (!bankNamesDelete.get(i).toString().matches(userName)){
-                                bankNamesADD.add(userName.toUpperCase());
-                            }
-
-
-
-                        }
-
-
-                    }
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {

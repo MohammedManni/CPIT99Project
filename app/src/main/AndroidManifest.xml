@@ -33,29 +33,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".retriveDB" />
         <activity android:name=".caregiver_homePage_activity" />
-        <activity android:name=".SecondActivity" />
+        <activity android:name=".Medication_Information" />
         <activity android:name=".Add_event_from_calendar" />
         <activity android:name=".medicationLog_page_Activity" />
-        <activity android:name=".privacy_page" />
         <activity android:name=".caregiver_relative_control_Activity" />
         <activity android:name=".personal_info_Activity" />
-        <activity android:name=".register2Activity" />
         <activity android:name=".Home_Page_Activity" />
-        <activity android:name=".Profile_Activity" />
+        <activity android:name=".Patient_Profile_Activity" />
         <activity android:name=".Add_Medicine_Activity" />
         <activity android:name=".Schedule_Activity" />
         <activity android:name=".SOS_Activity" />
         <activity android:name=".register1Activity" />
         <activity android:name=".sign_activity" />
-        <activity android:name=".patientProfile_caregiverView">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <receiver android:name=".MyBroadcastReceiver" />
 

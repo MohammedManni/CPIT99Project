@@ -59,19 +59,7 @@ public class sign_activity extends AppCompatActivity {
                 } else {
                     OnLogin(view);
                 }
-                // check caregiver
-                // Username.onSaveInstanceState();
-                // end caregiver
 
-                // if for empty edit text
-
-             /*
-                Intent myIntent = new Intent(sign_activity.this, Decide_Class.class);
-                myIntent.putExtra("USERNAME", Username.getText().toString());
-                myIntent.putExtra("PASSWORD", Password.getText().toString());
-                startActivity(myIntent);
-
-              */
             }
         });
 
@@ -89,19 +77,18 @@ public class sign_activity extends AppCompatActivity {
         String username = Username.getText().toString().trim();
         String password = Password.getText().toString().trim();
         String type = "login";
-        db1BackgroundWorker backgroundWorker = new db1BackgroundWorker(this);
+        signIN backgroundWorker = new signIN(this);
         backgroundWorker.execute(type, username, password);
     }
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private class db1BackgroundWorker extends AsyncTask<String, Void, String> {
+
+    private class signIN extends AsyncTask<String, Void, String> {
         Context context;
         AlertDialog alertDialog;
 
-        db1BackgroundWorker(Context ctx) {
+        signIN(Context ctx) {
             context = ctx;
         }
 

@@ -91,7 +91,8 @@ public class Home_Page_Activity extends AppCompatActivity {
                 String s = e.getEventListName();
                 String[] spilt = s.split(":");
 
-                Intent intent = new Intent(Home_Page_Activity.this, SecondActivity.class);
+
+                Intent intent = new Intent(Home_Page_Activity.this, Medication_Information.class);
                 if (spilt[0].equalsIgnoreCase("Medicine")) {
                     Medication medication = null;
                     int a = 0;
@@ -1356,7 +1357,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home_Page_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(Home_Page_Activity.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

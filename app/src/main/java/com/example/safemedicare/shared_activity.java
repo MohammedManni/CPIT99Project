@@ -119,8 +119,8 @@ public class shared_activity extends AppCompatActivity {
                             patientNameET.setText(patientName);
                             patientNameET.setEnabled(false);
                             ageET.setText(String.valueOf(age));
-                            phoneET.setText(String.valueOf(phoneNumber));
                             ageET.setEnabled(false);
+                            phoneET.setText(String.valueOf(phoneNumber));
                             phoneET.setEnabled(false);
                         }
                     }

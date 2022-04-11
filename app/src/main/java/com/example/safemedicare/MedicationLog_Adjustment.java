@@ -37,7 +37,7 @@ import java.util.Calendar;
 
 public class MedicationLog_Adjustment extends AppCompatActivity {
     private String name, type;
-    TextView textView1, textView2, text3, textView4, textView6, textView5, textView7, textView13, textView14, textView15, textView16, textView17, textView18, textView20, textView21, textView22;
+    TextView  textView7;
     String id, NameM, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, timeH, timeM, everyH, repeated, eventDescription, date;
     String NOTS, ANS, ATS, NDS, TDS, RS;
     EditText medicineNameET;
@@ -560,7 +560,7 @@ public class MedicationLog_Adjustment extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MedicationLog_Adjustment.this, Profile_Activity.class);
+                Intent intent = new Intent(MedicationLog_Adjustment.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

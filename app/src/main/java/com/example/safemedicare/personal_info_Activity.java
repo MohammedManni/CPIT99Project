@@ -37,7 +37,7 @@ import java.net.URLEncoder;
 public class personal_info_Activity extends AppCompatActivity {
 
     private String name, type, userName;
-    CaregiverClass caregiver;
+    User user;
 
     EditText UserNameINProfileEDITText, PersonNameINProfileEditText, PhoneNumberINProfileEditText, AgeEditText, ConfirmPassword, Password;
 
@@ -57,17 +57,49 @@ public class personal_info_Activity extends AppCompatActivity {
                 SecondB.setVisibility(View.GONE);
                 add.setVisibility(View.GONE);
             }
-            new ConnectionToCaregiver().execute();
+            new returnUserInformation().execute();
         }
-        caregiver = new CaregiverClass();
+        user = new CaregiverClass();
         UserNameINProfileEDITText = (EditText) findViewById(R.id.UserNameINProfileEDITText);
         PersonNameINProfileEditText = (EditText) findViewById(R.id.PersonNameINProfileEditText);
         PhoneNumberINProfileEditText = (EditText) findViewById(R.id.PhoneNumberINProfileEditText);
         AgeEditText = (EditText) findViewById(R.id.AgeEditText);
         Password = (EditText) findViewById(R.id.PasswordINProfileEditText);
         ConfirmPassword = (EditText) findViewById(R.id.ConPasswordINProfileEditText);
+        //toolbar
+        toolbar();
 
 
+        Button saveChange = findViewById(R.id.saveChange);
+        saveChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Password.getText().toString().equalsIgnoreCase("") && !ConfirmPassword.getText().toString().equalsIgnoreCase("")) {
+                    // the password match check
+                    if (Password.getText().toString().equals(ConfirmPassword.getText().toString())) {
+
+                        // update the information
+                        PasswordUpdate(view);
+                        Password.setText(null);
+                        ConfirmPassword.setText(null);
+
+                    } else {// else for not matching pass
+                        Password.setText(null);
+                        ConfirmPassword.setText(null);
+                        Toast.makeText(personal_info_Activity.this, "the Password not matching", Toast.LENGTH_LONG).show();
+                    }
+
+                } else {// else for phone number update
+                    PhoneUpdate(view);
+
+                }
+
+            }
+        });
+
+
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -79,7 +111,7 @@ public class personal_info_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (type.equalsIgnoreCase("patient")) {
-                    Intent intent = new Intent(personal_info_Activity.this, Profile_Activity.class);
+                    Intent intent = new Intent(personal_info_Activity.this, Patient_Profile_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
@@ -145,41 +177,7 @@ public class personal_info_Activity extends AppCompatActivity {
         });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
-
-        Button saveChange = findViewById(R.id.saveChange);
-        saveChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(personal_info_Activity.this, sign_activity.class);
-                //startActivity(intent);
-
-
-                if (!Password.getText().toString().equalsIgnoreCase("") && !ConfirmPassword.getText().toString().equalsIgnoreCase("")) {
-                    // the password match check
-                    if (Password.getText().toString().equals(ConfirmPassword.getText().toString())) {
-
-                        // update the information
-                        PasswordUpdate(view);
-                        Password.setText(null);
-                        ConfirmPassword.setText(null);
-
-                    } else {// else for not matching pass
-                        Password.setText(null);
-                        ConfirmPassword.setText(null);
-                        Toast.makeText(personal_info_Activity.this, "the Password not matching", Toast.LENGTH_LONG).show();
-                    }
-
-                } else {// else for phone number update
-                    PhoneUpdate(view);
-                    //Toast.makeText(personal_info_Activity.this, "Phone Number update", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-
-
     }
-
     public void PasswordUpdate(View view) {
 
         String operation = "password";
@@ -205,18 +203,18 @@ public class personal_info_Activity extends AppCompatActivity {
 
     }
 
-    ///////////////////////////// DO NOT CHANGE ANYTHING ///////////////////////////////////////////////////////////////////
+
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
-    class ConnectionToCaregiver extends AsyncTask<String, String, String> {
+    class returnUserInformation extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/returnINFO.php";
+            String readUser_url = "http://192.168.100.171/returnINFO.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
-                request.setURI(new URI(readPatient_url));
+                request.setURI(new URI(readUser_url));
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer stringBuffer = new StringBuffer("");
@@ -243,28 +241,28 @@ public class personal_info_Activity extends AppCompatActivity {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
                 if (success == 1) {
-                    JSONArray patientData = jsonResult.getJSONArray("patient");
-                    for (int i = 0; i < patientData.length(); i++) {
-                        JSONObject patientObject = patientData.getJSONObject(i);
+                    JSONArray userData = jsonResult.getJSONArray("user");
+                    for (int i = 0; i < userData.length(); i++) {
+                        JSONObject userObject = userData.getJSONObject(i);
 
-                        userName = patientObject.getString("userName");
+                        userName = userObject.getString("userName");
 
 
                         if (userName.equalsIgnoreCase(name)) {
-                            String fullName = patientObject.getString("name");
-                            int phoneNumber = Integer.parseInt(patientObject.getString("phoneNumber"));
-                            int age = Integer.parseInt(patientObject.getString("age"));
+                            String fullName = userObject.getString("name");
+                            int phoneNumber = Integer.parseInt(userObject.getString("phoneNumber"));
+                            int age = Integer.parseInt(userObject.getString("age"));
 
-                            caregiver.setId(Integer.parseInt(patientObject.getString("id")));
-                            caregiver.setUsername(userName);
-                            caregiver.setFullName(fullName);
-                            caregiver.setPhone_number(phoneNumber);
-                            caregiver.setAge(age);
+                            user.setId(Integer.parseInt(userObject.getString("id")));
+                            user.setUsername(userName);
+                            user.setFullName(fullName);
+                            user.setPhone_number(phoneNumber);
+                            user.setAge(age);
 
                             UserNameINProfileEDITText.setText(userName);
-                            PersonNameINProfileEditText.setText(caregiver.getFullName());
-                            PhoneNumberINProfileEditText.setText(String.valueOf(caregiver.getPhone_number()));
-                            AgeEditText.setText(String.valueOf(caregiver.getAge()));
+                            PersonNameINProfileEditText.setText(user.getFullName());
+                            PhoneNumberINProfileEditText.setText(String.valueOf(user.getPhone_number()));
+                            AgeEditText.setText(String.valueOf(user.getAge()));
                             UserNameINProfileEDITText.setEnabled(false);
                             PersonNameINProfileEditText.setEnabled(false);
 

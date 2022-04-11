@@ -5,12 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,16 +28,9 @@ import java.util.ArrayList;
 public class medicationLog_page_Activity extends AppCompatActivity {
     GridView gridList;
     GridAdapterMedicationLog myAdapter;
-    EditText medName, numOfTime, amount;
     public String name, type , userName;
     ArrayList medicationList = new ArrayList<>();
-    ArrayList medicationChild = new ArrayList();
-    ////////attributes medication to read from DB/////////
-    ListView list;
-    ArrayAdapter<String> adapter;
-    Medication medication;
-    MedicationLog medicationLog ;
-    /////////////////////////////////////////////
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +46,13 @@ public class medicationLog_page_Activity extends AppCompatActivity {
 
         //toolbar
         toolbar();
-
-        //////////attributes medication to read from DB////////////////////////////////////////////////
+////////////////////////////////////// read from DB////////////////////////////////////////////////
         new ConnectionToReadMedication().execute();
 
         ///// START GRID VIEW /////
         gridList = (GridView) findViewById(R.id.gridViewM);
         myAdapter = new GridAdapterMedicationLog(this, R.layout.grid_adapter_medication_log, medicationList);
-        // implement setOnItemClickListener
+        // implement OnItemClickListener
         gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +78,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
 
             }
         });
-        //////// database /////////////////
+
 
 
 
@@ -107,7 +96,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -166,17 +155,9 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
     }
 
-    public void medicationLog(View view) {
-       // String medicationName = medName.getText().toString();
-     //   String numberOfTime = numOfTime.getText().toString();
-       // String doseAmount = amount.getText().toString();
 
-     //   String type = "medication";
-     //   db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-     //   db1BackgroundWorker.execute(type, medicationName, numberOfTime, doseAmount);
-    }
 
-    ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
+    ///////////////////////////// class to read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadMedication extends AsyncTask<String, String, String> {
         // starting the connection
         @Override
@@ -186,8 +167,6 @@ public class medicationLog_page_Activity extends AppCompatActivity {
             String medication_url = "http://192.168.100.171/readMedication.php";
             try {
 
-
-                //////////////////////////////////////////////////////////////////////////////////////////
                 HttpClient clientM = new DefaultHttpClient();
                 HttpGet requestM = new HttpGet();
                 requestM.setURI(new URI(medication_url));
@@ -215,31 +194,29 @@ public class medicationLog_page_Activity extends AppCompatActivity {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
                 if (success == 2) {
-                    JSONArray patientData = jsonResult.getJSONArray("medication");
-                    for (int i = 0; i < patientData.length(); i++) {
-                        JSONObject patientObject = patientData.getJSONObject(i);
-                        userName = patientObject.getString("userName");
+                    JSONArray medicationData = jsonResult.getJSONArray("medication");
+                    for (int i = 0; i < medicationData.length(); i++) {
+                        JSONObject medicationObject = medicationData.getJSONObject(i);
+                        userName = medicationObject.getString("userName");
 
 
                         if (userName.equalsIgnoreCase(name)) {
 
 
-                            int id = patientObject.getInt("id");
-                            String medicineName = patientObject.getString("medicineName");
-                            String numberOfTime = patientObject.getString("numberOfTime");
-                            String doseAmountNumber = patientObject.getString("doseAmountNumber");
-                            String doseAmountText = patientObject.getString("doseAmountText");
-                            String duration = patientObject.getString("duration");
-                            String durationByText = patientObject.getString("durationByText");
-                            String startDayDate = patientObject.getString("startDayDate");
-                            String timeH = patientObject.getString("timeH");
-                            String timeM = patientObject.getString("timeM");
-                            String everyH = patientObject.getString("everyH");
-                            String repeated = patientObject.getString("repeated");
+                            int id = medicationObject.getInt("id");
+                            String medicineName = medicationObject.getString("medicineName");
+                            String numberOfTime = medicationObject.getString("numberOfTime");
+                            String doseAmountNumber = medicationObject.getString("doseAmountNumber");
+                            String doseAmountText = medicationObject.getString("doseAmountText");
+                            String duration = medicationObject.getString("duration");
+                            String durationByText = medicationObject.getString("durationByText");
+                            String startDayDate = medicationObject.getString("startDayDate");
+                            String timeH = medicationObject.getString("timeH");
+                            String timeM = medicationObject.getString("timeM");
+                            String everyH = medicationObject.getString("everyH");
+                            String repeated = medicationObject.getString("repeated");
 
                             // add to the array list medicationList
-                           // Medication m = new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated);
-
                             medicationList.add(new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated));
 
                         }

@@ -51,15 +51,12 @@ public class caregiver_homePage_activity extends AppCompatActivity {
                 SecondB.setVisibility(View.GONE);
                 add.setVisibility(View.GONE);
             }
-            // Toast.makeText(getApplicationContext(), "Welcome "+name, Toast.LENGTH_SHORT).show();
+
         }
 
-        /////////////////////////////////////////////////////////////////////<include
 
+        // toolbar
         toolbar();
-
-        ////////////// read from database///////////////////////////
-        list = (ListView) findViewById(R.id.patientList);
 
 
         ////////////// read from database///////////////////////////
@@ -68,12 +65,7 @@ public class caregiver_homePage_activity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // Intent intent = new Intent(caregiver_homePage_activity.this, Profile_Activity.class);
-                // intent.putExtra("USERNAME", name);
-                // intent.putExtra("TYPE", type);
-                // intent.putExtra("PatientName", p.get(i));
-                //startActivity(intent);
-                //Toast.makeText(getApplicationContext(), "Welcome "+p.get(i), Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(caregiver_homePage_activity.this, shared_activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
@@ -186,7 +178,6 @@ public class caregiver_homePage_activity extends AppCompatActivity {
 
                         if (userName.equalsIgnoreCase(name)) {
                             p.add(patientName);
-                            //String line = id + " - " + patientName;
                             String line = patientName;
                             adapter.add(line);
                         }

@@ -41,7 +41,7 @@ import java.util.Calendar;
 public class Event_Adjustment extends AppCompatActivity {
     private String name, type;
     int eventId;
-    EditText nameOfEventET, DescriptionEditText, dateET, timeET, timeETM;
+    EditText nameOfEventET, DescriptionEditText;
     TimePicker timePicker;
     Button date;
     DatePickerDialog datePickerDialog;
@@ -59,7 +59,7 @@ public class Event_Adjustment extends AppCompatActivity {
             eventId = extras.getInt("EVENT_ID");
         }
         new ConnectionToReadEvent().execute();
-        //////////////////////DATABASE VARIABLES///////////////////////////////////////////
+
         nameOfEventET = findViewById(R.id.nameOfMedicineET);
         DescriptionEditText = findViewById(R.id.DescriptionEditText);
 
@@ -86,7 +86,7 @@ public class Event_Adjustment extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         // set day of month , month and year value in the edit text
-                        date.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
+                        date.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show();
@@ -104,7 +104,7 @@ public class Event_Adjustment extends AppCompatActivity {
 
                     //update the information
                     updateEvent(view);
-                }else {
+                } else {
                     nameOfEventET.setError("ENTER the Event Name ");
                     DescriptionEditText.setError("ENTER the Description ");
                 }
@@ -116,8 +116,8 @@ public class Event_Adjustment extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                    // Delete the information
-                    DeleteEvent(view);
+                // Delete the information
+                DeleteEvent(view);
 
 
             }
@@ -125,6 +125,7 @@ public class Event_Adjustment extends AppCompatActivity {
 
 
     }
+
     public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
@@ -136,7 +137,7 @@ public class Event_Adjustment extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Event_Adjustment.this, Profile_Activity.class);
+                Intent intent = new Intent(Event_Adjustment.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -199,16 +200,14 @@ public class Event_Adjustment extends AppCompatActivity {
 
     ////////////////////////////////METHOD FOR UPDATE////////////////////////////////////////////////////////////////
     public void updateEvent(View view) {
-        int hours = timePicker.getHour(); // after api level 23
-        int minutes = timePicker.getMinute(); // after api level 23
+        int hours = timePicker.getHour();
+        int minutes = timePicker.getMinute();
         String timeH = String.valueOf(hours);
         String timeM = String.valueOf(minutes);
         String operation = "update";
         String nameOfEvent = nameOfEventET.getText().toString();
         String descriptionOfEvent = DescriptionEditText.getText().toString();
         String dateOfEvent = date.getText().toString();
-        //String timeH = timeET.getText().toString();
-        //String timeM = timeETM.getText().toString();
         String eventID = String.valueOf(eventId);
         UpdateEvent db1BackgroundWorker = new UpdateEvent(this);
         db1BackgroundWorker.execute(operation, nameOfEvent, descriptionOfEvent, dateOfEvent, timeH, timeM, eventID);
@@ -218,7 +217,6 @@ public class Event_Adjustment extends AppCompatActivity {
     public void DeleteEvent(View view) {
 
         String operation = "delete";
-
         String eventID = String.valueOf(eventId);
         UpdateEvent db1BackgroundWorker = new UpdateEvent(this);
         db1BackgroundWorker.execute(operation, eventID);
@@ -230,11 +228,11 @@ public class Event_Adjustment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readEvent.php";
+            String readEvent_url = "http://192.168.100.171/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
-                request.setURI(new URI(readPatient_url));
+                request.setURI(new URI(readEvent_url));
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer stringBuffer = new StringBuffer("");
@@ -263,22 +261,19 @@ public class Event_Adjustment extends AppCompatActivity {
                 if (success == 1) {
                     JSONArray eventData = jsonResult.getJSONArray("event");
                     for (int i = 0; i < eventData.length(); i++) {
-                        JSONObject patientObject = eventData.getJSONObject(i);
-                        int id = patientObject.getInt("id");
+                        JSONObject eventObject = eventData.getJSONObject(i);
+                        int id = eventObject.getInt("id");
 
 
                         if (id == eventId) {
-                            String eventName = patientObject.getString("eventName");
-                            String eventDescription = patientObject.getString("eventDescription");
-                            String date1 = patientObject.getString("date");
-                            String timeH = patientObject.getString("timeH");
-                            String timeM = patientObject.getString("timeM");
+                            String eventName = eventObject.getString("eventName");
+                            String eventDescription = eventObject.getString("eventDescription");
+                            String date1 = eventObject.getString("date");
+                            String timeH = eventObject.getString("timeH");
+                            String timeM = eventObject.getString("timeM");
                             nameOfEventET.setText(eventName);
                             DescriptionEditText.setText(eventDescription);
                             date.setText(date1);
-                           // dateET.setText(date1);
-                            //String time=timeH+":"+timeM;
-
                             timePicker.setHour(Integer.parseInt(timeH));
                             timePicker.setMinute(Integer.parseInt(timeM));
 
@@ -312,7 +307,6 @@ public class Event_Adjustment extends AppCompatActivity {
                     String event_Name = params[1];
                     String eventDescription = params[2];
                     String date = params[3];
-
                     String timeH = params[4];
                     String timeM = params[5];
                     String eventID = params[6];
@@ -353,6 +347,7 @@ public class Event_Adjustment extends AppCompatActivity {
 
             } else if (operation.equals("delete")) {
                 try {
+                    // avoid null reference
                     String event_Name = " ";
                     String eventDescription = " ";
                     String date = " ";

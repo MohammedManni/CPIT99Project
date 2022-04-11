@@ -7,10 +7,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SecondActivity extends AppCompatActivity {
+public class Medication_Information extends AppCompatActivity {
 
     TextView textView1, textView2, text3, textView4,  textView6, textView7, textView13, textView14, textView15, textView16, textView17, textView18,  textView20, textView21, textView22;
-    String operation, NameM,numberOfTime, doseAmountNumber,doseAmountText, duration,durationByText,timeH, timeM, everyH, repeated ,eventDescription, date ;
+    String operation, type, NameM,numberOfTime, doseAmountNumber,doseAmountText, duration,durationByText,timeH, timeM, everyH, repeated ,eventDescription, date ;
     Switch takenMedicineSwitch;
 
     @Override
@@ -40,6 +40,8 @@ public class SecondActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             operation = extras.getString("operation");
+            type = extras.getString("type");
+
             if (operation.matches("1")){
                 NameM = extras.getString("NameM");
                 numberOfTime = extras.getString("numberOfTime");
@@ -74,6 +76,10 @@ public class SecondActivity extends AppCompatActivity {
                 textView20.setText(timeH+" : ");
                 textView21.setText(timeM);
                 textView22.setText(everyH+" Hours");
+
+                if (type.equalsIgnoreCase("caregiver")){
+                    takenMedicineSwitch.setVisibility(View.GONE);
+                }
 
             }else if (operation.matches("2")){
 

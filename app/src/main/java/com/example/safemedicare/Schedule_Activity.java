@@ -34,7 +34,7 @@ import java.util.Comparator;
 public class Schedule_Activity extends AppCompatActivity {
     ListView list;
     ArrayAdapter<String> adapter;
-    private String name, type, userName, date1,patientName;
+    private String name, type, userName, date1;
     DatePicker datePicker;
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
@@ -51,18 +51,17 @@ public class Schedule_Activity extends AppCompatActivity {
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/M/yyyy");
         currentDate = dateFormat.format(calendar.getTime());
-        //Toast.makeText(Schedule_Activity.this," The date is : "+currentDate ,Toast.LENGTH_LONG).show();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-           // patientName = extras.getString("PATIENT_NAME");
+
         }
         /////////////////////////////////////////////////////////////////////
         toolbar();
-      // fill the list view
-        new ConnectionToReadPatient().execute();
+        // fill the list view
+        new ConnectionToReadEvent().execute();
         list = (ListView) findViewById(R.id.ListViewEvent);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         list.setAdapter(adapter);
@@ -106,23 +105,23 @@ public class Schedule_Activity extends AppCompatActivity {
                 adapter.clear();
                 eventlist.clear();
                 selectedDateEvent.clear();
-                new ConnectionToReadPatient().execute();
+                new ConnectionToReadEvent().execute();
             }
         });
 
     }
 
     ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
-    class ConnectionToReadPatient extends AsyncTask<String, String, String> {
+    class ConnectionToReadEvent extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readEvent.php";
+            String readEvent_url = "http://192.168.100.171/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
-                request.setURI(new URI(readPatient_url));
+                request.setURI(new URI(readEvent_url));
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer stringBuffer = new StringBuffer("");
@@ -149,18 +148,18 @@ public class Schedule_Activity extends AppCompatActivity {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
                 if (success == 1) {
-                    JSONArray patientData = jsonResult.getJSONArray("event");
-                    for (int i = 0; i < patientData.length(); i++) {
-                        JSONObject patientObject = patientData.getJSONObject(i);
-                        userName = patientObject.getString("userName");
+                    JSONArray eventData = jsonResult.getJSONArray("event");
+                    for (int i = 0; i < eventData.length(); i++) {
+                        JSONObject eventObject = eventData.getJSONObject(i);
+                        userName = eventObject.getString("userName");
 
                         if (userName.equalsIgnoreCase(name)) {
-                            int id = patientObject.getInt("id");
-                            String eventName = patientObject.getString("eventName");
-                            String eventDescription = patientObject.getString("eventDescription");
-                            String date = patientObject.getString("date");
-                            String timeH = patientObject.getString("timeH");
-                            String timeM = patientObject.getString("timeM");
+                            int id = eventObject.getInt("id");
+                            String eventName = eventObject.getString("eventName");
+                            String eventDescription = eventObject.getString("eventDescription");
+                            String date = eventObject.getString("date");
+                            String timeH = eventObject.getString("timeH");
+                            String timeM = eventObject.getString("timeM");
                             // add to the array list
                             eventlist.add(new Event(eventName, eventDescription, timeH, timeM, date, id));
                         }
@@ -229,7 +228,7 @@ public class Schedule_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (type.equalsIgnoreCase("patient")) {
-                    Intent intent = new Intent(Schedule_Activity.this, Profile_Activity.class);
+                    Intent intent = new Intent(Schedule_Activity.this, Patient_Profile_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);

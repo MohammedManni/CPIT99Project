@@ -49,7 +49,6 @@ public class Add_Medicine_Text extends AppCompatActivity {
     EditText medicineNameET;
     Spinner numberOfTimeSpin, amountNumberSpinner, amountTextSpinner, numberDurationSpin, textDurationSpin, RepeatSpin;
     String NOTS, ANS, ATS, NDS, TDS, RS;
-
     DatePickerDialog datePickerDialog;
     Button start_day_DATE;
     ArrayList spin1, spin2, spin3, spin4, spin5, spin6, conflictMedicine, actionMedicine;
@@ -131,7 +130,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Please select duration in text", Toast.LENGTH_SHORT).show();
                     } else if (RS.equalsIgnoreCase("Select")) {
                         Toast.makeText(getApplicationContext(), "Please select the repetition", Toast.LENGTH_SHORT).show();
-                    } else if ((TDS.equalsIgnoreCase("Month/s") && Integer.parseInt(NDS) > 12) || (TDS.equalsIgnoreCase("Year") && Integer.parseInt(NDS) > 1)) {
+                    } else if ((TDS.equalsIgnoreCase("Month/s") && Integer.parseInt(NDS) > 12) ) {
                         Toast.makeText(getApplicationContext(), "Please Change the duration Number", Toast.LENGTH_SHORT).show();
                     } else if (start_day_DATE.getText().toString().matches("Start day DATE")) {
                         Toast.makeText(getApplicationContext(), "Please select the start day", Toast.LENGTH_SHORT).show();
@@ -159,12 +158,12 @@ public class Add_Medicine_Text extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String event_url = "http://192.168.100.171/Medication_Conflicte.php";
+            String conflicte_url = "http://192.168.100.171/Medication_Conflicte.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
-                request.setURI(new URI(event_url));
+                request.setURI(new URI(conflicte_url));
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer stringBuffer = new StringBuffer("");
@@ -189,16 +188,18 @@ public class Add_Medicine_Text extends AppCompatActivity {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
                 if (success == 1) {
-                    JSONArray patientData = jsonResult.getJSONArray("medication");
-                    for (int i = 0; i < patientData.length(); i++) {
-                        JSONObject patientObject = patientData.getJSONObject(i);
-                        String medication = patientObject.getString("medicine_name");
-                        String conflict = patientObject.getString("conflict");
+                    JSONArray conflicteData = jsonResult.getJSONArray("medication");
+                    for (int i = 0; i < conflicteData.length(); i++) {
+                        // store one object
+                        JSONObject conflicteObject = conflicteData.getJSONObject(i);
+                        // get object information
+                        String medication = conflicteObject.getString("medicine_name");
+                        String conflict = conflicteObject.getString("conflict");
                         String[] s = conflict.split(",");
                         //Toast.makeText(getApplicationContext(),medication, Toast.LENGTH_LONG).show();
 
                         if (medication.equalsIgnoreCase(medicineNameET.getText().toString().trim())) {
-
+                            //medicines name that conflict with medicineNameET
                             for (int j = 0; j < s.length; j++) {
                                 conflictMedicine.add(s[j]);
                             }
@@ -225,12 +226,12 @@ public class Add_Medicine_Text extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String event_url = "http://192.168.100.171/readMedication.php";
+            String medicine_url = "http://192.168.100.171/readMedication.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
-                request.setURI(new URI(event_url));
+                request.setURI(new URI(medicine_url));
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer stringBuffer = new StringBuffer("");
@@ -255,20 +256,18 @@ public class Add_Medicine_Text extends AppCompatActivity {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
                 if (success == 2) {
-                    JSONArray patientData = jsonResult.getJSONArray("medication");
-                    for (int i = 0; i < patientData.length(); i++) {
-                        JSONObject patientObject = patientData.getJSONObject(i);
-                        String userName = patientObject.getString("userName");
+                    JSONArray patientMedData = jsonResult.getJSONArray("medication");
+                    for (int i = 0; i < patientMedData.length(); i++) {
+                        JSONObject patientMedObject = patientMedData.getJSONObject(i);
+                        String userName = patientMedObject.getString("userName");
                         String medicineName = null;
 
                         if (name.equalsIgnoreCase(userName)) {
-                            medicineName = patientObject.getString("medicineName");
+                            medicineName = patientMedObject.getString("medicineName");
 
                             for (int j = 0; j < conflictMedicine.size(); j++) {
 
                                 if (conflictMedicine.get(j).toString().equalsIgnoreCase(medicineName)) {
-                                    //Toast.makeText(getApplicationContext(),"conflict found with "+ conflictMedicine.get(j).toString(), Toast.LENGTH_LONG).show();
-                                    // actionMedicine.add(conflictMedicine.get(j).toString());
                                     lastACTION = 1;
                                 }
                             }
@@ -279,6 +278,8 @@ public class Add_Medicine_Text extends AppCompatActivity {
                     }
                     if (lastACTION == 1) {
                         Alert();
+                    }else {
+                        AddMedicine();
                     }
 
                 }
@@ -300,11 +301,11 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String operation = params[0];
-            String login_url = "http://192.168.100.171/AddMedication.php";
+
+            String AddMedicine_URL = "http://192.168.100.171/AddMedication.php";
 
 
-            // if (operation.equals("AddEvent")) {
+
             try {
 
                 String medicineNameET = params[0];
@@ -313,14 +314,12 @@ public class Add_Medicine_Text extends AppCompatActivity {
                 String amountTextSpinner = params[3];
                 String numberDurationSpin = params[4];
                 String textDurationSpin = params[5];
-
-
                 String date = params[6];
                 String userName = params[7];
                 String timeH = params[8];
                 String timeM = params[9];
                 String repeated = params[10];
-                URL url = new URL(login_url);
+                URL url = new URL(AddMedicine_URL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
@@ -360,7 +359,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            //  }
+
             return null;
         }
 
@@ -389,20 +388,15 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
     public void Alert() {
 
-        // Create the object of AlertDialog Builder class
+        // Create the object
         AlertDialog.Builder builder = new AlertDialog.Builder(Add_Medicine_Text.this);
-
         // Set the message show for the Alert time
         builder.setMessage("There is a medication conflict with another medicine\nYou need to check with your Doctor \nDo you stile want to add the medicine");
-
         // Set Alert Title
         builder.setTitle("Conflict Check Alert !");
-
-        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+        // Set Cancelable false
         builder.setCancelable(false);
-
         // Set the positive button with yes name OnClickListener method is use of DialogInterface interface.
-
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -413,7 +407,6 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
         // Set the Negative button with No name OnClickListener method is use of DialogInterface interface.
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // If user click no then dialog box is canceled.
@@ -423,7 +416,6 @@ public class Add_Medicine_Text extends AppCompatActivity {
 
         // Create the Alert dialog
         AlertDialog alertDialog = builder.create();
-
         // Show the Alert Dialog box
         alertDialog.show();
     }
@@ -628,7 +620,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Add_Medicine_Text.this, Profile_Activity.class);
+                Intent intent = new Intent(Add_Medicine_Text.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -686,15 +678,14 @@ public class Add_Medicine_Text extends AppCompatActivity {
     }
 
     public void AddMedicine() {
-        int hours = timePicker.getHour(); // after api level 23
-        int minutes = timePicker.getMinute(); // after api level 23
+        int hours = timePicker.getHour();
+        int minutes = timePicker.getMinute();
         String medicineName = medicineNameET.getText().toString().trim();
         String numberOfTime = NOTS;
         String amountNumberSpinner = ANS;
         String amountTextSpinner = ATS;
         String numberDurationSpin = NDS;
         String textDurationSpin = TDS;
-
         String date = start_day_DATE.getText().toString();
         String userName = name;
         String timeH, timeM, repeated = null;
@@ -708,8 +699,8 @@ public class Add_Medicine_Text extends AppCompatActivity {
             repeated = "3";
         }
 
-        addMedicineToDB addEventToDB = new addMedicineToDB(this);
-        addEventToDB.execute(medicineName, numberOfTime, amountNumberSpinner,
+        addMedicineToDB addmedicineToDB = new addMedicineToDB(this);
+        addmedicineToDB.execute(medicineName, numberOfTime, amountNumberSpinner,
                 amountTextSpinner, numberDurationSpin, textDurationSpin, date, userName, timeH, timeM, repeated);
 
     }

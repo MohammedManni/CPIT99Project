@@ -53,7 +53,7 @@ public class SOS_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (type.equalsIgnoreCase("patient")){
-                    Intent intent = new Intent(SOS_Activity.this, Profile_Activity.class);
+                    Intent intent = new Intent(SOS_Activity.this, Patient_Profile_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
