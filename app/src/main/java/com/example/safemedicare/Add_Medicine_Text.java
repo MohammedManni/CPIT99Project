@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Add_Medicine_Text extends AppCompatActivity {
-    String name, type;
+    String name, type, MedicineName;
     EditText medicineNameET;
     Spinner numberOfTimeSpin, amountNumberSpinner, amountTextSpinner, numberDurationSpin, textDurationSpin, RepeatSpin;
     String NOTS, ANS, ATS, NDS, TDS, RS;
@@ -66,11 +66,8 @@ public class Add_Medicine_Text extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
+            MedicineName = extras.getString("medName");
 
-            Button SecondB = findViewById(R.id.SecondB);
-            if (type.matches("caregiver")) {
-                SecondB.setVisibility(View.GONE);
-            }
         }
 
         toolbar();
@@ -78,6 +75,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         actionMedicine = new ArrayList<>();
         lastACTION = 0;
         medicineNameET = findViewById(R.id.EditMedicineName);
+        medicineNameET.setText(MedicineName);
         numberOfTimeSpin = (Spinner) findViewById(R.id.numberOfTimeSpin);
         amountNumberSpinner = (Spinner) findViewById(R.id.amountNumberSpinner);
         amountTextSpinner = (Spinner) findViewById(R.id.amountTextSpinner);

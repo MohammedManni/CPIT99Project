@@ -1,28 +1,45 @@
 package com.example.safemedicare;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+
+import java.util.ArrayList;
 
 public class Add_Medicine_Activity extends AppCompatActivity {
     private String name, type;
-
+    EditText medName;
     // text recognition varibles//
-    Button captureImageButton, detectText;
+    Button addBT;
     ImageView imageView;
-    TextView textView;
+    TextView note;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Bitmap imageBitmap;
+    EditText editext_message;
+    int number;
     /////////////////////////
 
     @Override
@@ -32,9 +49,10 @@ public class Add_Medicine_Activity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            name = extras.getString("USERNAME");
-            type = extras.getString("TYPE");
-
+          //  name = extras.getString("USERNAME");
+          //  type = extras.getString("TYPE");
+            name = "manni";
+            type = "patient";
             Button SecondB = findViewById(R.id.SecondB);
             if (type.matches("caregiver")) {
                 SecondB.setVisibility(View.GONE);
@@ -42,49 +60,23 @@ public class Add_Medicine_Activity extends AppCompatActivity {
         }
         ////////////////////////   TOOL BAR //////////////////////////////////
         toolbar();
+        number=0;
         ImageButton cam = findViewById(R.id.cameraButton);
         ImageButton voice = findViewById(R.id.imageButton2);
         ImageButton text = findViewById(R.id.imageButton3);
-        CheckBox checkBox2 = findViewById(R.id.checkBox2);
-        CheckBox checkBox3 = findViewById(R.id.checkBox3);
-        CheckBox checkBox4 = findViewById(R.id.checkBox4);
-        CheckBox checkBox5 = findViewById(R.id.checkBox5);
-        TextView note = findViewById(R.id.NOTE);
-        EditText medName = findViewById(R.id.nameOfMedicineET);
-        Button addBT = findViewById(R.id.AddBT);
+         note = findViewById(R.id.NOTE);
+         medName = findViewById(R.id.nameOfMedicineET);
+         addBT = findViewById(R.id.AddBT);
 
-        checkBox2.setVisibility(View.INVISIBLE);
-        checkBox3.setVisibility(View.INVISIBLE);
-        checkBox4.setVisibility(View.INVISIBLE);
-        checkBox5.setVisibility(View.INVISIBLE);
         note.setVisibility(View.INVISIBLE);
         medName.setVisibility(View.INVISIBLE);
         addBT.setVisibility(View.INVISIBLE);
 
-        cam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                //doProcess(view);
-
-                checkBox2.setVisibility(View.VISIBLE);
-                checkBox3.setVisibility(View.VISIBLE);
-                checkBox4.setVisibility(View.VISIBLE);
-                checkBox5.setVisibility(View.VISIBLE);
-                note.setVisibility(View.VISIBLE);
-                medName.setVisibility(View.VISIBLE);
-                addBT.setVisibility(View.VISIBLE);
-
-
-            }
-        });
         voice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkBox2.setVisibility(View.VISIBLE);
-                checkBox3.setVisibility(View.VISIBLE);
-                checkBox4.setVisibility(View.VISIBLE);
-                checkBox5.setVisibility(View.VISIBLE);
+                recordSpeech();
                 note.setVisibility(View.VISIBLE);
                 medName.setVisibility(View.VISIBLE);
                 addBT.setVisibility(View.VISIBLE);
@@ -99,56 +91,20 @@ public class Add_Medicine_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        medName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                medName.setText("");
-            }
-        });
-        checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (checkBox2.isChecked()) {
-                    medName.setText(medName.getText().toString() + " " + checkBox2.getText().toString());
-                }
-            }
-        });
 
-        checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (checkBox3.isChecked()) {
-                    medName.setText(medName.getText().toString() + " " + checkBox3.getText().toString());
-                }
-            }
-        });
-        checkBox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (checkBox4.isChecked()) {
-                    medName.setText(medName.getText().toString() + " " + checkBox4.getText().toString());
-                }
-            }
-        });
-        checkBox5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (checkBox5.isChecked()) {
-                    medName.setText(medName.getText().toString() + " " + checkBox5.getText().toString());
-                }
-            }
-        });
+
 
 
         addBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (medName.getText().toString().isEmpty()) {
-                    medName.setError("Please chose the name from above");
+                    medName.setError("There is no name");
                 } else {
                     Intent intent = new Intent(Add_Medicine_Activity.this, Add_Medicine_Text.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
+                    intent.putExtra("medName", medName.getText().toString());
                     startActivity(intent);
                 }
 
@@ -157,38 +113,36 @@ public class Add_Medicine_Activity extends AppCompatActivity {
 
 
         ///////////////////////Text recognition//////////////////////////////////////
-        captureImageButton = findViewById(R.id.capture_image);
-        detectText = findViewById(R.id.detect_text);
-        imageView = findViewById(R.id.image_view);
-        textView = findViewById(R.id.text_display);
-/*
-        captureImageButton.setOnClickListener(new View.OnClickListener() {
+        //captureImageButton = findViewById(R.id.capture_image);
+       // detectText = findViewById(R.id.detect_text);
+        imageView = findViewById(R.id.image_view0);
+       // textView = findViewById(R.id.text_display);
+
+        cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (checkPermission()){
-                   // dispatchTakePictureIntent();
-              //  }else{
-                   // requestPermission();
-              //  }
-              //  doProcess(view);
+                //check app level permission is granted for Camera
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                    //grant the permission
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 101);
+                }else {
+                    doProcess(view);
+
+                }
+
+               // if (checkPermission()){
+
+             //   }else{
+                //    requestPermission();
+                //}
+
             }
         });
 
 
 
-        detectText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // detectTextFromImage();
 
-            }
-        });
 
-        //check app level permission is granted for Camera
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            //grant the permission
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, 101);
-        }
     }
 
 
@@ -198,7 +152,7 @@ public class Add_Medicine_Activity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 101);
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -221,7 +175,10 @@ public class Add_Medicine_Activity extends AppCompatActivity {
             @Override
             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                 String s = firebaseVisionText.getText();
-                textView.setText(s);
+                note.setVisibility(View.VISIBLE);
+                medName.setVisibility(View.VISIBLE);
+                addBT.setVisibility(View.VISIBLE);
+                medName.setText(s);
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
         });
@@ -236,10 +193,72 @@ public class Add_Medicine_Activity extends AppCompatActivity {
 
 
 
-
-
-
  */
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void recordSpeech() {
+
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
+        try {
+
+            startActivityForResult(intent, 1);
+        } catch (Exception e) {
+            Toast.makeText(this, "Your device does not support Speech recognizer", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK && data != null) {
+                ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                medName.setText(text.get(0));
+
+            }
+        }else  if (requestCode == 101) {
+            Bundle bundle = data.getExtras();
+            //from bundle, extract the image
+            Bitmap bitmap = (Bitmap) bundle.get("data");
+            //set image in imageview
+            imageView.setImageBitmap(bitmap);
+            //process the image
+            //1. create a FirebaseVisionImage object from a Bitmap object
+            FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmap);
+            //2. Get an instance of FirebaseVision
+            FirebaseVision firebaseVision = FirebaseVision.getInstance();
+            //3. Create an instance of FirebaseVisionTextRecognizer
+            FirebaseVisionTextRecognizer firebaseVisionTextRecognizer = firebaseVision.getOnDeviceTextRecognizer();
+            //4. Create a task to process the image
+            Task<FirebaseVisionText> task = firebaseVisionTextRecognizer.processImage(firebaseVisionImage);
+            //5. if task is success
+            task.addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+                @Override
+                public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                    String s = firebaseVisionText.getText();
+                    note.setVisibility(View.VISIBLE);
+                    medName.setVisibility(View.VISIBLE);
+                    addBT.setVisibility(View.VISIBLE);
+                    medName.setText(s);
+                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                }
+            });
+            //6. if task is failure
+            task.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+    }
+
+
 
 
 /*
@@ -355,77 +374,73 @@ public class Add_Medicine_Activity extends AppCompatActivity {
             }
         }
      */
+    public void toolbar () {
+        // toolbar buttons
+        Button Profile = findViewById(R.id.firstB);
+        Button Schedule = findViewById(R.id.SecondB);
+        Button Add = findViewById(R.id.thirdB);
+        Button SOS = findViewById(R.id.SOS);
+        ImageButton imageButton = findViewById(R.id.imageButton);
 
+        Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_Medicine_Activity.this, Profile_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_Medicine_Activity.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_Medicine_Activity.this, Add_Medicine_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        SOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_Medicine_Activity.this, SOS_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equalsIgnoreCase("patient")) {
+                    Intent intent = new Intent(Add_Medicine_Activity.this, Home_Page_Activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                } else if (type.equalsIgnoreCase("caregiver")) {
+                    Intent intent = new Intent(Add_Medicine_Activity.this, caregiver_homePage_activity.class);
+                    intent.putExtra("USERNAME", name);
+                    intent.putExtra("TYPE", type);
+                    startActivity(intent);
+
+                }
+            }
+        });
+    }
 
     }
-        public void toolbar () {
-            // toolbar buttons
-            Button Profile = findViewById(R.id.firstB);
-            Button Schedule = findViewById(R.id.SecondB);
-            Button Add = findViewById(R.id.thirdB);
-            Button SOS = findViewById(R.id.SOS);
-            ImageButton imageButton = findViewById(R.id.imageButton);
-
-            Profile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Add_Medicine_Activity.this, Profile_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            Schedule.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Add_Medicine_Activity.this, Schedule_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            Add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Add_Medicine_Activity.this, Add_Medicine_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            SOS.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Add_Medicine_Activity.this, SOS_Activity.class);
-                    intent.putExtra("USERNAME", name);
-                    intent.putExtra("TYPE", type);
-                    startActivity(intent);
-                }
-            });
-
-            imageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (type.equalsIgnoreCase("patient")) {
-                        Intent intent = new Intent(Add_Medicine_Activity.this, Home_Page_Activity.class);
-                        intent.putExtra("USERNAME", name);
-                        intent.putExtra("TYPE", type);
-                        startActivity(intent);
-
-                    } else if (type.equalsIgnoreCase("caregiver")) {
-                        Intent intent = new Intent(Add_Medicine_Activity.this, caregiver_homePage_activity.class);
-                        intent.putExtra("USERNAME", name);
-                        intent.putExtra("TYPE", type);
-                        startActivity(intent);
-
-                    }
-                }
-            });
-        }
-
-
-}
 

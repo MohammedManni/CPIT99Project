@@ -98,13 +98,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="41dp"
 
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="41dp"
-        android:text="NOTE : Please choose the name from the above list."
+        android:text="NOTE : Please make sure the name is currect"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+        app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
 
     <EditText
         android:id="@+id/nameOfMedicineET"
@@ -116,51 +117,21 @@
         android:background="#F7E2E2"
         android:ems="10"
         android:inputType="text"
+        android:textColor="@color/black"
         android:textAlignment="center"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/NOTE" />
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="95dp"
-        android:text="CheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addByText" />
-
-    <CheckBox
-        android:id="@+id/checkBox3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="34dp"
-        android:text="CheckBox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
-
-    <CheckBox
-        android:id="@+id/checkBox4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="81dp"
-        android:layout_marginEnd="97dp"
-        android:text="CheckBox"
+    <ImageView
+        android:id="@+id/image_view0"
+        android:layout_width="304dp"
+        android:layout_height="187dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="54dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
-
-    <CheckBox
-        android:id="@+id/checkBox5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="97dp"
-        android:text="CheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox4" />
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameOfMedicineET" />
 </androidx.constraintlayout.widget.ConstraintLayout>

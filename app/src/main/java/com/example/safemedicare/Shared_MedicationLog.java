@@ -157,7 +157,7 @@ public class Shared_MedicationLog extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             String result = "";
 
-            String medication_url = "http://192.168.100.10/readMedication.php";
+            String medication_url = "http://192.168.100.171/readMedication.php";
             try {
 
 

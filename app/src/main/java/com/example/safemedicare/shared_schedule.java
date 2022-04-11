@@ -121,7 +121,7 @@ public class shared_schedule extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.10/readEvent.php";
+            String readPatient_url = "http://192.168.100.171/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
