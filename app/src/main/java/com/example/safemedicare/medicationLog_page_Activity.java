@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,18 +23,14 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
 
 public class medicationLog_page_Activity extends AppCompatActivity {
+    GridView gridList;
+    GridAdapterMedicationLog myAdapter;
+    public String name, type , userName;
+    ArrayList medicationList = new ArrayList<>();
 
-    EditText medName, numOfTime, amount;
-    public String name, type;
-
-    ////////attributes medication to read from DB/////////
-    ListView list;
-    ArrayAdapter<String> adapter;
-    Medication medication;
-    MedicationLog medicationLog ;
-    /////////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +43,49 @@ public class medicationLog_page_Activity extends AppCompatActivity {
             type = extras.getString("TYPE");
 
         }
-        //////////attributes medication to read from DB////////////////////////////////////////////////
 
-
-
-
+        //toolbar
+        toolbar();
+////////////////////////////////////// read from DB////////////////////////////////////////////////
         new ConnectionToReadMedication().execute();
-        /////////////////////////////////////////////////////////////////////////////////////////
+
+        ///// START GRID VIEW /////
+        gridList = (GridView) findViewById(R.id.gridViewM);
+        myAdapter = new GridAdapterMedicationLog(this, R.layout.grid_adapter_medication_log, medicationList);
+        // implement OnItemClickListener
+        gridList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // set an Intent to Another Activity
+                Medication m = (Medication) medicationList.get(position);
+                Intent intent = new Intent(medicationLog_page_Activity.this, MedicationLog_Adjustment.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                intent.putExtra("id", m.getId());
+                intent.putExtra("NameM", m.getMedicineName());
+                intent.putExtra("numberOfTime", m.getNumberOfTime());
+                intent.putExtra("doseAmountNumber", m.getDoseAmountNumber());
+                intent.putExtra("doseAmountText", m.getDoseAmountText());
+                intent.putExtra("duration", m.getDuration());
+                intent.putExtra("durationByText", m.getTextDurationSpin());
+                intent.putExtra("startDayDate", m.getStartDayDate());
+                intent.putExtra("timeH", m.getTimeH());
+                intent.putExtra("timeM", m.getTimeM());
+                intent.putExtra("everyH", m.getEveryH());
+                intent.putExtra("repeated", m.getRepeated());
+
+                startActivity(intent); // start Intent
+
+            }
+        });
 
 
-        // Edit text
-        medName = (EditText) findViewById(R.id.EditMedicineName);
-        numOfTime = (EditText) findViewById(R.id.editTextNumberOfTime);
-        amount = (EditText) findViewById(R.id.editTextAmount);
-        ////////////////////////////////////////////////////////////////
 
+
+
+
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -73,7 +96,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -93,7 +116,7 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(medicationLog_page_Activity.this, Add_Activity.class);
+                Intent intent = new Intent(medicationLog_page_Activity.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -130,85 +153,79 @@ public class medicationLog_page_Activity extends AppCompatActivity {
         });
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
-
-        //////// database /////////////////
-
-        // saveChange button
-        Button save = findViewById(R.id.Changes);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                medicationLog(view);
-            }
-        });
     }
 
-    public void medicationLog(View view) {
-        String medicationName = medName.getText().toString();
-        String numberOfTime = numOfTime.getText().toString();
-        String doseAmount = amount.getText().toString();
 
-        String type = "medication";
-        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(type, medicationName, numberOfTime, doseAmount);
-    }
 
-    ///////////////////////////// class for read from DB ///////////////////////////////////////////////////////////////////
+    ///////////////////////////// class to read from DB ///////////////////////////////////////////////////////////////////
     class ConnectionToReadMedication extends AsyncTask<String, String, String> {
-
+        // starting the connection
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
+
             String medication_url = "http://192.168.100.171/readMedication.php";
             try {
-                HttpClient client = new DefaultHttpClient();
-                HttpGet request = new HttpGet();
-                request.setURI(new URI(medication_url));
-                HttpResponse response = client.execute(request);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-                StringBuffer stringBuffer = new StringBuffer("");
-                String line = "";
-                while ((line = reader.readLine()) != null) {
-                    stringBuffer.append(line);
+
+                HttpClient clientM = new DefaultHttpClient();
+                HttpGet requestM = new HttpGet();
+                requestM.setURI(new URI(medication_url));
+                HttpResponse responseM = clientM.execute(requestM);
+                BufferedReader readerM = new BufferedReader(new InputStreamReader(responseM.getEntity().getContent()));
+                StringBuffer stringBufferM = new StringBuffer("");
+                String lineM = "";
+                while ((lineM = readerM.readLine()) != null) {
+                    stringBufferM.append(lineM);
                     break;
                 }
-                reader.close();
-                result = stringBuffer.toString();
-
-
+                readerM.close();
+                result = stringBufferM.toString();
             } catch (Exception e) {
                 return new String("error");
             }
-
-
             return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
+
+
             try {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
-                if (success == 1) {
-                    JSONArray caregiverData = jsonResult.getJSONArray("medication");
-                    for (int i = 0; i < caregiverData.length(); i++) {
-                        JSONObject caregiverObject = caregiverData.getJSONObject(i);
-                        int id = caregiverObject.getInt("id");
-                        String medicationName = caregiverObject.getString("medicationName");
-                        int numOfTime = caregiverObject.getInt("numberOfTime");
-                        int med_DoseAmount = caregiverObject.getInt("doseAmount");
+                if (success == 2) {
+                    JSONArray medicationData = jsonResult.getJSONArray("medication");
+                    for (int i = 0; i < medicationData.length(); i++) {
+                        JSONObject medicationObject = medicationData.getJSONObject(i);
+                        userName = medicationObject.getString("userName");
 
-                        //try to match the constructor medicationName,  med_numberOfTime,  med_DoseAmount,  id
-                        medication= new Medication( medicationName,  numOfTime,  med_DoseAmount,  id);
-                       // create the array and add the medication
-                        medicationLog = new MedicationLog();
-                        medicationLog.AddMedication(medication);
-                        String line = id + " - " + medicationName + " - " + numOfTime + " - " + amount;
-                        //adapter.add(line);
+
+                        if (userName.equalsIgnoreCase(name)) {
+
+
+                            int id = medicationObject.getInt("id");
+                            String medicineName = medicationObject.getString("medicineName");
+                            String numberOfTime = medicationObject.getString("numberOfTime");
+                            String doseAmountNumber = medicationObject.getString("doseAmountNumber");
+                            String doseAmountText = medicationObject.getString("doseAmountText");
+                            String duration = medicationObject.getString("duration");
+                            String durationByText = medicationObject.getString("durationByText");
+                            String startDayDate = medicationObject.getString("startDayDate");
+                            String timeH = medicationObject.getString("timeH");
+                            String timeM = medicationObject.getString("timeM");
+                            String everyH = medicationObject.getString("everyH");
+                            String repeated = medicationObject.getString("repeated");
+
+                            // add to the array list medicationList
+                            medicationList.add(new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated));
+
+                        }
+
 
                     }
+                    gridList.setAdapter(myAdapter);
                 } else {
-                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The retrieve was not successful ", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

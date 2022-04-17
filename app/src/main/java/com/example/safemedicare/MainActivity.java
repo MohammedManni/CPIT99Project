@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.medic_splash);
 
 
-        // getSupportActionBar().hide();
+
 
         new Handler().postDelayed(new Runnable() {
             @Override

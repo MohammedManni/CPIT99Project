@@ -7,31 +7,36 @@
     android:layout_height="match_parent">
     <include
         layout="@layout/toolbar"
-        android:id="@+id/toolbarh"
+        android:id="@+id/toolbarHomePage"
         ></include>
 
     <TextView
         android:id="@+id/UpComingEv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="119dp"
-        android:layout_marginTop="35dp"
-        android:textAlignment="center"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="81dp"
         android:text="Up coming events for today"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarh" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarHomePage" />
 
     <GridView
         android:id="@+id/gridView"
-        android:layout_width="406dp"
+        android:layout_width="match_parent"
         android:layout_height="605dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="12dp"
         android:horizontalSpacing="5dp"
-        android:numColumns="auto_fit"
+        android:verticalSpacing="5dp"
+        android:numColumns="1"
         android:scrollbarAlwaysDrawHorizontalTrack="true"
         android:scrollbars="horizontal"
-        android:verticalSpacing="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UpComingEv" />
 

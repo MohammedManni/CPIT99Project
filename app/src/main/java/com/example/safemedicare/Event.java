@@ -2,20 +2,26 @@ package com.example.safemedicare;
 
 public class Event {
     String EventName, EventDetails ,EventDate,EventTimeH,EventTimeM;
-
+    int id;
     public Event() {
 
     }
 
-    public Event(String eventName, String eventDetails, String eventTimeH, String eventTimeM, String eventDate) {
+    public Event(String eventName, String eventDetails,String eventTimeH, String eventTimeM,String eventDate, int id) {
         EventName = eventName;
         EventDetails = eventDetails;
+        EventDate = eventDate;
         EventTimeH = eventTimeH;
         EventTimeM = eventTimeM;
-        EventDate = eventDate;
+        this.id = id;
+    }
+    public int getId() {
+        return id;
     }
 
-
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getEventTimeH() {
         return EventTimeH;
     }

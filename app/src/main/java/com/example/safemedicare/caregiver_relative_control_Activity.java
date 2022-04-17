@@ -6,13 +6,24 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,13 +34,16 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class caregiver_relative_control_Activity extends AppCompatActivity {
-    CaregiverClass caregiver;
-    CaregiverClass[] caregiverList;
+    String wantToDelete, wantToADD;
 
+    ArrayList bankNamesDelete = new ArrayList<>();
+    ArrayList bankNamesADD = new ArrayList<>();
     EditText editTextName;
     Switch switchMedicationLog, switchSchedule, switchTimeline, switchAddCaregiver;
 
@@ -53,22 +67,66 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         Button add = findViewById(R.id.addPatinetORcaregiver);
         Button delete = findViewById(R.id.deletePatinetORcaregiver);
         Button BackBT = findViewById(R.id.BackBT);
+        BackBT.setVisibility(View.GONE);
+        //////////////////////////////Delete it from DB/////////////////////////////////////////////////////////////
+        switchAddCaregiver.setChecked(false);
+        switchAddCaregiver.setVisibility(View.GONE);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
+        Spinner spinADD = (Spinner) findViewById(R.id.simpleSpinnerADD);
 
+        refresh();
+
+        // Toast.makeText(getApplicationContext(), spin.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, bankNamesDelete);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spin.setAdapter(aa);
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                wantToDelete = bankNamesDelete.get(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+        ArrayAdapter arrayAdapterADD = new ArrayAdapter(this, android.R.layout.simple_spinner_item, bankNamesADD);
+        arrayAdapterADD.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spinADD.setAdapter(arrayAdapterADD);
+        spinADD.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                wantToADD = bankNamesADD.get(i).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        //another seiner ready to show all the caregivers
+        spinADD.setVisibility(View.GONE);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!switchMedicationLog.isChecked() && !switchSchedule.isChecked() && !switchTimeline.isChecked() && !switchAddCaregiver.isChecked()){
-                    switchMedicationLog.setError("");
-                    switchSchedule.setError("");
-                    switchTimeline.setError("");
-                    switchAddCaregiver.setError("");
-                    Toast.makeText(getApplicationContext(), "Please choose at least one", Toast.LENGTH_LONG).show();
-                }else {
-                    switchMedicationLog.setChecked(false);
-                    switchSchedule.setChecked(false);
-                    switchTimeline.setChecked(false);
-                    switchAddCaregiver.setChecked(false);
+                if (!switchMedicationLog.isChecked() && !switchSchedule.isChecked() && !switchTimeline.isChecked() && !switchAddCaregiver.isChecked()) {
+
+                    Toast.makeText(getApplicationContext(), "Please choose at least one option", Toast.LENGTH_LONG).show();
+                } else {
+
                     addCaregiver(view);
+                    refresh();
+
                 }
 
             }
@@ -79,20 +137,26 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
             public void onClick(View view) {
 
                 deleteCaregiver(view);
+                refresh();
             }
         });
 
         BackBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(caregiver_relative_control_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(caregiver_relative_control_Activity.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
             }
         });
+        //toolbar
+        toolbar();
 
 
+
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -103,7 +167,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(caregiver_relative_control_Activity.this, Profile_Activity.class);
+                Intent intent = new Intent(caregiver_relative_control_Activity.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -123,7 +187,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(caregiver_relative_control_Activity.this, Add_Activity.class);
+                Intent intent = new Intent(caregiver_relative_control_Activity.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -163,6 +227,15 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
     }
 
+    public void refresh() {
+        bankNamesDelete.clear();
+        bankNamesDelete.add("Select Caregiver to DELETE");
+        bankNamesADD.clear();
+        bankNamesADD.add("Select Caregiver to ADD");
+        new Connection().execute();
+        new Connection1().execute();
+    }
+
     public void addCaregiver(View view) {
         String operation = "AddCaregiver";
         String username = editTextName.getText().toString();
@@ -176,12 +249,18 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
     }
 
     public void deleteCaregiver(View view) {
-        String operation = "DeleteCaregiver";
-        String username = editTextName.getText().toString();
-        String patientName = name;
 
-        connection_to_DB backgroundWorker = new connection_to_DB(this);
-        backgroundWorker.execute(operation, username, patientName);
+        if (wantToDelete.matches("Select Caregiver to DELETE")) {
+            Toast.makeText(getApplicationContext(), "Please Select a Caregiver", Toast.LENGTH_LONG).show();
+        } else {
+            String operation = "DeleteCaregiver";
+            String username = wantToDelete;
+            String patientName = name;
+            connection_to_DB backgroundWorker = new connection_to_DB(this);
+            backgroundWorker.execute(operation, username, patientName);
+        }
+
+
     }
 
     ////////////////////// ADD CAREGIVER/////////////////////////////////////////////
@@ -292,12 +371,20 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
 
             // if caregiver was added already
             if (result.toString().equalsIgnoreCase("Already added")) {
+                switchMedicationLog.setChecked(false);
+                switchSchedule.setChecked(false);
+                switchTimeline.setChecked(false);
+                switchAddCaregiver.setChecked(false);
                 alertDialog.setMessage(result);
                 alertDialog.show();
 
             }
             // if caregiver was added successfully
             else if (result.toString().equalsIgnoreCase("The Caregiver was added")) {
+                switchMedicationLog.setChecked(false);
+                switchSchedule.setChecked(false);
+                switchTimeline.setChecked(false);
+                switchAddCaregiver.setChecked(false);
                 editTextName.setText(null);
                 alertDialog.setMessage(result);
                 alertDialog.show();
@@ -322,7 +409,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
-            // if caregiver was not found with the patient
+            // if caregiver was not found with the patient in PC table
             else if (result.toString().equalsIgnoreCase(user_name + " not found")) {
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
@@ -341,4 +428,118 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         }
     }
 
+    class Connection extends AsyncTask<String, String, String> {
+        // starting the connection
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = "";
+            String readPC_url = "http://192.168.100.171/readPC.php";
+            try {
+
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(readPC_url));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer stringBuffer = new StringBuffer("");
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    stringBuffer.append(line);
+                    break;
+                }
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                return new String("error");
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if (success == 1) {
+                    JSONArray patientData = jsonResult.getJSONArray("patient");
+                    for (int i = 0; i < patientData.length(); i++) {
+                        JSONObject patientObject = patientData.getJSONObject(i);
+                        String caregiverName = patientObject.getString("userNameC");
+                        String patientName = patientObject.getString("userNameP");
+
+                        if (patientName.equalsIgnoreCase(name)) {
+                            bankNamesDelete.add(caregiverName.toUpperCase());
+                        }
+
+
+
+
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
+    class Connection1 extends AsyncTask<String, String, String> {
+        // starting the connection
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = "";
+            String medication_url = "http://192.168.100.171/readCaregiver.php";
+            try {
+
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(medication_url));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer stringBuffer = new StringBuffer("");
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    stringBuffer.append(line);
+                    break;
+                }
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                return new String("error");
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if (success == 2) {
+                    JSONArray caregiverData = jsonResult.getJSONArray("caregiver");
+                    for (int i = 0; i < caregiverData.length(); i++) {
+                        JSONObject patientObject = caregiverData.getJSONObject(i);
+                        String userName = patientObject.getString("userName");
+
+
+                            bankNamesADD.add(userName.toUpperCase());
+
+
+
+
+
+                    }
+                }else {
+                    Toast.makeText(getApplicationContext(), "no there", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
 }

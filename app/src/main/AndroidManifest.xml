@@ -2,8 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.safemedicare">
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeMedicare"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Event_Adjustment"></activity>
+        <activity android:name=".shared_timeline"></activity>
+        <activity android:name=".Shared_MedicationLog" />
+        <activity android:name=".GridAdapterMedicationLog" />
+        <activity android:name=".MedicationLog_Adjustment" />
+        <activity android:name=".shared_activity" />
+        <activity android:name=".Add_Medicine_Text" />
+        <activity android:name=".Event_Adjustment" />
+        <activity android:name=".shared_schedule" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,30 +33,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".retriveDB" />
-        <activity android:name=".Decide_Class" />
         <activity android:name=".caregiver_homePage_activity" />
-        <activity android:name=".SecondActivity" />
+        <activity android:name=".Medication_Information" />
         <activity android:name=".Add_event_from_calendar" />
         <activity android:name=".medicationLog_page_Activity" />
-        <activity android:name=".privacy_page" />
         <activity android:name=".caregiver_relative_control_Activity" />
         <activity android:name=".personal_info_Activity" />
-        <activity android:name=".register2Activity" />
         <activity android:name=".Home_Page_Activity" />
-        <activity android:name=".Profile_Activity" />
-        <activity android:name=".Add_Activity" />
+        <activity android:name=".Patient_Profile_Activity" />
+        <activity android:name=".Add_Medicine_Activity" />
         <activity android:name=".Schedule_Activity" />
         <activity android:name=".SOS_Activity" />
         <activity android:name=".register1Activity" />
         <activity android:name=".sign_activity" />
-        <activity android:name=".patientProfile_caregiverView">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <receiver android:name=".MyBroadcastReceiver" />
 
         <uses-library
             android:name="org.apache.http.legacy"

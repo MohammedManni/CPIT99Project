@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "178997543324",
+    "project_id": "safemedicare-f8555",
+    "storage_bucket": "safemedicare-f8555.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178997543324:android:213fe1aebf4f17554b8859",
+        "android_client_info": {
+          "package_name": "com.example.safemedicare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "178997543324-rj8ujru26i8q1urj6ldeurjlt0fo667u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSaRrs2TSSyLzOofjLhgizvq_O4fwQ1wA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "178997543324-rj8ujru26i8q1urj6ldeurjlt0fo667u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

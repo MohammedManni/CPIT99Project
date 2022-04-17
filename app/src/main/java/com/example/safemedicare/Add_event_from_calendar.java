@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
@@ -36,6 +38,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
     Button date;
     DatePickerDialog datePickerDialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,73 @@ public class Add_event_from_calendar extends AppCompatActivity {
            // selectedDateString = extras.getString("DATE");
 
         }
+        //toolbar
+        toolbar();
+
+
+        // timeline button    dateView
+        eventNameET = findViewById(R.id.eventNameET);
+        DescriptionET = findViewById(R.id.DescriptionET);
+        Button buttonSave = findViewById(R.id.buttonSave);
+        timePicker = (TimePicker) findViewById(R.id.timePicker); // initiate a time picker
+        timePicker.setCurrentHour(12); // before api level 23
+        timePicker.setHour(12); // from api level 23
+
+        date = (Button) findViewById(R.id.date);
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // calender class's instance and get current date , month and year from calender
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog = new DatePickerDialog(Add_event_from_calendar.this, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // set day of month , month and year value in the edit text
+                         date.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
+                         }
+                         }, mYear, mMonth, mDay);
+                         datePickerDialog.show();
+                         }
+                         });
+
+
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (eventNameET.getText().toString().isEmpty()) {
+                    eventNameET.setError("ENTER the event Name ");
+
+                } else if (DescriptionET.getText().toString().isEmpty()) {
+                    DescriptionET.setError("ENTER the Description ");
+
+                } else {
+                    AddEvent(view);
+                    eventNameET.setText("");
+                    DescriptionET.setText("");
+                    date.setText("Select Date...");
+                }
+            }
+        });
+
+        Button buttonBack = findViewById(R.id.buttonBack);
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Add_event_from_calendar.this, Schedule_Activity.class);
+                intent.putExtra("USERNAME", name);
+                intent.putExtra("TYPE", type);
+                startActivity(intent);
+            }
+        });
+    }
+    public void toolbar() {
         // toolbar buttons
         Button Profile = findViewById(R.id.firstB);
         Button Schedule = findViewById(R.id.SecondB);
@@ -58,7 +128,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Add_event_from_calendar.this, Profile_Activity.class);
+                Intent intent = new Intent(Add_event_from_calendar.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -78,7 +148,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Add_event_from_calendar.this, Add_Activity.class);
+                Intent intent = new Intent(Add_event_from_calendar.this, Add_Medicine_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -116,95 +186,33 @@ public class Add_event_from_calendar extends AppCompatActivity {
 
         ///////////////////////END TOOLBAR BUTTON//////////////////////////////////////////
 
-        // timeline button    dateView
-        eventNameET = findViewById(R.id.eventNameET);
-        DescriptionET = findViewById(R.id.DescriptionET);
-
-        Button buttonSave = findViewById(R.id.buttonSave);
-        timePicker = (TimePicker) findViewById(R.id.timePicker); // initiate a time picker
-        timePicker.setCurrentHour(12); // before api level 23
-        timePicker.setHour(12); // from api level 23
-
-        date = (Button) findViewById(R.id.date);
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // calender class's instance and get current date , month and year from calender
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR); // current year
-                int mMonth = c.get(Calendar.MONTH); // current month
-                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-                // date picker dialog
-                datePickerDialog = new DatePickerDialog(Add_event_from_calendar.this, new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // set day of month , month and year value in the edit text
-                         date.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
-                         }
-                         }, mYear, mMonth, mDay);
-                         datePickerDialog.show();
-                         }
-                         });
-
-
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (eventNameET.getText().toString().isEmpty()) {
-                    eventNameET.setError("ENTER the event Name ");
-
-                } else if (DescriptionET.getText().toString().isEmpty()) {
-                    DescriptionET.setError("ENTER the Description ");
-
-                } else {
-                    AddEvent(view);
-                    eventNameET.setText("");
-                    DescriptionET.setText("");
-                    date.setText("Select Date...");
-                }
-            }
-        });
-
-        Button buttonBack = findViewById(R.id.buttonBack);
-
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Add_event_from_calendar.this, Schedule_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void AddEvent(View view) {
         int hours = timePicker.getHour(); // after api level 23
         int minutes = timePicker.getMinute(); // after api level 23
         String operation = "AddEvent";
         String username = name;
         String type1 = type;
-        String eventName = eventNameET.getText().toString();
+        String eventName = eventNameET.getText().toString().trim();
         String Description = DescriptionET.getText().toString();
         String Date = date.getText().toString();
         String timeH = String.valueOf(hours);
         String timeM = String.valueOf(minutes);
 
 
-        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(operation, username, type1, eventName, Description, Date, timeH, timeM);
+        AddEventToDB AddEventToDB = new AddEventToDB(this);
+        AddEventToDB.execute(operation, username, type1, eventName, Description, Date, timeH, timeM);
 
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////// Add to DB //////////////////////////////////////////////////////////////////////////
-    public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
+    public class AddEventToDB extends AsyncTask<String, Void, String> {
         Context context;
         AlertDialog alertDialog;
 
-        db1BackgroundWorker(Context ctx) {
+        AddEventToDB(Context ctx) {
             context = ctx;
         }
 

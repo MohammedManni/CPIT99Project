@@ -41,6 +41,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:text="Personal information"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
@@ -51,6 +52,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="Medication log"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonPersonalInfo" />
 
@@ -61,19 +63,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="Caregiver"
+        android:backgroundTint="#5B7DB1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonMedicationLog" />
-
-    <Button
-        android:id="@+id/buttonPrivacy"
-        android:layout_width="356dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Privacy"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCaregiver" />
-
 
 
     <ImageView

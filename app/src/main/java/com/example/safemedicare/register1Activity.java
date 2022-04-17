@@ -92,7 +92,7 @@ public class register1Activity extends AppCompatActivity {
 
                     }
 
-                    //Toast.makeText(register1Activity.this, "Please fill all blanks", Toast.LENGTH_LONG).show();
+
 
                 } else { // else whine all the input filled
 
@@ -101,7 +101,7 @@ public class register1Activity extends AppCompatActivity {
                         // the check if patient or care giver
                         if (radioButtonP.isChecked()) {
                             // send to database
-                            OnRegister(view);
+                            registerPatient(view);
 
 
 
@@ -141,15 +141,15 @@ public class register1Activity extends AppCompatActivity {
 
     }
 
-    public void OnRegister(View view) {
+    public void registerPatient(View view) {
         String username = Username.getText().toString();
         String name = Name.getText().toString();
         String phoneNumber = PhoneNumber.getText().toString();
         String age = Age.getText().toString();
         String password = Password.getText().toString();
         String type = "register";
-        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password);
+        registerUser registerUser = new registerUser(this);
+        registerUser.execute(type, username, name, phoneNumber, age, password);
     }
 
     public void registerCaregiver(View view) {
@@ -158,26 +158,16 @@ public class register1Activity extends AppCompatActivity {
         String phoneNumber = PhoneNumber.getText().toString();
         String age = Age.getText().toString();
         String password = Password.getText().toString();
-
         String type = "registerC";
-        db1BackgroundWorker db1BackgroundWorker = new db1BackgroundWorker(this);
-        db1BackgroundWorker.execute(type, username, name, phoneNumber, age, password);
+        registerUser registerUser = new registerUser(this);
+        registerUser.execute(type, username, name, phoneNumber, age, password);
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public class db1BackgroundWorker extends AsyncTask<String, Void, String> {
+    public class registerUser extends AsyncTask<String, Void, String> {
         Context context;
         AlertDialog alertDialog;
 
-        db1BackgroundWorker(Context ctx) {
+        registerUser(Context ctx) {
             context = ctx;
         }
 
