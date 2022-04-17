@@ -156,7 +156,7 @@ public class Home_Page_Activity extends AppCompatActivity {
         intent.putExtra("EVENT_DESCRIPTION", eventDescription);
 
         Random random = new Random();
-        int requestCode = random.nextInt(9999 - 1000) + 1000;
+        int requestCode = random.nextInt(10000) ;
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
 
         if (c.before(Calendar.getInstance())) {

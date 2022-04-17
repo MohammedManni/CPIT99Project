@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
@@ -36,6 +38,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
     Button date;
     DatePickerDialog datePickerDialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +87,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
 
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
                 if (eventNameET.getText().toString().isEmpty()) {
@@ -184,6 +188,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void AddEvent(View view) {
         int hours = timePicker.getHour(); // after api level 23
         int minutes = timePicker.getMinute(); // after api level 23
