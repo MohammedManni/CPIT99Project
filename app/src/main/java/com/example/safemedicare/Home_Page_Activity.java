@@ -90,7 +90,8 @@ public class Home_Page_Activity extends AppCompatActivity {
                 GridItem e = (GridItem) eventList.get(position);
                 String s = e.getEventListName();
                 String[] spilt = s.split(":");
-
+                String time = e.getEventListTime();
+                String[] t = time.split(":");
 
                 Intent intent = new Intent(Home_Page_Activity.this, Medication_Information.class);
                 if (spilt[0].equalsIgnoreCase("Medicine")) {
@@ -98,27 +99,32 @@ public class Home_Page_Activity extends AppCompatActivity {
                     int a = 0;
                     for (int i = 0; i < medicationChild.size(); i++) {
                         medication = (Medication) medicationChild.get(i);
+                        //Toast.makeText(getApplicationContext(),Integer.parseInt(medication.getTimeH().trim()), Toast.LENGTH_SHORT).show();
                         if (spilt[1].equalsIgnoreCase(" " + medication.getMedicineName())) {
 
-                            //intent.putExtra("image", logos[position]); // put image data in Intent
-                            intent.putExtra("operation", "1");
-                            //intent.putExtra("userName", medication.getUser_name());
-                            intent.putExtra("NameM", medication.getMedicineName());
-                            intent.putExtra("numberOfTime", medication.getNumberOfTime());
-                            intent.putExtra("doseAmountNumber", medication.getDoseAmountNumber());
-                            intent.putExtra("doseAmountText", medication.getDoseAmountText());
-                            intent.putExtra("duration", medication.getDuration());
-                            intent.putExtra("durationByText", medication.getTextDurationSpin());
-                            intent.putExtra("startDayDate", medication.getStartDayDate());
-                            intent.putExtra("timeH", medication.getTimeH());
-                            intent.putExtra("timeM", medication.getTimeM());
-                            intent.putExtra("everyH", medication.getEveryH());
-                            intent.putExtra("repeated", medication.getRepeated());
+                            if (Integer.parseInt(medication.getTimeH().trim()) ==Integer.parseInt(t[1].trim())  ) {
+                                //intent.putExtra("image", logos[position]); // put image data in Intent
+                                intent.putExtra("operation", "1");
+                                intent.putExtra("type", type);
+                                intent.putExtra("NameM", medication.getMedicineName());
+                                intent.putExtra("numberOfTime", medication.getNumberOfTime());
+                                intent.putExtra("doseAmountNumber", medication.getDoseAmountNumber());
+                                intent.putExtra("doseAmountText", medication.getDoseAmountText());
+                                intent.putExtra("duration", medication.getDuration());
+                                intent.putExtra("durationByText", medication.getTextDurationSpin());
+                                intent.putExtra("startDayDate", medication.getStartDayDate());
+                                intent.putExtra("timeH", medication.getTimeH());
+                                intent.putExtra("timeM", medication.getTimeM());
+                                intent.putExtra("everyH", medication.getEveryH());
+                                intent.putExtra("repeated", medication.getRepeated());
+                                startActivity(intent); // start Intent
+                            }
+
 
                         }
 
                     }
-                    startActivity(intent); // start Intent
+
 
                 } else if (spilt[0].equalsIgnoreCase("Name")) {
                     for (int i = 0; i < eventlistChild.size(); i++) {
@@ -128,7 +134,7 @@ public class Home_Page_Activity extends AppCompatActivity {
 
                             //intent.putExtra("image", logos[position]); // put image data in Intent
                             intent.putExtra("operation", "2");
-                            //intent.putExtra("userName", event.getEventName());
+                            intent.putExtra("type", type);
                             intent.putExtra("eventName", event.getEventName());
                             intent.putExtra("eventDescription", event.getEventDetails());
                             intent.putExtra("date", event.getEventDate());
@@ -248,29 +254,10 @@ public class Home_Page_Activity extends AppCompatActivity {
                         e = eventlistChild.get(i);
                         int check = Integer.parseInt(e.getEventTimeH());
                         if (e.getEventDate().matches(formattedDate)) {
-                            convert12(check);
-                            eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (timeIn12 + " : " + e.getEventTimeM())));
+                            //convert12(check);
+                            eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (Integer.parseInt(e.getEventTimeH()) + " : " + e.getEventTimeM())));
                         }
-                        /*
-                        if (e.getEventDate().matches(formattedDate)) {
-                            if (Integer.parseInt(e.getEventTimeH()) >= 12 && Integer.parseInt(e.getEventTimeH()) < 24) {
-                                if (Integer.parseInt(e.getEventTimeH()) > 12) {
-                                    eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + ((Integer.parseInt(e.getEventTimeH()) - 12) + ":" + e.getEventTimeM() + " pm")));
 
-                                } else {
-                                    eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " pm")));
-
-                                }
-                            } else if (Integer.parseInt(e.getEventTimeH()) == 0) {
-                                eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + ("12" + ":" + e.getEventTimeM() + " am")));
-
-                            } else {
-                                eventList.add(new GridItem("Name: " + e.getEventName(), "Date: " + e.getEventDate(), "Time: " + (e.getEventTimeH() + ":" + e.getEventTimeM() + " am")));
-                            }
-                        }
-                    }
-
- */
                     }
                     gridList.setAdapter(myAdapter);
 
@@ -1288,9 +1275,9 @@ public class Home_Page_Activity extends AppCompatActivity {
             Medication m = (Medication) medicationChild.get(i);
             int check = Integer.parseInt(m.getTimeH());
             if (m.getStartDayDate().matches(formattedDate)) {
-                convert12(check);
+               // convert12(check);
 
-                eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber() + " " + m.getDoseAmountText(), "Time: " + timeIn12 + " : " + m.getTimeM()));
+                eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber() + " " + m.getDoseAmountText(), "Time: " + Integer.parseInt(m.getTimeH()) + " : " + m.getTimeM()));
 
             }
         }

@@ -2,6 +2,7 @@ package com.example.safemedicare;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.apache.http.HttpResponse;
@@ -43,6 +45,7 @@ public class Schedule_Activity extends AppCompatActivity {
     ArrayList<Event> eventlist = new ArrayList<>();
     ArrayList<Event> selectedDateEvent = new ArrayList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

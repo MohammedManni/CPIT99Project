@@ -45,7 +45,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
     ArrayList bankNamesDelete = new ArrayList<>();
     ArrayList bankNamesADD = new ArrayList<>();
     EditText editTextName;
-    Switch switchMedicationLog, switchSchedule, switchTimeline, switchAddCaregiver;
+    Switch switchMedicationLog, switchSchedule, switchTimeline;
 
     private String name, type, user_name;
 
@@ -63,14 +63,9 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         switchMedicationLog = (Switch) findViewById(R.id.switchMedicationLog);
         switchSchedule = (Switch) findViewById(R.id.switchSchedule);
         switchTimeline = (Switch) findViewById(R.id.switchTimeline);
-        switchAddCaregiver = (Switch) findViewById(R.id.switchAddCaregiver);
         Button add = findViewById(R.id.addPatinetORcaregiver);
         Button delete = findViewById(R.id.deletePatinetORcaregiver);
-        Button BackBT = findViewById(R.id.BackBT);
-        BackBT.setVisibility(View.GONE);
-        //////////////////////////////Delete it from DB/////////////////////////////////////////////////////////////
-        switchAddCaregiver.setChecked(false);
-        switchAddCaregiver.setVisibility(View.GONE);
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
         Spinner spinADD = (Spinner) findViewById(R.id.simpleSpinnerADD);
@@ -119,7 +114,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!switchMedicationLog.isChecked() && !switchSchedule.isChecked() && !switchTimeline.isChecked() && !switchAddCaregiver.isChecked()) {
+                if (!switchMedicationLog.isChecked() && !switchSchedule.isChecked() && !switchTimeline.isChecked() ) {
 
                     Toast.makeText(getApplicationContext(), "Please choose at least one option", Toast.LENGTH_LONG).show();
                 } else {
@@ -141,15 +136,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
             }
         });
 
-        BackBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(caregiver_relative_control_Activity.this, Patient_Profile_Activity.class);
-                intent.putExtra("USERNAME", name);
-                intent.putExtra("TYPE", type);
-                startActivity(intent);
-            }
-        });
+
         //toolbar
         toolbar();
 
@@ -243,9 +230,8 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         Boolean swMedLog = switchMedicationLog.isChecked();
         Boolean swSchedule = switchSchedule.isChecked();
         Boolean swTimeline = switchTimeline.isChecked();
-        Boolean swAddAsCaregiver = switchAddCaregiver.isChecked();
         connection_to_DB backgroundWorker = new connection_to_DB(this);
-        backgroundWorker.execute(operation, username, patientName, swMedLog.toString(), swSchedule.toString(), swTimeline.toString(), swAddAsCaregiver.toString());
+        backgroundWorker.execute(operation, username, patientName, swMedLog.toString(), swSchedule.toString(), swTimeline.toString());
     }
 
     public void deleteCaregiver(View view) {
@@ -287,7 +273,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                     String swMedLog = params[3];
                     String swSchedule = params[4];
                     String swTimeline = params[5];
-                    String swAddAsCaregiver = params[6];
+
                     URL url = new URL(addCaregiver);
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setRequestMethod("POST");
@@ -299,8 +285,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                             + "&" + URLEncoder.encode("patient", "UTF-8") + "=" + URLEncoder.encode(patientName, "UTF-8")
                             + "&" + URLEncoder.encode("swMedLog", "UTF-8") + "=" + URLEncoder.encode(swMedLog, "UTF-8")
                             + "&" + URLEncoder.encode("swSchedule", "UTF-8") + "=" + URLEncoder.encode(swSchedule, "UTF-8")
-                            + "&" + URLEncoder.encode("swTimeline", "UTF-8") + "=" + URLEncoder.encode(swTimeline, "UTF-8")
-                            + "&" + URLEncoder.encode("swAddAsCaregiver", "UTF-8") + "=" + URLEncoder.encode(swAddAsCaregiver, "UTF-8");
+                            + "&" + URLEncoder.encode("swTimeline", "UTF-8") + "=" + URLEncoder.encode(swTimeline, "UTF-8");
                     bufferedWriter.write(post_data);
                     bufferedWriter.flush();
                     bufferedWriter.close();
@@ -374,7 +359,6 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
-                switchAddCaregiver.setChecked(false);
                 alertDialog.setMessage(result);
                 alertDialog.show();
 
@@ -384,7 +368,6 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
-                switchAddCaregiver.setChecked(false);
                 editTextName.setText(null);
                 alertDialog.setMessage(result);
                 alertDialog.show();
@@ -395,7 +378,6 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
-                switchAddCaregiver.setChecked(false);
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
@@ -404,7 +386,6 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
-                switchAddCaregiver.setChecked(false);
                 editTextName.setText(null);
                 alertDialog.setMessage(result);
                 alertDialog.show();
@@ -414,7 +395,6 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
                 switchMedicationLog.setChecked(false);
                 switchSchedule.setChecked(false);
                 switchTimeline.setChecked(false);
-                switchAddCaregiver.setChecked(false);
                 alertDialog.setMessage(result);
                 alertDialog.show();
             }
