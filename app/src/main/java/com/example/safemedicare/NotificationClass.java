@@ -40,6 +40,6 @@ public class NotificationClass {
         return new NotificationCompat.Builder(context, channelID)
                 .setContentTitle(eventName)
                 .setContentText("Description: "+eventDescription)
-                .setSmallIcon(R.drawable.ic_baseline_notifications_active_24);
+                .setSmallIcon(R.drawable.ic_baseline_shield_24);
     }
 }

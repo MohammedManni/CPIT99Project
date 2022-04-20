@@ -158,7 +158,7 @@ public class shared_timeline extends AppCompatActivity {
         intent.putExtra("EVENT_DESCRIPTION", eventDescription);
 
         Random random = new Random();
-        int requestCode = random.nextInt(9999 - 1000) + 1000;
+        int requestCode = random.nextInt(10000);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
 
         if (c.before(Calendar.getInstance())) {
@@ -330,10 +330,6 @@ public class shared_timeline extends AppCompatActivity {
                             Medication m = new Medication(String.valueOf(id), userName, medicineName, numberOfTime, doseAmountNumber, doseAmountText, duration, durationByText, startDayDate, timeH, timeM, everyH, repeated);
 
                             medicationList.add(m);
-                            if (startDayDate.equalsIgnoreCase(formattedDate)) {
-                                onTimeSet(Integer.parseInt(timeH), Integer.parseInt(timeM), "Medicine Name: " + medicineName, "The patient "+patientUserNameFromGetIntent+"\nShould Take "+doseAmountNumber+" "+doseAmountText);
-                            }
-                            //  eventList.add(new GridItem("Medicine: " + m.getMedicineName(), "Amount: " + m.getDoseAmountNumber() + " Pill/s", "Time " + m.getTimeH() + " : " + m.getTimeM()));
 
                         }
 
@@ -1288,7 +1284,7 @@ public class shared_timeline extends AppCompatActivity {
             Medication m = (Medication) medicationChild.get(i);
             if (m.getStartDayDate().equalsIgnoreCase(formattedDate)) {
 
-                onTimeSet(Integer.parseInt(m.getTimeH()), Integer.parseInt(m.getTimeM()), "Medicine Name: " + m.getMedicineName(), "Take " + m.getDoseAmountNumber() + " " + m.getDoseAmountText());
+                onTimeSet(Integer.parseInt(m.getTimeH()), Integer.parseInt(m.getTimeM()), "Medicine Name: " + m.getMedicineName(), "The patient "+patientUserNameFromGetIntent+"\nShould Take "+ m.getDoseAmountNumber() + " " + m.getDoseAmountText());
             }
         }
 
