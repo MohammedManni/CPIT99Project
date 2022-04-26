@@ -1,7 +1,6 @@
 package com.example.safemedicare;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -77,7 +76,7 @@ public class sign_activity extends AppCompatActivity {
         String username = Username.getText().toString().trim();
         String password = Password.getText().toString().trim();
         String type = "login";
-        signIN backgroundWorker = new signIN(this);
+        signIN backgroundWorker = new signIN();
         backgroundWorker.execute(type, username, password);
     }
 
@@ -85,12 +84,10 @@ public class sign_activity extends AppCompatActivity {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private class signIN extends AsyncTask<String, Void, String> {
-        Context context;
+
         AlertDialog alertDialog;
 
-        signIN(Context ctx) {
-            context = ctx;
-        }
+
 
         @Override
         protected String doInBackground(String... params) {
@@ -137,7 +134,7 @@ public class sign_activity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            alertDialog = new AlertDialog.Builder(context).create();
+            alertDialog = new AlertDialog.Builder(sign_activity.this).create();
             alertDialog.setTitle("Login Status");
         }
 

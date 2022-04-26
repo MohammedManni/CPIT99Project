@@ -55,7 +55,7 @@ public class Add_event_from_calendar extends AppCompatActivity {
         toolbar();
 
 
-        // timeline button    dateView
+
         eventNameET = findViewById(R.id.eventNameET);
         DescriptionET = findViewById(R.id.DescriptionET);
         Button buttonSave = findViewById(R.id.buttonSave);
