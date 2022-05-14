@@ -59,7 +59,7 @@ public class personal_info_Activity extends AppCompatActivity {
             }
             new returnUserInformation().execute();
         }
-        user = new CaregiverClass();
+        user = new User();
         UserNameINProfileEDITText = (EditText) findViewById(R.id.UserNameINProfileEDITText);
         PersonNameINProfileEditText = (EditText) findViewById(R.id.PersonNameINProfileEditText);
         PhoneNumberINProfileEditText = (EditText) findViewById(R.id.PhoneNumberINProfileEditText);

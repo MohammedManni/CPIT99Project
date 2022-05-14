@@ -14,18 +14,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-public class sign_activityTest {
-
+public class Add_event_from_calendarTest {
     String r=null;
     @Test
-    public void onLogin() {
+    public void addEvent() {
         String username = "manni";
-        String password = "123";
-        String login_url = "http://192.168.100.9/login.php";
-
+        String operation = "AddEvent";
+        String login_url = "http://192.168.100.9/AddEvent.php";
         try {
+            String user_name = username; String type1 ="patient";String eventName = "Try Test";String Description = "Test";
+            String Date = "5/14/2022"; String timeH = "9";  String timeM = "40";
             URL url = new URL(login_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
@@ -33,8 +33,14 @@ public class sign_activityTest {
             httpURLConnection.setDoInput(true);
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8") + "&"
-                    + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+            String post_data = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8") + "&"
+                    + URLEncoder.encode("type1", "UTF-8") + "=" + URLEncoder.encode(type1, "UTF-8") + "&"
+                    + URLEncoder.encode("eventName", "UTF-8") + "=" + URLEncoder.encode(eventName, "UTF-8") + "&"
+                    + URLEncoder.encode("Description", "UTF-8") + "=" + URLEncoder.encode(Description, "UTF-8") + "&"
+                    + URLEncoder.encode("Date", "UTF-8") + "=" + URLEncoder.encode(Date, "UTF-8") + "&"
+                    + URLEncoder.encode("timeH", "UTF-8") + "=" + URLEncoder.encode(timeH, "UTF-8") + "&"
+                    + URLEncoder.encode("timeM", "UTF-8") + "=" + URLEncoder.encode(timeM, "UTF-8") + "&"
+                    + URLEncoder.encode("operation", "UTF-8") + "=" + URLEncoder.encode(operation, "UTF-8");
             bufferedWriter.write(post_data);
             bufferedWriter.flush();
             bufferedWriter.close();
@@ -49,14 +55,12 @@ public class sign_activityTest {
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
-            r= result;
+            r=result;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assertEquals("patient",r);
-        //assertTrue("working",r.equalsIgnoreCase("patient"));
-        //assertFalse("not working ",!r.equalsIgnoreCase("patient"));
+        assertEquals("Event Added",r);
     }
 }
