@@ -21,7 +21,16 @@ public class Patient_Profile_Activity extends AppCompatActivity {
         if (extras != null) {
             name = extras.getString("USERNAME");
             type = extras.getString("TYPE");
-
+            Button medicationLog = findViewById(R.id.buttonMedicationLog);
+            Button caregiver_relative_control = findViewById(R.id.buttonCaregiver);
+            Button SecondB = findViewById(R.id.SecondB);
+            Button add = findViewById(R.id.thirdB);
+            if (type.matches("caregiver")) {
+                SecondB.setVisibility(View.GONE);
+                add.setVisibility(View.GONE);
+                medicationLog.setVisibility(View.GONE);
+                caregiver_relative_control.setVisibility(View.GONE);
+            }
         }
         /////////////////////////////////////////////////////////////////////
         // toolbar
@@ -32,7 +41,7 @@ public class Patient_Profile_Activity extends AppCompatActivity {
         Button personalInfo = findViewById(R.id.buttonPersonalInfo);
         Button medicationLog = findViewById(R.id.buttonMedicationLog);
         Button caregiver_relative_control = findViewById(R.id.buttonCaregiver);
-
+        Button signout = findViewById(R.id.signout);
 
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +73,13 @@ public class Patient_Profile_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Patient_Profile_Activity.this, sign_activity.class);
+                startActivity(intent);
+            }
+        });
 
     }
     public void toolbar() {

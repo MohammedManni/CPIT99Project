@@ -25,8 +25,9 @@ import java.net.URLEncoder;
 
 public class sign_activity extends AppCompatActivity {
     EditText Username, Password;
+    private String name, type, operation;
     RadioButton radioButtonC;
-
+    AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,15 @@ public class sign_activity extends AppCompatActivity {
         Button register = findViewById(R.id.Register);
         Button logIn = findViewById(R.id.LogIN);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            name = extras.getString("USERNAME");
+            type = extras.getString("TYPE");
+            alertDialog = new AlertDialog.Builder(sign_activity.this).create();
+            alertDialog.setTitle("Register Status");
+            alertDialog.setMessage("The "+type+" with the User Name "+name+" has register successfully. ");
+            alertDialog.show();
+        }
 
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +81,10 @@ public class sign_activity extends AppCompatActivity {
         });
 
     }
-
+    //////////////////////
+    @Override
+    public void onBackPressed() { }
+    /////////////////////
     public void OnLogin(View view) {
         String username = Username.getText().toString().trim();
         String password = Password.getText().toString().trim();
@@ -92,7 +105,7 @@ public class sign_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String type = params[0];
-            String login_url = "http://192.168.100.171/login.php";
+            String login_url = "http://192.168.100.126/login.php";
 
 
             try {

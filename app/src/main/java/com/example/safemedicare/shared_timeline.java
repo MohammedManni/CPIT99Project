@@ -182,7 +182,7 @@ public class shared_timeline extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String event_url = "http://192.168.100.171/readEvent.php";
+            String event_url = "http://192.168.100.126/readEvent.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
@@ -271,7 +271,7 @@ public class shared_timeline extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             String result = "";
 
-            String medication_url = "http://192.168.100.171/readMedication.php";
+            String medication_url = "http://192.168.100.126/readMedication.php";
             try {
 
 
@@ -1321,7 +1321,7 @@ public class shared_timeline extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(shared_timeline.this, personal_info_Activity.class);
+                Intent intent = new Intent(shared_timeline.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

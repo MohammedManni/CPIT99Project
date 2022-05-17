@@ -174,8 +174,8 @@ public class register1Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String type = params[0];
-            String register_url = "http://192.168.100.171/register.php";
-            String registerC_url = "http://192.168.100.171/registerC.php";
+            String register_url = "http://192.168.100.126/register.php";
+            String registerC_url = "http://192.168.100.126/registerC.php";
 
             if (type.equals("register")) {
                 try {
@@ -272,7 +272,7 @@ public class register1Activity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             alertDialog = new AlertDialog.Builder(context).create();
-            alertDialog.setTitle("Login Status");
+            alertDialog.setTitle("Register Status");
         }
 
         @Override
@@ -285,7 +285,7 @@ public class register1Activity extends AppCompatActivity {
             // if was patient
             else if (result.toString().equalsIgnoreCase("Patient Register successfully")) {
                 // end to database
-                Intent intent = new Intent(register1Activity.this, Home_Page_Activity.class);
+                Intent intent = new Intent(register1Activity.this, sign_activity.class);
                 intent.putExtra("USERNAME", Username.getText().toString());
                 intent.putExtra("TYPE", "patient");
                 startActivity(intent);
@@ -294,7 +294,7 @@ public class register1Activity extends AppCompatActivity {
             // if was patient
              else if (result.toString().equalsIgnoreCase("Caregiver Register successfully")) {
                 // Caregiver home page
-                Intent intent = new Intent(register1Activity.this, caregiver_homePage_activity.class);
+                Intent intent = new Intent(register1Activity.this, sign_activity.class);
                 intent.putExtra("USERNAME", Username.getText().toString());
                 intent.putExtra("TYPE", "caregiver");
                 startActivity(intent);

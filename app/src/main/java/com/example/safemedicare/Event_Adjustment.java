@@ -228,7 +228,7 @@ public class Event_Adjustment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readEvent_url = "http://192.168.100.171/readEvent.php";
+            String readEvent_url = "http://192.168.100.126/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -300,7 +300,7 @@ public class Event_Adjustment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String Url_updateEvent = "http://192.168.100.171/updateEvent.php";
+            String Url_updateEvent = "http://192.168.100.126/updateEvent.php";
 
             if (operation.equals("update")) {
                 try {

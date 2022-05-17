@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.apache.http.HttpResponse;
@@ -56,6 +58,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
     TimePicker timePicker;
     int eh, lastACTION;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +161,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String conflicte_url = "http://192.168.100.171/Medication_Conflicte.php";
+            String conflicte_url = "http://192.168.100.126/Medication_Conflicte.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
@@ -226,7 +229,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medicine_url = "http://192.168.100.171/readMedication.php";
+            String medicine_url = "http://192.168.100.126/readMedication.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
@@ -302,7 +305,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String AddMedicine_URL = "http://192.168.100.171/AddMedication.php";
+            String AddMedicine_URL = "http://192.168.100.126/AddMedication.php";
 
 
 
@@ -398,6 +401,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         builder.setCancelable(false);
         // Set the positive button with yes name OnClickListener method is use of DialogInterface interface.
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // When the user click yes button then app will role back
@@ -677,6 +681,7 @@ public class Add_Medicine_Text extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void AddMedicine() {
         int hours = timePicker.getHour();
         int minutes = timePicker.getMinute();

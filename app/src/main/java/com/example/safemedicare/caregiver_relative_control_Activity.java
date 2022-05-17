@@ -263,8 +263,8 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String addCaregiver = "http://192.168.100.171/pc.php";
-            String deleteCaregiver = "http://192.168.100.171/Delete_From_PC.php";
+            String addCaregiver = "http://192.168.100.126/pc.php";
+            String deleteCaregiver = "http://192.168.100.126/Delete_From_PC.php";
 
             if (operation.equals("AddCaregiver")) {
                 try {
@@ -413,7 +413,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPC_url = "http://192.168.100.171/readPC.php";
+            String readPC_url = "http://192.168.100.126/readPC.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();
@@ -471,7 +471,7 @@ public class caregiver_relative_control_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String medication_url = "http://192.168.100.171/readCaregiver.php";
+            String medication_url = "http://192.168.100.126/readCaregiver.php";
             try {
 
                 HttpClient client = new DefaultHttpClient();

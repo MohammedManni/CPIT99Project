@@ -117,7 +117,7 @@ public class personal_info_Activity extends AppCompatActivity {
                     startActivity(intent);
 
                 } else if (type.equalsIgnoreCase("caregiver")) {
-                    Intent intent = new Intent(personal_info_Activity.this, personal_info_Activity.class);
+                    Intent intent = new Intent(personal_info_Activity.this, Patient_Profile_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);
@@ -210,7 +210,7 @@ public class personal_info_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readUser_url = "http://192.168.100.171/returnINFO.php";
+            String readUser_url = "http://192.168.100.126/returnINFO.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -294,7 +294,7 @@ public class personal_info_Activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String UrlPaasPhone = "http://192.168.100.171/UpdatePassword.php";
+            String UrlPaasPhone = "http://192.168.100.126/UpdatePassword.php";
 
             if (operation.equals("password")) {
                 try {

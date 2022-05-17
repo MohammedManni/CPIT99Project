@@ -94,7 +94,7 @@ public class Shared_MedicationLog extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Shared_MedicationLog.this, personal_info_Activity.class);
+                Intent intent = new Intent(Shared_MedicationLog.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);
@@ -163,7 +163,7 @@ public class Shared_MedicationLog extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             String result = "";
 
-            String medication_url = "http://192.168.100.171/readMedication.php";
+            String medication_url = "http://192.168.100.126/readMedication.php";
             try {
 
 

@@ -36,8 +36,10 @@ public class SOS_Activity extends AppCompatActivity {
             type = extras.getString("TYPE");
 
             Button SecondB = findViewById(R.id.SecondB);
+            Button thirdB = findViewById(R.id.thirdB);
             if (type.matches("caregiver")){
                 SecondB.setVisibility(View.GONE);
+                thirdB.setVisibility(View.GONE);
             }
         }
         /////////////////////////////////////////////////////////////////////
@@ -59,7 +61,7 @@ public class SOS_Activity extends AppCompatActivity {
                     startActivity(intent);
 
                 }else if (type.equalsIgnoreCase("caregiver")){
-                    Intent intent = new Intent(SOS_Activity.this, personal_info_Activity.class);
+                    Intent intent = new Intent(SOS_Activity.this, Patient_Profile_Activity.class);
                     intent.putExtra("USERNAME", name);
                     intent.putExtra("TYPE", type);
                     startActivity(intent);

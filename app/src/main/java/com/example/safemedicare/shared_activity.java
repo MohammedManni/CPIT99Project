@@ -73,7 +73,7 @@ public class shared_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readPatient.php";
+            String readPatient_url = "http://192.168.100.126/readPatient.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -139,7 +139,7 @@ public class shared_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readPC.php";
+            String readPatient_url = "http://192.168.100.126/readPC.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -252,7 +252,7 @@ public class shared_activity extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(shared_activity.this, personal_info_Activity.class);
+                Intent intent = new Intent(shared_activity.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

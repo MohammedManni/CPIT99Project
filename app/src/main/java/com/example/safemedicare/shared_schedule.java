@@ -123,7 +123,7 @@ public class shared_schedule extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             String result = "";
-            String readPatient_url = "http://192.168.100.171/readEvent.php";
+            String readPatient_url = "http://192.168.100.126/readEvent.php";
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -233,7 +233,7 @@ public class shared_schedule extends AppCompatActivity {
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(shared_schedule.this, personal_info_Activity.class);
+                Intent intent = new Intent(shared_schedule.this, Patient_Profile_Activity.class);
                 intent.putExtra("USERNAME", name);
                 intent.putExtra("TYPE", type);
                 startActivity(intent);

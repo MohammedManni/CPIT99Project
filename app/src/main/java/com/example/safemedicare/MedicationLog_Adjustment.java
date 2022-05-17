@@ -217,7 +217,7 @@ public class MedicationLog_Adjustment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String operation = params[0];
-            String Url_updateMedicine = "http://192.168.100.171/UpdateMedicine.php";
+            String Url_updateMedicine = "http://192.168.100.126/UpdateMedicine.php";
 
             if (operation.equals("update")) {
                 try {
