@@ -22,7 +22,7 @@ public class Add_event_from_calendarTest {
     public void addEvent() {
         String username = "manni";
         String operation = "AddEvent";
-        String login_url = "http://192.168.100.9/AddEvent.php";
+        String login_url = "http://192.168.100.126/AddEvent.php";
         try {
             String user_name = username; String type1 ="patient";String eventName = "Try Test";String Description = "Test";
             String Date = "5/14/2022"; String timeH = "9";  String timeM = "40";

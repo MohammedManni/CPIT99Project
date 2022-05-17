@@ -23,7 +23,7 @@ public class sign_activityTest {
     public void onLogin() {
         String username = "manni";
         String password = "123";
-        String login_url = "http://192.168.100.9/login.php";
+        String login_url = "http://192.168.100.126/login.php";
 
         try {
             URL url = new URL(login_url);
