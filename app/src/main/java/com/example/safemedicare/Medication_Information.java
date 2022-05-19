@@ -37,6 +37,7 @@ public class Medication_Information extends AppCompatActivity {
         textView22= findViewById(R.id.textView22);
 
         takenMedicineSwitch= findViewById(R.id.takenMedicineSwitch);
+        takenMedicineSwitch.setVisibility(View.GONE);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             operation = extras.getString("operation");

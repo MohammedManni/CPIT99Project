@@ -17,15 +17,21 @@ import java.net.URLEncoder;
 import static org.junit.Assert.*;
 
 public class Add_event_from_calendarTest {
-    String r=null;
+    String r = null;
+
     @Test
     public void addEvent() {
         String username = "manni";
         String operation = "AddEvent";
         String login_url = "http://192.168.100.126/AddEvent.php";
         try {
-            String user_name = username; String type1 ="patient";String eventName = "Try Test";String Description = "Test";
-            String Date = "5/14/2022"; String timeH = "9";  String timeM = "40";
+            String user_name = username;
+            String type1 = "patient";
+            String eventName = "Try Test";
+            String Description = "Test";
+            String Date = "5/14/2022";
+            String timeH = "9";
+            String timeM = "40";
             URL url = new URL(login_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
@@ -55,12 +61,12 @@ public class Add_event_from_calendarTest {
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
-            r=result;
+            r = result;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assertEquals("Event Added",r);
+        assertEquals("Event Added", r);
     }
 }
